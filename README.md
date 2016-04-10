@@ -14,8 +14,8 @@ which makes use of `pdflatex`.
 * `style.tex` - formats the thesis latex and include differnet package dependencies
 
 # Outline
-* Chapter 1 - Overview of how Galaxy Clusters can probe SIDM
-* Chapter 2 - paper of MACS1752
-* Chapter 3 - paper of El Gordo 
-* Chapter 4 - Illustris analysis   
-TBC
+* Chapter 1 - Introduction - Overview of how to analyze weak lensing signals
+* Chapter 2 - paper of El Gordo 
+* Chapter 3 - Illustris analysis   
+* Chapter 4 - Cosmic shear mass mapping using Gaussian Processes    
+* Chapter 5 - Summary 
