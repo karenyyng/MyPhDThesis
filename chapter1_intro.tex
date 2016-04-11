@@ -1,0 +1,65 @@
+% LaTeX template file for a UC Davis Mathematics / Physics Ph.D. Dissertation
+% The UC Davis Dissertation Formatting Requirements can be found at
+% http://www.gradstudies.ucdavis.edu/students/filing.html
+
+% SPECIFY AN APPROPRIATE DOCUMENT CLASS WITH APPROPRIATE OPTIONS:
+\documentclass[letterpaper, 12pt, oneside]{book}
+    
+% SPECIFY THE PAGE AND HEADER FORMATTING (which is completely a hack):
+\input{style/style}
+
+
+\begin{document}
+    
+    % Toggle commenting the following command out in order to toggle 
+    % the inclusion of line numbering (this requires the ``lineno'' 
+    % package to be includes above):
+%    \linenumbers
+    
+    % The following commands produce page numbering at the bottom
+    % center using roman numerals per UC Davis requirements for the
+    % front matter of the dissertation:
+    \pagenumbering{roman}
+    \pagestyle{plain}
+
+       
+
+    % The following command produces double-spaced lines for the
+    % remainder of the document:
+    \doublespacing
+    
+       
+    % % -- BEGIN TEXT OF THESIS
+
+    % The following commands produce page numbering at the top right
+    % using arabic numerals per UC Davis requirements for the main
+    % text of the dissertation:
+%    \pagestyle{fancy}
+	\cfoot{\thepage}
+    \pagenumbering{arabic}
+
+
+    % %-----------------------------------------------------------------------
+    % 
+    % %-------------------------------------------------------- NEW CHAPTER --
+    %
+    % % -- Chapter 1
+    
+    \include{Chapter1/chapter1}
+
+        % Either type your Introduction here or input a file 
+        % containing it using the ``\input'' or ``\include'' command.
+        
+        % You will probably want to split your chapter up into several
+        % sections (with each section possibly even split up into
+        % subsections), each of which can either be written directly
+        % in this file or input from an external file as above.
+        %
+        % Suggested sections for your introduction include a general 
+        % overview (with historical motivation as appropriate) and a 
+        % summary of your main results. E.g.:
+        
+
+\bibliography{dissertation}{}
+
+\end{document}
