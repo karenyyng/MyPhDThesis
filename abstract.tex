@@ -3,10 +3,8 @@
 % http://www.gradstudies.ucdavis.edu/students/filing.html
 
 % SPECIFY AN APPROPRIATE DOCUMENT CLASS WITH APPROPRIATE OPTIONS:
-\documentclass[letterpaper, 12pt, oneside]{book}
+\documentclass[ucdthesis.tex]{subfiles}
     
-% SPECIFY THE PAGE AND HEADER FORMATTING (which is completely a hack):
-\input{style/style}
 
 
 \begin{document}
@@ -15,11 +13,16 @@
     % The following commands produce page numbering at the bottom
     % center using roman numerals per UC Davis requirements for the
     % front matter of the dissertation:
-    \pagenumbering{roman}
-    \pagestyle{plain}
+    % \pagenumbering{roman}
+    % \pagestyle{plain}
+
     % The following command produces double-spaced lines for the
     % remainder of the document:
     \doublespacing
+		\section*{Abstract} 
+		\addcontentsline{toc}{chapter}{Abstract}
+
+		\input{Abstract/abstract}
 
        
     % Toggle the commenting of the following command in order to
@@ -29,11 +32,10 @@
     % Note that the page numbering style for the autonomous Abstract 
     % Page needs to be adjusted. See the Grad Studies website.
 
-    \include{Abstract/intext}
+    % \include{Abstract/intext}
     
     \newpage
     
 
-	  \bibliography{dissertation}{}
 
 \end{document}
