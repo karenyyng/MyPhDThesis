@@ -19,8 +19,11 @@ all : ucdthesis.pdf
 # -interactive=nonstopmode keeps the pdflatex backend from stopping at a
 # missing file reference and interactively asking you for an alternative.
 
+ucdthesis.pdf : $(PROJECT)
+	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode " -use-make ucdthesis.tex 
+
 %.pdf : %.tex
-	latexmk -pdf -pdflatex="pdflatex -interactive=nonstopmode " -use-make $< 
+	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode " -use-make $< 
 
 # make sure that .aux files are not removed since they tell latex 
 # if a file has been changed or not!!

@@ -2,42 +2,12 @@
 % The UC Davis Dissertation Formatting Requirements can be found at
 % http://www.gradstudies.ucdavis.edu/students/filing.html
 
-% SPECIFY AN APPROPRIATE DOCUMENT CLASS WITH APPROPRIATE OPTIONS:
 \documentclass[letterpaper, 12pt, oneside]{book}
-    
-% SPECIFY THE PAGE AND HEADER FORMATTING (which is completely a hack):
 \input{style/style}
-
-   % This statement dictates which chapters get compiled. Comment a
-   % line if you do not wish it to be in the output. The final draft
-   % should have everything uncommented, unless you have opted to not
-   % include a Glossary or Index.
-    \includeonly{
-      Front/title,
-      Front/copyright,
-      Front/dedication,
-      Front/toc,
-      Front/tof,
-      Front/lot,
-      Abstract/intext,
-      Acknowledgements/acknowledgements,
-      Chapter1/chapter1,
-      Chapter2/chapter2,
-      Chapter3/chapter3,
-      Chapter4/chapter4,
-      Chapter5/chapter5,
-      Appendix1/appendix1,
-      Appendix2/appendix2
-%      Glossary/glossary,
-%      Index/index
-    }
-
-\begin{document}
+\usepackage{epigraph}
+\usepackage{subfiles}
     
-    % Toggle commenting the following command out in order to toggle 
-    % the inclusion of line numbering (this requires the ``lineno'' 
-    % package to be includes above):
-%    \linenumbers
+\begin{document}
     
     % The following commands produce page numbering at the bottom
     % center using roman numerals per UC Davis requirements for the
@@ -46,90 +16,31 @@
     \pagestyle{plain}
 
        
-    % %-----------------------------------------------------------------------
-    % 
-    % %----------------------------------------------------------- NEW PAGE --
-    %
     % % -- Title Page
-
-
     \include{Front/title}
-
-       
-    % %-----------------------------------------------------------------------
-    % 
-    % %----------------------------------------------------------- NEW PAGE --
-    %
-    % % -- Copyright Page
-        
-    % The following commands create a copyright notice page. This 
-    % page can be deleted if you would prefer to not include it.
-        
-
     \include{Front/copyright}
-    
-       
-    % %-----------------------------------------------------------------------
-    % 
-    % %----------------------------------------------------------- NEW PAGE --
-    %
-    % % -- Dedication Page
-    
-    % The following command inserts a nice dedication to whomever you
-    % feel is appropriate.  This page can be deleted if you would
-    % prefer to not include it.
     \include{Front/dedication}
 
     % The following command produces double-spaced lines for the
     % remainder of the document:
     \doublespacing
-    
        
-    % %-----------------------------------------------------------------------
-    % 
-    % %----------------------------------------------------------- NEW PAGE --
-    %
     % % -- Table of Contents
     
     \include{Front/toc}
        
-    % %-----------------------------------------------------------------------
-    % 
-    % %----------------------------------------------------------- NEW PAGE --
-    %
     % % -- Table of Figures
-    
-    \include{Front/tof}
+    % \include{Front/tof}
 
-    % %-----------------------------------------------------------------------
-    % 
-    % %----------------------------------------------------------- NEW PAGE --
-    %
     % % -- List of Tables
-    
-    \include{Front/lot}
+    % \include{Front/lot}
 
-    % %-----------------------------------------------------------------------
-    % 
-    % %----------------------------------------------------------- NEW PAGE --
-    %
     % % -- Abstract
-    
-    % Toggle the commenting of the following command in order to
-    % include a page number.  The purpose of this is to allow the
-    % create an autonomous Abstract Page per University Requirements.
-    % 
     % Note that the page numbering style for the autonomous Abstract 
     % Page needs to be adjusted. See the Grad Studies website.
-
     \include{Abstract/intext}
-    
     \newpage
     
-    % %-----------------------------------------------------------------------
-    % 
-    % %----------------------------------------------------------- NEW PAGE --
-    %
     % % -- Acknowledgements
 
     % the vspace command forces the title up a bit higher 
@@ -138,108 +49,25 @@
     
     \newpage
        
-    % %-----------------------------------------------------------------------
-    % 
-    % %----------------------------------------------------------- NEW PAGE --
-    %
     % % -- BEGIN TEXT OF THESIS
 
     % The following commands produce page numbering at the top right
     % using arabic numerals per UC Davis requirements for the main
     % text of the dissertation:
-%    \pagestyle{fancy}
-	\cfoot{\thepage}
+	  %\pagestyle{fancy}
+	  \cfoot{\thepage}
     \pagenumbering{arabic}
-
-
-    % %-----------------------------------------------------------------------
-    % 
-    % %-------------------------------------------------------- NEW CHAPTER --
-    %
-    % % -- Chapter 1
-    
-    \include{Chapter1/chapter1}
-
-        % Either type your Introduction here or input a file 
-        % containing it using the ``\input'' or ``\include'' command.
-        
-        % You will probably want to split your chapter up into several
-        % sections (with each section possibly even split up into
-        % subsections), each of which can either be written directly
-        % in this file or input from an external file as above.
-        %
-        % Suggested sections for your introduction include a general 
-        % overview (with historical motivation as appropriate) and a 
-        % summary of your main results. E.g.:
-        
-    % %-----------------------------------------------------------------------
-    % 
-    % %-------------------------------------------------------- NEW CHAPTER --
-    %
-    % % -- Chapter 2
-
-
-    \include{Chapter2/chapter2}
-
-    % %-----------------------------------------------------------------------
-    % 
-    % %-------------------------------------------------------- NEW CHAPTER --
-    %
-    % % -- Chapter 3
-
-    \include{Chapter3/chapter3}
-        
-    % %-----------------------------------------------------------------------
-    % 
-    % %-------------------------------------------------------- NEW CHAPTER --
-    %
-    % % -- Chapter 4
-
-    \include{Chapter4/chapter4}
-        
-    % %-----------------------------------------------------------------------
-    % 
-    % %-------------------------------------------------------- NEW CHAPTER --
-    %
-    % % -- Chapter 5
-
-    \include{Chapter5/chapter5}
-
-
-    % % ----------------------------------------------------------------------
-    % 
-    %% % -- Appendices
-    %
+ 
+    \subfile{chapter1}
+    \subfile{chapter2}
+    \subfile{chapter3}
+    \subfile{chapter4}
+    \subfile{chapter5}
     \appendix
-    %
-    %
-    %% % ----------------------------------------------------------------------
-    %% 
-    %% %------------------------------------------------------- NEW APPENDIX --
-    %%
     %% % -- Appendix 1
-    %
-    %
-    \include{Appendix1/appendix1}
-    
-    \include{Appendix2/appendix2}
-    %
-    %
-    %% % ----------------------------------------------------------------------
-    %% 
-    %% %----------------------------------------------------------- GLOSSARY --
-    %%
-    %% % -- Glossary
-    %
+    % \subfile{appendix1}
+    % \subfile{appendix2}
     %\include{Glossary/glossary}
-    %
-    %
-    %% % ----------------------------------------------------------------------
-    %% 
-    %% %-------------------------------------------------------------- INDEX --
-    %%
-    %% % -- Index
-    %
     %\include{Index/index}
 
 \bibliography{dissertation}{}
