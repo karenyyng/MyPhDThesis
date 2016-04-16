@@ -19,7 +19,7 @@ all : ucdthesis.pdf
 # -interactive=nonstopmode keeps the pdflatex backend from stopping at a
 # missing file reference and interactively asking you for an alternative.
 
-ucdthesis.pdf : $(PROJECT) ./style/style.tex
+ucdthesis.pdf : $(PROJECT) ./style/style.tex ./Front/title.tex ./Front/toc.tex ./Front/tof.tex
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode " -use-make ucdthesis.tex 
 
 %.pdf : %.tex
@@ -29,4 +29,3 @@ ucdthesis.pdf : $(PROJECT) ./style/style.tex
 # if a file has been changed or not!!
 clean:
 	latexmk -c
-	# rm *.bbl *.fls *.fdb_latexmk *.log *.blg *.out *.pdf

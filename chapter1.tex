@@ -5,7 +5,6 @@
 \documentclass[ucdthesis.tex]{subfiles}
     
 \begin{document}
-    
     % The following commands produce page numbering at the bottom
     % center using roman numerals per UC Davis requirements for the
     % front matter of the dissertation:
@@ -15,32 +14,96 @@
     % remainder of the document:
     \doublespacing
 
-		\chapter{Introduction: Motivation for studying Dark Matter at different scales
-		}{Modivation for studying Dark Matter at different scales}{}
+		\chapter{Motivation for studying Dark Matter (DM) at different 
+			scales}		
 		\label{chapter:1}
+    \epigraph{``If your experiments require statistics, you ought to have done a
+		better experiment.''}{Ernest Rutherford} 
 
-		\section{Probing unknown Dark matter properties}
-		% specify properties that we already know about from observations 
+		\section{Research background}
+		% Argues why studying DM is important
+		\subsection{Existing DM models, the successes and pitfalls}
+		Dark matter compose of $\sim$80\% of the matter density in our universe
+		(CITE). 
+		Interacts gravitationally.	
+		Its gravity pull together baryonic matter and counteracted 
+		Dark Energy.  
 
-		\subsection{Dark matter lensing basics}
+		% Explain the most successful model of DM, and the successes of CDM 
+		% what properties of DM do we know now?
+		The Cold Dark Matter model (CDM) matches observations the best at large scale
 
-		\section{Why use probabilistic methods?}
+		% The pitfalls of CDM 
+		% what properties of DM do we still not know?
+		Why are other DM models, e.g. warm dark matter, ruled out?
+
+		At smaller scales, there are multiple low signal-to-noise observations that 
+		are in contention with CDM. Missing satellite problem, cusp-and-core problem 
+		offset between DM and the galaxy counterparts in cluster mergers.
+
+		% Explain that only astrophy observations can probe self-interaction of DM
+		% particles experiments are not successful and they probe
+		% only the baryon-DM cross section,  
+		Possible candidates have small interaction cross-sections. 
+		Ground  experiments have inconclusive evidence due to the low
+		signal-to-noise (SN).
+
+		\subsection{Techniques of detecting DM distribution - weak lensing}
+		Astrophysical observations also have their limitations and a separate sets
+		of systematics and unknowns.
+
+		\section{Research studies and their significance}
+		\subsection{Why use probabilistic methods?}
+		No other way to do a better experiment, but we have a choice to use models
+		that can represent the uncertainties sufficiently.
+		One uniting theme of the thesis are the choice of probabilistic methods
+		among the several studies. Monte Carlo sampling, Markov Chain Monte Carlo, 
+		mixture models, kernel density estimations, graphical models and 
+		Gaussian Processes. 
+
 		What are probabilistic methods?
+		How to improve existing methods that utilizes estimators. 
+		Discards information 
+
+		How to best incorporate prior information during the modeling steps. 
+		Methods showing explicit modeling choices for comparison. 
+		
 		\begin{itemize}
+		\item model selection / comparison problem
+		\item whether the model can be generalized, or in terminology of Machine
+			Learning, whether we overfit our model to the data 
 		\item hierarchical models 
-		\item make assumptions explicit for future improvements, a recipe for writing
-		inference algorithms 
 		\item uncertainty propagation 
+		\item make assumptions explicit for future improvements, a recipe for writing
+		inference algorithms - account for other possible causes of signal 
+		- what needs to be jointly modeled 
 		\end{itemize}
 
-		\section{Probabilistic methods in the context of galaxy clusters inference}
+		% Primary "direct" observation of DM is from the lensing signal 
+		% Explain the basics of weak lensing 
+		\subsection{Monte Carlo simulation of a merger of galaxy cluster}
+		Introduce Weak lensing as an observable for density and mass estimation of
+		clusters. In Chapter 2, mass-estimation by fitting parametric NFW models. 
+		Gives an overview of the relationship of DM with respect to the other
+		components of a galaxy cluster during a merger. Combine weak lensing with
+		other observables in a Monte Carlo sampling scheme.
 
-		\section{Probabilistc methods in the context of cosmic shear inference}
-						 
-		% \cfoot{\thepage}
-		% \pagenumbering{arabic}
+		\subsection{Examining how DM distribute differently from galaxies under no
+		DM self-interaction}
+		In Chapter 3, I examine the distribution of Dark Matter in galaxy clusters
+		from a entirely new setting, using cosmological data in the Illustris
+		simulation. Show the deficiency of statistical estimators 
+
+		\subsection{Modeling large-scale DM distribution with Gaussian Process}
+		At large scales of the universe, weak lensing also serves as a probe of 
+		cosmological parameters. Constrains $\Omega_m$ and $\sigma_8$ 
+		One of the primary goals of the next generation sky survey, the Large
+		Synoptic Sky Survey (LSST). In Chapter 4, I will explain a new generative
+		model for extracting information from cosmic shear. 
+	  Has less restrictions on prior assumptions for cosmological models.	
+
 
         
-% \bibliography{dissertation}{}
+	  \bibliography{chapter1}{}
 
 \end{document}
