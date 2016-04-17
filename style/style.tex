@@ -92,6 +92,26 @@
 	\chaptermark{#1}
 %      \thispagestyle{myheadings}
 }
+
+% Karen Ng 's customization
+\usepackage{epigraph}
+\usepackage{calc}
+
+\newcommand{\mytextformat}{\itshape\epigraphsize}
+\newenvironment{mytext}{\mytextformat}{}
+\newenvironment{mysource}{\scshape\hfill}{}
+\renewcommand{\textflush}{mytext} 
+\renewcommand{\sourceflush}{mysource}
+
+\let\originalepigraph\epigraph 
+\renewcommand\epigraph[2]%
+   {\setlength{\epigraphwidth}{\widthof{\mytextformat#1}}\originalepigraph{#1}{#2}}
+
+
+\usepackage{subfiles}
+
+
+
 %\fancyhead[L]{\rightmark}
 
 % SOME SLIGHTLY LESS COMMON LaTeX PACKAGES TO INCLUDE 

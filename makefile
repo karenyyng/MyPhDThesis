@@ -1,5 +1,6 @@
 # Detect the tex files in this folder and make them a target 
 PROJECT:= $(shell echo *.tex)
+BIB:= $(shell echo *.bib)
 
 # You want latexmk to *always* run, because make does not have all the info.
 # Also, include non-file targets in .PHONY so they are run regardless of any
@@ -19,10 +20,10 @@ all : ucdthesis.pdf
 # -interactive=nonstopmode keeps the pdflatex backend from stopping at a
 # missing file reference and interactively asking you for an alternative.
 
-ucdthesis.pdf : $(PROJECT) ./style/style.tex ./Front/title.tex ./Front/toc.tex ./Front/tof.tex
+ucdthesis.pdf : $(PROJECT) ./style/style.tex ./Front/title.tex ./Front/toc.tex ./Front/tof.tex $(BIB)
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode " -use-make ucdthesis.tex 
 
-%.pdf : %.tex
+%.pdf : %.tex %.bib
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode " -use-make $< 
 
 # make sure that .aux files are not removed since they tell latex 
