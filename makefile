@@ -1,5 +1,5 @@
 # Detect the tex files in this folder and make them a target 
-PROJECT:= $(shell echo *.tex)
+PROJECT:= $(shell echo ./Chapters/*.tex)
 BIB:= $(shell echo *.bib)
 
 # You want latexmk to *always* run, because make does not have all the info.

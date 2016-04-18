@@ -54,18 +54,19 @@
 	  \cfoot{\thepage}
     \pagenumbering{arabic}
  
-    % \subfile{chapter1}
-    \subfile{chapter2}
-    \subfile{chapter3}
-    \subfile{chapter4}
-    \subfile{chapter5}
+    % \input{Chapters/chapter1}
+    \input{Chapters/chapter2}
+    \input{Chapters/chapter3}
+    \input{Chapters/chapter4}
+    \input{Chapters/chapter5}
     \appendix
     %% % -- Appendix 1
-    \subfile{appendix1}
+    \include{Chapters/appendix1}
     % \subfile{appendix2}
     %\include{Glossary/glossary}
     %\include{Index/index}
 
 		% \addcontentsline{toc}{chapter}{References}
+		\bibliography{chapter2}
 
 \end{document}
