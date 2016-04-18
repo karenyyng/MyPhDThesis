@@ -96,11 +96,24 @@
 }
 
 % ---------- Karen Ng 's customization --------------
+% Use landscape mode for rotating table that are too long
+\usepackage{lscape}
 
+% Use graphicx package for adding paths 
 \usepackage{graphicx}
 \graphicspath{{Figures/chapter1/}{Figures/chapter2/}{Figures/chapter3/}}
+
+% Put different chapters in different files 
 \usepackage{subfiles}
+
+% Make sure references from other files are visible to each file
+% \usepackage{xr}
+% \externaldocument{chapter2}
+% \externaldocument{appendix1}
+
+% \usepackage{bibentry}
 \usepackage{calc}
+
 \usepackage{epigraph}
 \newcommand{\mytextformat}{\itshape\epigraphsize}
 \newenvironment{mytext}{\mytextformat}{}
@@ -116,12 +129,13 @@
 \usepackage{tabularx}
 \usepackage{booktabs}
 \usepackage{hhline}
+
+% Aliases
 \defcitealias{D13}{D13}
 \defcitealias{Jee13}{J13}
 \defcitealias{M12}{M12}
 \defcitealias{Sifon13}{Sif\'{o}n 2013}
 
-\usepackage{bibentry}
 
 
 % ---------- Karen Ng 's customization --------------

@@ -3,6 +3,8 @@
 % http://www.gradstudies.ucdavis.edu/students/filing.html
 
 \documentclass[ucdthesis.tex]{subfiles}
+\usepackage{xr}
+\externaldocument{appendix1}
 % \defcitealias{D13}{D13}
 % \defcitealias{Jee13}{J13}
 % \defcitealias{M12}{M12}
@@ -168,7 +170,7 @@
     redshift. The galaxy number density contours in the background in green indicate a bimodal
     distribution.} 
     \end{figure}
-    \section{DATA} 
+    \section{Data} 
     We gathered and analyzed data from multiple sources. 
     See Table~\ref{tab:inputs} for descriptions of the PDFs of the input
     variables. 
@@ -529,8 +531,8 @@
     
     \subsection{Extension to the Monte Carlo simulation - Determining merger
     scenario with radio relic position by model comparison}
+		\begin{landscape}
     \begin{table*}
-    	\begin{minipage}{170mm} 
     	\caption{List of variables that provide quantitative constraints for the merger
     		scenario. For details of the distribution of each variable see the corresponding
     	$^\dagger$Section. Calculations were done with all available realizations
@@ -560,8 +562,8 @@
     \end{tabular} 
     \end{center} 
     \label{tab:input_contraints} 
-    \end{minipage}
     \end{table*} 
+	\end{landscape}
     
     One of the biggest questions involving the merger is whether El Gordo is
     observed during a returning or outgoing phase. We compared the two merger
@@ -626,18 +628,17 @@
     68\% confidence regions respectively. }
     	\label{fig:TSP_v3D}
     \end{figure}
-    
+
+		\begin{landscape}
     \begin{table*}
-    \begin{minipage}{170mm} 
     \caption{Table of the output PDF properties of the model variables and output variables from Monte Carlo simulation
     \label{tab:outputs}}
     \begin{tabularx}{\textwidth}{@{\extracolsep{\fill}}lccccccccc@{}}
-    \hline
-    \hline
-    &&&&Default weights & & & & Default + polarization weights  \\ 
+    \cmidrule{1-10}     
+		&&&&Default weights & & & & Default + polarization weights  \\ 
     \cmidrule{4-6} \cmidrule{8-10} 
     Variables & Units && Location & 68$\%$ CI $^{\dagger}$ &95$\%$ CI && Location & 68$\%$ CI  & 95$\%$ CI \\ 
-    \hline 
+    \cmidrule{1-10}     
     $\alpha$ &(degree)&&43&19-69&6-80&&21&10-30&3-34\\
     $d_{\rm proj}$ &Mpc&&0.74&0.74-0.75&0.73-0.76&&0.74&0.74-0.75&0.73-0.76\\
     $d_{\rm max}$ &Mpc&&1.2&0.90-2.2&0.77-4.6&&0.93&0.81-1.2&0.75-1.9\\
@@ -648,11 +649,11 @@
     $v_{\rm 3D}(t_{\rm obs})$ & \kilo \meter~\second$^{-1}$ &&580&260-1200&59-2400&&940&360-1800&62-2900\\
     $v_{\rm rad}(t_{\rm obs})$ & \kilo \meter~\second$^{-1}$ &&360&140-630&27-880&&310&110-590&8-840\\
     $v_{\rm 3D}(t_{\rm per})$ & \kilo \meter~\second$^{-1}$ &&2800&2400-3700&2100-4200&&2400&2200-2800&2100-3500\\
-    \bottomrule
-    \end{tabularx}\\
+		\cmidrule{1-10}    
+	  \end{tabularx}\\
     \footnotesize{$\dagger$ CI stands for confidence interval}\\
-    \end{minipage}
     \end{table*}
+	\end{landscape}
     
     For the most likely range of $\beta$, we refer to the
     simulations of cluster mergers by both \cite{Springel2007} and
@@ -1034,7 +1035,7 @@
     		showed that this weighting function helps reduce uncertainty for the dynamical
     		variables without changing the dynamical variable estimates drastically ($< 20\%$).\\ 
     	\item inferred the {\it relative} pericenter velocity 
-    		between the subclusters of El Gordo as 
+    		between the subclusters of El Gordo as\\ 
     		$2400\pm^{400}_{200}~\kilo\meter~\second^{-1}$ \\ 
     	\item showed that a returning scenario is favored if $\langle v_{NW relic}\rangle \leq
     		1000~\kilo

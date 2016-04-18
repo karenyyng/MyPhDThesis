@@ -4,6 +4,8 @@
 
 \documentclass[ucdthesis.tex]{subfiles}
 \renewcommand{\chaptername}{Appendix}
+\usepackage{xr}
+\externaldocument{chapter2}
     
 \begin{document}
     
@@ -304,8 +306,9 @@
     Note: The authors have made the Python code for most of the analyses openly
     available at
     \href{https://github.com/karenyyng/ElGordo\_paper1}{https://github.com/karenyyng/ElGordo\_paper1}. 
-		\nobibliography{appendix1}
-    \bsp 
+		
+		\bibliography{appendix1}
+		% \nobibliography{appendix1}
 
       
 \end{document}
