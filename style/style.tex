@@ -98,7 +98,7 @@
 % ---------- Karen Ng 's customization --------------
 
 \usepackage{graphicx}
-\graphicspath{{Figures/chapter2/}}
+\graphicspath{{Figures/chapter1/}{Figures/chapter2/}{Figures/chapter3/}}
 \usepackage{subfiles}
 \usepackage{calc}
 \usepackage{epigraph}
@@ -112,6 +112,16 @@
 \renewcommand\epigraph[2]%
    {\setlength{\epigraphwidth}{\widthof{\mytextformat#1}}\originalepigraph{#1}{#2}}
 
+% My alias for chapter 2 
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{hhline}
+\defcitealias{D13}{D13}
+\defcitealias{Jee13}{J13}
+\defcitealias{M12}{M12}
+\defcitealias{Sifon13}{Sif\'{o}n 2013}
+
+\usepackage{bibentry}
 
 
 % ---------- Karen Ng 's customization --------------

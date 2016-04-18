@@ -23,6 +23,8 @@ all : ucdthesis.pdf
 ucdthesis.pdf : $(PROJECT) ./style/style.tex ./Front/title.tex ./Front/toc.tex ./Front/tof.tex $(BIB)
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode " -use-make ucdthesis.tex 
 
+# You must have a bibliography file of the same file prefix 
+# Use a symbolic link if you want to reuse bib file of another chapter
 %.pdf : %.tex %.bib ./style/style.tex
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode " -use-make $< 
 
