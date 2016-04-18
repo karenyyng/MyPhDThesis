@@ -95,10 +95,13 @@
 %      \thispagestyle{myheadings}
 }
 
-% Karen Ng 's customization
-\usepackage{epigraph}
-\usepackage{calc}
+% ---------- Karen Ng 's customization --------------
 
+\usepackage{graphicx}
+\graphicspath{{Figures/chapter2/}}
+\usepackage{subfiles}
+\usepackage{calc}
+\usepackage{epigraph}
 \newcommand{\mytextformat}{\itshape\epigraphsize}
 \newenvironment{mytext}{\mytextformat}{}
 \newenvironment{mysource}{\scshape\hfill}{}
@@ -110,8 +113,8 @@
    {\setlength{\epigraphwidth}{\widthof{\mytextformat#1}}\originalepigraph{#1}{#2}}
 
 
-\usepackage{subfiles}
 
+% ---------- Karen Ng 's customization --------------
 
 
 %\fancyhead[L]{\rightmark}
