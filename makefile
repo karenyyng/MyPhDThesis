@@ -23,10 +23,10 @@ all : ucdthesis.pdf
 ucdthesis.pdf : $(PROJECT) ./style/style.tex ./Front/title.tex ./Front/toc.tex ./Front/tof.tex $(BIB)
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode " -use-make ucdthesis.tex 
 
-%.pdf : %.tex %.bib
+%.pdf : %.tex %.bib ./style/style.tex
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode " -use-make $< 
 
 # make sure that .aux files are not removed since they tell latex 
 # if a file has been changed or not!!
 clean:
-	latexmk -c
+	latexmk -CA
