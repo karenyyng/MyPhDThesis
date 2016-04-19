@@ -1,5 +1,7 @@
 # Detect the tex files in this folder and make them a target 
+CONTENT:= $(shell echo *.tex)
 PROJECT:= $(shell echo ./Chapters/*.tex)
+FRONT:= $(shell echo ./Front/*.tex)
 BIB:= $(shell echo *.bib)
 
 # You want latexmk to *always* run, because make does not have all the info.
@@ -20,7 +22,7 @@ all : ucdthesis.pdf
 # -interactive=nonstopmode keeps the pdflatex backend from stopping at a
 # missing file reference and interactively asking you for an alternative.
 
-ucdthesis.pdf : $(PROJECT) ./style/style.tex ./Front/title.tex ./Front/toc.tex ./Front/tof.tex $(BIB)
+ucdthesis.pdf : ucdthesis.tex $(PROJECT) ./style/style.tex ./Front/title.tex ./Front/toc.tex ./Front/tof.tex $(BIB) $(FRONT) $(CONTENT)
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode " -use-make ucdthesis.tex 
 
 # You must have a bibliography file of the same file prefix 
