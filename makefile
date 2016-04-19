@@ -1,6 +1,6 @@
 # Detect the tex files in this folder and make them a target 
 CONTENT:= $(shell echo *.tex)
-PROJECT:= $(shell echo ./Chapters/*.tex)
+TEXFILE:= $(shell echo ./Chapters/*.tex)
 FRONT:= $(shell echo ./Front/*.tex)
 BIB:= $(shell echo *.bib)
 
@@ -22,13 +22,13 @@ all : ucdthesis.pdf
 # -interactive=nonstopmode keeps the pdflatex backend from stopping at a
 # missing file reference and interactively asking you for an alternative.
 
-ucdthesis.pdf : ucdthesis.tex $(PROJECT) ./style/style.tex ./Front/title.tex ./Front/toc.tex ./Front/tof.tex $(BIB) $(FRONT) $(CONTENT)
+ucdthesis.pdf : ./style/style.tex $(CONTENT) $(TEXFILE) $(BIB) $(FRONT) ucdthesis.tex
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode " -use-make ucdthesis.tex 
 
 # You must have a bibliography file of the same file prefix 
 # Use a symbolic link if you want to reuse bib file of another chapter
-%.pdf : %.tex %.bib ./style/style.tex
-	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode " -use-make $< 
+%.pdf : %.tex ./style/style.tex %.bib 	
+	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode " -use-make  
 
 # make sure that .aux files are not removed since they tell latex 
 # if a file has been changed or not!!
