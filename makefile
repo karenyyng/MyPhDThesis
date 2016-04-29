@@ -25,14 +25,12 @@ all : ucdthesis.pdf
 ucdthesis.pdf : $(BIB) ./style/style.tex $(CONTENT) $(TEXFILE) $(FRONT) ucdthesis.tex
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode " -use-make ucdthesis.tex 
 
-# You must have a bibliography file of the same file prefix 
-# Use a symbolic link if you want to reuse bib file of another chapter
-%.pdf :%.tex style/style.tex %.bib Chapters/%.tex 
+abstract.pdf : abstract.tex style/style.tex  	
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode " -use-make $<
 
 # You must have a bibliography file of the same file prefix 
 # Use a symbolic link if you want to reuse bib file of another chapter
-abstract.pdf : abstract.tex style/style.tex  	
+%.pdf :%.tex style/style.tex Chapters/%.bib Chapters/%.tex 
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode " -use-make $<
 
 # make sure that .aux files are not removed since they tell latex 

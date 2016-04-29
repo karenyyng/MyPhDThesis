@@ -6,70 +6,68 @@
 \input{style/style}
     
 \begin{document}
-    
-    % The following commands produce page numbering at the bottom
-    % center using roman numerals per UC Davis requirements for the
-    % front matter of the dissertation:
-    \pagenumbering{roman}
-    \pagestyle{plain}
+	% The following commands produce page numbering at the bottom
+	% center using roman numerals per UC Davis requirements for the
+	% front matter of the dissertation:
+	\pagenumbering{roman}
+	\pagestyle{plain}
 
-       
-    % % -- Title Page
-    \include{Front/title}
-    \include{Front/copyright}
-    \include{Front/dedication}
+		 
+	% % -- Title Page
+	\include{Front/title}
+	\include{Front/copyright}
+	\include{Front/dedication}
 
-    % The following command produces double-spaced lines for the
-    % remainder of the document:
-    \doublespacing
-       
-    % % -- Table of Contents
-    \include{Front/toc}
-       
-    % % -- Table of Figures
-    % \include{Front/tof}
-    % % -- List of Tables
-    % \include{Front/lot}
+	% The following command produces double-spaced lines for the
+	% remainder of the document:
+	\doublespacing
+		 
+	% % -- Table of Contents
+	\include{Front/toc}
+		 
+	% % -- Table of Figures
+	% \include{Front/tof}
+	% % -- List of Tables
+	% \include{Front/lot}
 
-    % % -- Abstract
-    % Note that the page numbering style for the autonomous Abstract 
-    % Page needs to be adjusted. See the Grad Studies website.
-    \subfile{abstract}
-    \newpage
-    
-    % % -- Acknowledgements
+	% % -- Abstract
+	% Note that the page numbering style for the autonomous Abstract 
+	% Page needs to be adjusted. See the Grad Studies website.
+	\subfile{abstract}
+	\newpage
+	
+	% % -- Acknowledgements
 
-    % the vspace command forces the title up a bit higher 
+	% the vspace command forces the title up a bit higher 
 
-    \include{Acknowledgements/acknowledgements}
-    
-    \newpage
-       
-    % % -- BEGIN TEXT OF THESIS
+	\include{Acknowledgements/acknowledgements}
+	
+	\newpage
+		 
+	% % -- BEGIN TEXT OF THESIS
 
-    % The following commands produce page numbering at the top right
-    % using arabic numerals per UC Davis requirements for the main
-    % text of the dissertation:
-	  %\pagestyle{fancy}
-	  \cfoot{\thepage}
-    \pagenumbering{arabic}
- 
-    \input{Chapters/chapter1}
-    \input{Chapters/chapter2}
-		\input{Chapters/chapter3_headers}
-    \input{Chapters/chapter3}
-    \input{Chapters/chapter4}
-    \input{Chapters/chapter5}
-    \appendix
-    % % -- Appendix 1
-    \include{Chapters/appendix1}
-    % \subfile{appendix2}
-    %\include{Glossary/glossary}
-    %\include{Index/index}
+	% The following commands produce page numbering at the top right
+	% using arabic numerals per UC Davis requirements for the main
+	% text of the dissertation:
+	%\pagestyle{fancy}
+	\cfoot{\thepage}
+	\pagenumbering{arabic}
 
-		% \addcontentsline{toc}{chapter}{References}
-		{\singlespacing
-		\bibliography{./Chapters/chapter1,./Chapters/chapter2,./Chapters/chapter3}
-		}
+	\input{Chapters/chapter1}
+	\input{Chapters/chapter2}
+	\input{Chapters/chapter3_headers}
+	\input{Chapters/chapter3}
+	\input{Chapters/chapter4}
+	\input{Chapters/chapter5}
+
+	% -- Appendix 1
+	\appendix
+	\include{Chapters/appendix1}
+	% \include{Chapters/appendix2}
+
+	\addcontentsline{toc}{chapter}{References}
+	{\singlespacing
+	\bibliography{./Chapters/chapter1,./Chapters/chapter2,./Chapters/chapter3}
+	}
 
 \end{document}
