@@ -2,7 +2,7 @@
 CONTENT:= $(shell echo *.tex)
 TEXFILE:= $(shell echo ./Chapters/*.tex)
 FRONT:= $(shell echo ./Front/*.tex)
-BIB:= $(shell echo *.bib)
+BIB:= $(shell echo ./Chapters/*.bib)
 
 # You want latexmk to *always* run, because make does not have all the info.
 # Also, include non-file targets in .PHONY so they are run regardless of any
