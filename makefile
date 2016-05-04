@@ -3,6 +3,8 @@ CONTENT:= $(shell echo *.tex)
 TEXFILE:= $(shell echo ./Chapters/*.tex)
 FRONT:= $(shell echo ./Front/*.tex)
 BIB:= $(shell echo ./Chapters/*.bib)
+FIGS:= $(shell echo ./Figures/chapter*/*.p*)
+CHFIGS = *.png *.pdf
 
 # You want latexmk to *always* run, because make does not have all the info.
 # Also, include non-file targets in .PHONY so they are run regardless of any
@@ -30,7 +32,7 @@ abstract.pdf : abstract.tex style/style.tex
 
 # You must have a bibliography file of the same file prefix 
 # Use a symbolic link if you want to reuse bib file of another chapter
-%.pdf :%.tex style/style.tex Chapters/%.bib Chapters/%.tex 
+%.pdf :%.tex style/style.tex Chapters/%.bib Chapters/%.tex Figures/%/*\.p*
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode " -use-make $<
 
 # make sure that .aux files are not removed since they tell latex 
