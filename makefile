@@ -24,7 +24,7 @@ all : ucdthesis.pdf
 # -interaction=nonstopmode keeps the pdflatex backend from stopping at a
 # missing file reference and interactively asking you for an alternative.
 
-ucdthesis.pdf : $(BIB) ./style/style.tex $(CONTENT) $(TEXFILE) $(FRONT) ucdthesis.tex
+ucdthesis.pdf : $(BIB) ./style/style.tex $(CONTENT) $(TEXFILE) $(FRONT) $(FIGS) ucdthesis.tex
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode " -use-make ucdthesis.tex 
 
 abstract.pdf : abstract.tex style/style.tex  	
@@ -32,7 +32,7 @@ abstract.pdf : abstract.tex style/style.tex
 
 # You must have a bibliography file of the same file prefix 
 # Use a symbolic link if you want to reuse bib file of another chapter
-%.pdf :%.tex style/style.tex Chapters/%.bib Chapters/%.tex Figures/%/*\.p*
+%.pdf : %.tex style/style.tex Chapters/%.bib Chapters/%.tex Figures/%/*\.p*
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode " -use-make $<
 
 # make sure that .aux files are not removed since they tell latex 
