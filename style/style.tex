@@ -118,15 +118,15 @@
 \usepackage{calc}
 
 \usepackage{epigraph}
-\newcommand{\mytextformat}{\itshape\epigraphsize}
-\newenvironment{mytext}{\mytextformat}{}
-\newenvironment{mysource}{\scshape\hfill}{}
-\renewcommand{\textflush}{mytext} 
-\renewcommand{\sourceflush}{mysource}
-
-\let\originalepigraph\epigraph 
-\renewcommand\epigraph[2]%
-   {\setlength{\epigraphwidth}{\widthof{\mytextformat#1}}\originalepigraph{#1}{#2}}
+% \newcommand{\mytextformat}{\itshape\epigraphsize}
+% \newenvironment{mytext}{\mytextformat}{}
+% \newenvironment{mysource}{\scshape\hfill}{}
+% \renewcommand{\textflush}{mytext} 
+% \renewcommand{\sourceflush}{mysource}
+% 
+% \let\originalepigraph\epigraph 
+% \renewcommand\epigraph[2]%
+%    {\setlength{\epigraphwidth}{\widthof{\mytextformat#1}}\originalepigraph{#1}{#2}}
 
 % My alias for chapter 2 
 \usepackage{tabularx}
