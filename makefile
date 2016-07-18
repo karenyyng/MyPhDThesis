@@ -32,6 +32,7 @@ abstract.pdf : abstract.tex style/style.tex
 
 # You must have a bibliography file of the same file prefix 
 # Use a symbolic link if you want to reuse bib file of another chapter
+
 %.pdf : %.tex style/style.tex Chapters/%.bib Chapters/%.tex Figures/%/*\.p*
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode " -use-make $<
 

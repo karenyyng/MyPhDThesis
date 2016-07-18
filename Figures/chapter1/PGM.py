@@ -68,18 +68,18 @@ def PGM_examples(render=True, save=True, fig_name="1pt2_pgm_examples.png"):
     pgm.add_edge("C4", "B4")
 
     # add labels
-    base_x_loc = 4.0
-    x_offset = 9.9
+    base_x_loc = 4.6
+    x_offset = 10.
     fontsize = 20
     y_label_height = base_y - 0.5
 
-    ax.annotate("Fig. 1.2.1", xy=(base_x_loc, y_label_height),
+    ax.annotate("(a)", xy=(base_x_loc, y_label_height),
                 fontsize=fontsize)
-    ax.annotate("Fig. 1.2.2", xy=(base_x_loc + x_offset * 1, y_label_height),
+    ax.annotate("(b)", xy=(base_x_loc + x_offset * 1, y_label_height),
                 fontsize=fontsize)
-    ax.annotate("Fig. 1.2.3", xy=(base_x_loc + x_offset * 2, y_label_height),
+    ax.annotate("(c)", xy=(base_x_loc + x_offset * 2, y_label_height),
                 fontsize=fontsize)
-    ax.annotate("Fig. 1.2.4", xy=(base_x_loc + x_offset * 3, y_label_height),
+    ax.annotate("(d)", xy=(base_x_loc + x_offset * 3, y_label_height),
                 fontsize=fontsize)
 
     if render:

@@ -5,6 +5,8 @@
 % group all the messy styling file and package dependencies here 
 \usepackage[left=1in, right=1in, top=1in, bottom=1in, dvips, pdftex]{geometry} 
 \usepackage{fancyhdr} % See this package's documentation for more
+
+% Use package float to control the location where figure appears 
 \usepackage{float}
 \pagestyle{fancy}     % information about the following commands
 \renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}}
@@ -101,7 +103,10 @@
 
 % ---------- Karen Ng 's customization --------------
 % Use landscape mode for rotating table that are too long
+\usepackage[font=small]{caption}
 \usepackage{lscape}
+\usepackage{rotating}
+\usepackage{anyfontsize}
 
 % Use graphicx package for adding paths 
 \usepackage{graphicx}
