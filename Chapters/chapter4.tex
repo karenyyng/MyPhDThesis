@@ -1,15 +1,78 @@
+
+This work was performed as a continuation of \citep{Schneider2014}  
+and forms the basis of all the analyses performed in Schneider et al. 2016.
+
 \section{Introduction} 
 % what parameter does cosmic shear constrain?
 % why there needs to be an alternative of cosmic shear inference - simulation
 % for inferring the non-Gaussian component  
+
+Importance of $\sigma_8$ and $\sigma_M$  
+
+
+Our universe, on the largest scales, contains matter fluctuations ($> 100
+h^{-1}$ Mpc) that are
+mainly Gaussian. 
+% This is consistent with observed low power mode of the
+% cosmic microwave background (CMB).  
+However, for the late-time evolution of the matter fluctuations on smaller
+scales ($< 100 Mpc$), non-linear process such as gravitational collapse introduced  
+perturbations that cannot be well described by Gaussian statistics.   
+Many studies have stated the necessity to use higher-order statistic to represent the
+non-Gaussianity \cite{Jee} 
+Sufficient statistic 
+
+Our method provides an alternative from having to use the two-point correlation 
+function or the bispectrum function for representing cosmic shear information. 
+have to evaluate the non-Gaussian component from N-body simulations  
+
+We have developed an interpolation scheme that allows us to encode the 
+lensing physics.  
+In this work, we 
+1) show the basic steps for incorporating lensing physics in 
+a suitable covariance kernel form for a Gaussian Process  
+2) lay out the statistical model for performing cosmic shear inference 
+with the Gaussian Process with modified kernel 
+3)  
+
 \section{Method}
-% We propose a generative model 
+
+In the weak lensing regime, we assume  
+
+
+A Gaussian Process is the generalization of the concept of a multivariate Gaussian
+to higher dimension \citep{Rasmussen2006}. 
+
+a non-parametric linear smoother \cite{Hastie1990} that is closely   
+
+
+
+The two hyperparameters Provide the characteristic length  
+
+% Fig. 1 - Put plot that shows different realizations from a Gaussian Process  
+
+
+Instead of drawing 
+
+We propose a generative statistical model by incorporating the relevant lensing physics.  
 % Simultaneously infer both the shear and the convergence component
 % interpolate between 
-\section{Results}
 
+\subsection{Interpretation of the Gaussian Process hyperparameters}
+ 
+
+\section{Results}
+Our work is the first attempt to represent the information in cosmic shear
+without assuming a Gaussian distribution for the density modes.  
+
+We can simultaneously draw the 
 
 
 \section{Discussion}
+The constraints on cosmological parameters need to be verified in a mock
+weak-lensing analysis of cosmological simulation. 
+It enables the separation of E and B mode in the convergence field  
+
 
 \section{Conclusion}
+
