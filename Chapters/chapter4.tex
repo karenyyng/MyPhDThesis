@@ -32,7 +32,7 @@ the line of sight.
 \subsection{The basics of a Gaussian Process}
 A Gaussian Process is one of the most highly published and studied 
 generative model. It allows the inference of the joint probability density 
-function (PDF) for describing data. The joint PDF can carry more information,
+function (PDF) for describing a set of data. The joint PDF can carry more information,
 such as the uncertainties from the inputs, 
 than summary statistics such as the two-point correlation function.
 This gives the model the flexibility for a wide range
@@ -154,8 +154,8 @@ Additionally, the exponential squared kernel is infinitely differentiable. This
 differentiable kernel choice allows us to derive an analytical expression to
 relate the different lensing observables.  
 In the Newtonian limit, the scalar lensing potential $\psi$ is related to 
-each of the lensed observables, e.g. $\lensparams(\xv) \equiv [\kappa, \gamma_1,
-\gamma_2]$ mentioned in chapter 1 via the following derivatives:
+each of the lensing observables mentioned in chapter 1, e.g. $\lensparams \equiv [\kappa, \gamma_1,
+\gamma_2]$, via the following derivatives:
 \begin{align}
 \kappa &= \frac{1}{2}\left(\frac{\partial^2 \psi}{\partial x_1^2} +
 \frac{\partial^2 \psi}{\partial x_2^2 }\right) 
@@ -195,7 +195,7 @@ can be shown to be:
 \Cov(\gamma_2(\xv), \gamma_2(\yv)) &= \frac{1}{4}\left(
 \kerngp_{,1212} + \kerngp_{,1221} + \kerngp_{,2112} + \kerngp_{,2121}
 \right),
-	% \label{eq:kernel_derivatives2}
+	\label{eq:kernel_derivatives2}
 \end{align}
 where
 \begin{equation}
@@ -228,7 +228,8 @@ the terms the multiplied to $\beta^2$ due to choosing two pairs of indices from
 $h, i, j, k$ where the order of the pairs does not matter.
 The derivation of the relevant derivatives and terms are available 
 in the appendix for completeness. 
-Our implementation of $\kerngp$ is openly available at
+Our implementation of the GP kernels in eqn \ref{eq:kernel_derivatives1} - 
+\ref{eq:kernel_derivatives2} is openly available at
 \href{https://github.com/karenyyng/george}{https://github.com/karenyyng/george}.
 
 
@@ -304,7 +305,7 @@ $l^2$ & squared GP correlation length (element of $\gpparams$) \\
 We can draw realizations of the lensing observables from the GP given a set of
 optimized GP parameters:
 \begin{equation}
-	\lensparams(\xv) \sim GP(\kerngp(\xv, \yv)) 
+	\lensparams(\xv) \sim GP(0, \kerngp_{\rm GP}(\xv, \yv)) 
 \end{equation}
 
 
@@ -331,7 +332,17 @@ A more sophisticated model can be found in Schneider et al. 2016.
 
 \subsection{Separation of the E / B mode}
 Under the same formalism, it is also possible to rewrite our covariance kernel 
-to separate the E and the B mode. 
+to separate the E and the B mode of the shear, those derivation can be seen in  
+\cite{Schneider2001a}.
+
+\begin{align}
+	\kappa^E & = \kappa\\
+	\kappa^B & = 0 \\
+	\gamma^E &= \left[\frac{1}{2} (\psi^E_{,11} - \psi^E_{,22}) -
+	\psi^B_{,12}\right]\\
+	\gamma^B &= \left[\frac{1}{2} (\psi^E_{,12} - \psi^E_{,11}) - \psi^B_{,22}\right]
+\end{align}
+
 
 \subsection{Modeling systematics and noise}
 % Can handle sharp boundaries from stacking images 
@@ -366,20 +377,20 @@ almost exact computation can be considered, but is outside the scope of this wor
 
 \subsection{Computational performance of our method}
 We implemented the covariance kernels in \ref{eq:kernel_derivatives1}
-via {\sc C++}. Although the operation of computing and assembling the
+via {\sc C++} along with a {\sc Python} wrapper. 
+Although the operation of computing and assembling the
 derivatives are $O(\ngal^2)$, the large number of addition and 
 multiplication operations can be slow.
-Exploiting the symmetry of the covariance kernel can only provide both speed and
+Exploiting the symmetry of the covariance kernel can only provide 
 memory saving of a factor of 2.
 The parallelized computation of each element of the kernel was achieved using 
-the OpenMP library. 
-
-
-The slowest step of the entire computation, however, is the inversion of the
-covariance kernel matrix for the evaluation of the data fit, 
+the {\sc OpenMP} library. The slowest step of the entire computation, however, 
+is the inversion of the
+covariance kernel matrix for the evaluation of the marginal likelihood, 
 which is a $O(\ngal^3)$ operation. 
-We made use of parallelized Cholesky decomposition via the Intel Math Kernel Library
-to perform the inversion of the matrix and achieved 10 times speed up so the
+We made use of parallelized Cholesky decomposition via the {\sc Intel Math
+Kernel Library}
+to perform the inversion of the matrix and achieved $\sim10$ times speed up so the
 computation and the evaluation of the likelihood of each set of GP parameter
 take $< 10s$ for 1000 galaxies, which translates to a 3000 $\times$ 3000
 covariance matrix.
@@ -415,7 +426,7 @@ We thank Chris Paciorek for discussion about the statistical
 framework for performing shear inference and the
 use of Gaussian Processes.
 This research
-used resources of the National Energy Research Scientific 
+used the resources of the National Energy Research Scientific 
 Computing Center (NERSC), a DOE Office of Science
 User Facility supported by 
 of the U.S. Department of Energy under Contract No.
@@ -423,7 +434,7 @@ DE-AC02-05CH11231.
  This work uses a modified version
 of the public code {\sc George} available at \href{https://
 github.com/karenyyng/george}{https://
-github.com/karenyyng/george}, which was forked from
+github.com/karenyyng/george}, which was forked from \\
 \href{https://github.com/dfm/george}{https://github.com/dfm/george}.
 
 
