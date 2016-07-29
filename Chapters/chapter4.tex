@@ -4,10 +4,13 @@ forms the basis of the analyses performed in Schneider et al. (in prep.).
 
 \section{Introduction} 
 Conventional approach to infer cosmological parameters from lensed galaxies
-from sky surveys is to use the two-point correlation function (2PCF).
-We need a flexible, generative regression model 
-that can specify the joint distribution of the input variables.
-Simultaneously capture the rich  physical relationship between the different
+from sky surveys is to use the 
+two-point correlation function (2PCF), or aperture-mass dispersion.
+% state what is a 2PCF 
+
+We propose a flexible, generative regression model    
+that can specify the joint distribution of the input variables while 
+simultaneously capturing the rich physical relationships between the different
 lensing observables.  
 
 In this work, we 
@@ -15,8 +18,8 @@ In this work, we
 similar or different from other approaches for cosmic shear inference  \\ 
 2) show the derivation for incorporating the lensing physics in 
 a suitable covariance kernel form for a Gaussian Process  \\
-3) lay out the statistical model for making a mass map  
-with the Gaussian Process with the modified kernel \\ 
+3) lay out the statistical model for making several mass maps 
+with the Gaussian Process with the modified kernel and show preliminary results \\ 
 4) discuss possible extensions and future directions 
  
 Our method provides an alternative from having to use the 2PCF to represent the
@@ -26,22 +29,22 @@ Source galaxies provide sparse constraints to probe the matter density along
 the line of sight. 
 
 \section{Method}
-\subsection{the basics of a Gaussian Process}
+\subsection{The basics of a Gaussian Process}
 A Gaussian Process is one of the most highly published and studied 
 generative model. It allows the inference of the joint probability density 
-function (PDF) for describing the data. Having the PDF can carry more information 
+function (PDF) for describing data. The joint PDF can carry more information,
+such as the uncertainties from the inputs, 
 than summary statistics such as the two-point correlation function.
 This gives the model the flexibility for a wide range
 of successful applications in many fields. 
 In Astronomy, a GP has been used for modeling 
-the light curve of exoplanets \citep{Ambikasaran2014a}
+the light curve of exoplanets \citep{Ambikasaran2014a}.
 Or the GP can be used as a prior probability 
 for optimizing the model parameters of
 neural networks \citep{Snoek2012}, 
 It has also been used for other classification and pattern extraction tasks 
 (\citealt{Wilson2013}, \citealt{Duvenaud2013}, \citealt{Rasmussen2006}).
  
-
 It is helpful to understand the mathematical formulation of a GP 
 before discussing how we can adapt the GP to model the lensing observables. 
 In a nutshell, a GP smooths the input data using a non-parametric kernel
@@ -79,9 +82,9 @@ functions:
 
 
 This shows the probabilistic nature of the GP predictions.
-(See Fig. [TODO])
+(See Fig. \ref{fig:one_d_gaussian_process})
 Each drawn function represents one realization of the smoothed
-field, which will be used to model the lensing potential $\psi$ later on. 
+field, which can be used to model the lensing potential $\psi$ later on. 
 By drawing many realizations of $\psi$, we can obtain the
 corresponding credible levels.
 Note that the credible levels are wider for regions with less data to reflect
@@ -116,6 +119,15 @@ A GP with composite kernels is a
 famous example how both the short-and-long term trends of global carbon
 dioxide level can be modeled and predicted \citep{Duvenaud2013}.
 
+A statistical model that makes use of the GP usually decomposes 
+the signal and the noise in the following way: 
+\begin{equation}
+	e_{\rm obs} = g + e_{}  
+\end{equation}
+
+
+
+
 \subsection{Adapting the exponential squared kernel with lensing physics}
 One of the most popular kernels that can generate homogeneous and
 isotropic data is the exponential squared kernel: 
@@ -127,11 +139,11 @@ where
 \begin{equation}
 	r^2 \equiv (\xv - \yv)^T \Matrix{D} (\xv - \yv), 
 \end{equation}
-It only depends on the
+This kernel only depends on the
 squared magnitude of distances between pairs of galaxy locations. 
 This chosen form is therefore invariant
 under translational and rotational transformations.
-The metric $\Matrix{D}$ is taken to be an identity matrix but  
+The metric $\Matrix{D}$ is taken to be a diagonal matrix but  
 can be generalized to account for anamorphic distortions. 
 The precision parameter $\lambda$ affects the 
 amplitude of the density perturbation, while the correlation length $l^2$ 
@@ -141,9 +153,9 @@ field $\psi$ fall off as a function of the spatial distance.
 Additionally, the exponential squared kernel is infinitely differentiable. This
 differentiable kernel choice allows us to derive an analytical expression to
 relate the different lensing observables.  
-After using the Born approximation to express the lensing potential $\psi$,
-each of the lensed observables, $\lensparams(\xv) \equiv [\kappa, \gamma_1,
-\gamma_2]$ is related to the lensing potential $\psi$ via derivatives in the form of:
+In the Newtonian limit, the scalar lensing potential $\psi$ is related to 
+each of the lensed observables, e.g. $\lensparams(\xv) \equiv [\kappa, \gamma_1,
+\gamma_2]$ mentioned in chapter 1 via the following derivatives:
 \begin{align}
 \kappa &= \frac{1}{2}\left(\frac{\partial^2 \psi}{\partial x_1^2} +
 \frac{\partial^2 \psi}{\partial x_2^2 }\right) 
@@ -341,10 +353,10 @@ This restricts us to use kernels with degree of freedom above [TODO].
 When we take the limit of the degree of freedom of a Mat\'{e}rn kernel to infinity, 
 we recover the exponential squared kernel.
 
-It is possible to generalize the derivation of derivatives by using numerical
-differentiation. Numerical differentiation may allow evaluation of other
+It is possible to generalize the derivation of derivatives by using automatic
+differentiation. Automatic differentiation may allow evaluation of other
 kernels that generates isotropic and homogeneous data, 
-such as the Mat\'{e}rn kernels.
+such as the Mat\'{e}rn kernels.  
 % An implementation via numerical differentiation may
 % or may not be more computationally intensive to
 % compute, depending on the required numerical precision (aka order of accuracy).
@@ -369,7 +381,11 @@ which is a $O(\ngal^3)$ operation.
 We made use of parallelized Cholesky decomposition via the Intel Math Kernel Library
 to perform the inversion of the matrix and achieved 10 times speed up so the
 computation and the evaluation of the likelihood of each set of GP parameter
-take $< 10s$ for 1000 galaxies.
+take $< 10s$ for 1000 galaxies, which translates to a 3000 $\times$ 3000
+covariance matrix.
+Currently, our method is not computationally competitive as the 2PCF, those
+fastest distributed and parallelized 
+implementation has a computational complexity of $O(N\sqrt{N})$ \citep{Chhugani2012}.
 
 Rather than relying on manual intensive methods for parallelizing the
 computation of the kernel methods, a more promising way is to approximate the
@@ -377,12 +393,15 @@ small elements in the covariance kernel structure as zero.
 
 
 With large amount of
-sparsity, The inversion of the matrix can be sped up to [TODO]$O()$.
+sparsity, The inversion of the matrix can be sped up to [TODO]$O(M^2N)$ for
+building the model and $O(M^2)$ for interpolating / predicting output functions
+at new input locations \citep{Snelson2006}.
 The relevant field of literature about how the approximations may affect the
 statistical inference is called covariance tapering. On the other hand,  
 the Machine Learning community refer to the support for the approximate kernel
 as induce point methods.
 
+  
 
 \section{Conclusion}
 Here, we have derived and implemented a fully probabilistic method for 
@@ -410,68 +429,70 @@ github.com/karenyyng/george}, which was forked from
 
 
 \appendix 
+
 \section{Derivation of GP kernel}
 
 \begin{equation*}
-\Sigma = \lambda^{-1} k 
+\Sigma = \lambda^{-1} \kerngp 
 \end{equation*}
 
 \begin{align}
-k &= \exp{\left(\frac{-\beta}{2} r^2 \right)}\\
-k_{,x_i} &= \frac{-\beta}{2} k r^2_{,x_i} = -\beta k X_i\\ 
-k_{,y_h} &= \beta k X_h 
+\kerngp &= \exp{\left(\frac{-\beta}{2} r^2 \right)}\\
+\kerngp_{,x_i} &= \frac{-\beta}{2} k r^2_{,x_i} = -\beta \kerngp X_i\\ 
+\kerngp_{,y_h} &= \beta \kerngp X_h 
 \end{align}
 
 \begin{align}
-k_{,x_i x_j} &= \frac{-\beta}{2}(k_{,x_j} r^2_{,x_i} + k r^2_{,x_i x_j})\\
-k_{,x_i x_j y_h} &= \frac{-\beta}{2}(k_{,x_j y_h} r^2_{,x_i} + k_{,x_j}
-r^2_{,x_i y_h} + k_{,y_h} r^2_{,x_i x_j})\\
-k_{,x_i x_j y_h y_k} &= \frac{-\beta}{2} 
-(k_{,x_j y_h y_k} r^2_{,x_i} +
-k_{,x_j y_h} r^2_{,x_i y_k} + 
-k_{,x_j y_k} r^2_{,x_i y_h} + 
-k_{,y_h y_k} r^2_{,x_i x_j} )
+\kerngp_{,x_i x_j} &= \frac{-\beta}{2}(\kerngp_{,x_j} r^2_{,x_i} + 
+\kerngp r^2_{,x_i x_j})\\
+\kerngp_{,x_i x_j y_h} &= \frac{-\beta}{2}(\kerngp_{,x_j y_h} r^2_{,x_i} + \kerngp_{,x_j}
+r^2_{,x_i y_h} + \kerngp_{,y_h} r^2_{,x_i x_j})\\
+\kerngp_{,x_i x_j y_h y_k} &= \frac{-\beta}{2} 
+(\kerngp_{,x_j y_h y_k} r^2_{,x_i} +
+\kerngp_{,x_j y_h} r^2_{,x_i y_k} + 
+\kerngp_{,x_j y_k} r^2_{,x_i y_h} + 
+\kerngp_{,y_h y_k} r^2_{,x_i x_j} )
 \end{align}
 
 Just work on terms that are parts of the 4th kernel derivative 
 \begin{align*}
-k_{,x_i x_j} &= \frac{\partial}{\partial x_j} (-\beta k X_i)\\
-&= -\beta(k_{,x_j X_i} + k X_{i, x_j})\\ 
-&= -\beta(-\beta k X_j X_i + k \delta_{ij} D_{ij}) \\ 
-&= (\beta^2 X_j X_i - \beta \delta_{ij} D_{ij})k 
+\kerngp_{,x_i x_j} &= \frac{\partial}{\partial x_j} (-\beta \kerngp X_i)\\
+&= -\beta(\kerngp_{,x_j X_i} + k X_{i, x_j})\\ 
+&= -\beta(-\beta \kerngp X_j X_i + \kerngp \delta_{ij} D_{ij}) \\ 
+&= (\beta^2 X_j X_i - \beta \delta_{ij} D_{ij})\kerngp 
 \end{align*}
 
 \begin{align*}
-k_{,x_i y_h} &= \frac{\partial}{\partial y_h} (-\beta k X_i)\\
-&= -\beta(k_{,y_h X_i} + k X_{i, y_h})\\ 
-&= -\beta(\beta k X_h X_i - k \delta_{ih} D_{ih}) \\ 
-&= -(\beta^2 X_h X_i - \beta \delta_{ih} D_{ih})k 
+\kerngp_{,x_i y_h} &= \frac{\partial}{\partial y_h} (-\beta \kerngp X_i)\\
+&= -\beta(\kerngp_{,y_h X_i} + \kerngp X_{i, y_h})\\ 
+&= -\beta(\beta \kerngp X_h X_i - \kerngp \delta_{ih} D_{ih}) \\ 
+&= -(\beta^2 X_h X_i - \beta \delta_{ih} D_{ih})  
 \end{align*}
 
 \begin{align*}
-k_{,y_h y_k} &= \frac{\partial}{\partial y_h} (\beta k X_h)\\
-&= \beta(k_{,y_k X_h} + k X_{h, y_k})\\ 
+\kerngp_{,y_h y_k} &= \frac{\partial}{\partial y_h} (\beta k X_h)\\
+&= \beta(\kerngp_{,y_k X_h} + k X_{h, y_k})\\ 
 &= \beta(\beta k X_k X_h - k \delta_{hk} D_{hk}) \\ 
-&= (\beta^2 X_h X_k - \beta \delta_{hk} D_{hk})k 
+&= (\beta^2 X_h X_k - \beta \delta_{hk} D_{hk})\kerngp 
 \end{align*}
 
 \begin{align}
-k_{,x_i x_j} &= (\beta^2 X_j X_i - \beta \delta_{ij} D_{ij})k\\ 
-k_{,x_i y_h} &= -(\beta^2 X_h X_i - \beta \delta_{ih} D_{ih})k\\ 
-k_{,y_h y_k} &= (\beta^2 X_h X_k - \beta \delta_{hk} D_{hk})k 
+\kerngp_{,x_i x_j} &= (\beta^2 X_j X_i - \beta \delta_{ij} D_{ij})\kerngp\\ 
+\kerngp_{,x_i y_h} &= -(\beta^2 X_h X_i - \beta \delta_{ih} D_{ih})\kerngp\\ 
+\kerngp_{,y_h y_k} &= (\beta^2 X_h X_k - \beta \delta_{hk} D_{hk})\kerngp 
 \end{align}
 
 \subsection{Term 1 of the 4th derivative of eqn [TODO]}
 \begin{align*}
-k_{,x_j y_h y_k}
-&= \frac{\partial}{\partial y_k} k_{,x_j y_h}\\ 
-&= -\frac{\partial}{\partial y_k} (\beta^2 X_h X_j - \beta \delta_{jh} D_{jh})k\\
-&= (\beta^2 D_{hk} \delta_{hk} X_j + \beta^2 X_h D_{jk}\delta_{jk})k -
+\kerngp_{,x_j y_h y_k}
+&= \frac{\partial}{\partial y_k} \kerngp_{,x_j y_h}\\ 
+&= -\frac{\partial}{\partial y_k} (\beta^2 X_h X_j - \beta \delta_{jh} D_{jh})\kerngp\\
+&= (\beta^2 D_{hk} \delta_{hk} X_j + \beta^2 X_h D_{jk}\delta_{jk})\kerngp -
 (\beta^2 X_h X_j - \beta D_{jh} \delta_{jh})\beta X_k k
 \end{align*}
 
 \begin{align*}
-&k_{,x_j y_h y_k} r_{,x_i}^2\\
+&\kerngp_{,x_j y_h y_k} r_{,x_i}^2\\
 &= 2[\beta^2 X_j D_{hk} \delta_{hk} + \beta^2 X_h D_{jk}\delta_{jk} +
 \beta^2 X_k D_{jh} \delta_{jh} - \beta^3 X_h X_j X_k] X_i k\\ 
 &=\boxed{2\beta^2[ 
@@ -483,7 +504,7 @@ X_k X_i D_{jh} \delta_{jh}] k
 
 \subsection{Term 2 of the 4th derivative}
 \begin{align*}
-k_{,x_j y_h} r^2_{,x_i y_k}
+\kerngp_{,x_j y_h} r^2_{,x_i y_k}
 &= - (\beta^2 X_h X_j - \beta D_{jh} \delta_{jh}) (-2D_{ik} \delta_{ik}k) \\  
 &= \boxed{( 2 \beta^2  X_h X_j D_{ik} \delta_{ik} 
 -2 \beta D_{jh} D_{ik} \delta_{jh} \delta_{ik}) k} 
@@ -493,17 +514,17 @@ k_{,x_j y_h} r^2_{,x_i y_k}
 This is completely analogous to term 2 except the subscripts are slightly
 different
 \begin{align*}
-k_{,x_j y_k} r^2_{,x_i y_h}
+\kerngp_{,x_j y_k} r^2_{,x_i y_h}
 &=\boxed { ( 2 \beta^2  X_k X_j D_{ih} \delta_{ih} 
--2 \beta D_{jk} D_{ih} \delta_{jk} \delta_{ih}) k} 
+-2 \beta D_{jk} D_{ih} \delta_{jk} \delta_{ih}) \kerngp} 
 \end{align*}
 
 \subsection{Term 4 of the 4th derivative} 
 \begin{align*}
-k_{,y_h y_k} r^2_{,x_i x_j}
-&= (\beta^2 X_k X_h - \beta D_{hk}\delta_{hk})k 2 D_{ij} \delta_{ij}\\ 
+\kerngp_{,y_h y_k} r^2_{,x_i x_j}
+&= (\beta^2 X_k X_h - \beta D_{hk}\delta_{hk})\kerngp 2 D_{ij} \delta_{ij}\\ 
 &= \boxed{(2\beta^2 X_k X_h D_{ij} \delta_{ij} - 2\beta D_{ij} D_{hk} \delta_{hk}
-\delta_{ij})k } 
+\delta_{ij})\kerngp } 
 \end{align*}
 
 Collect terms of $\Sigma_{,x_i x_j y_h y_k}$ by plugging them in eqn 20 
