@@ -8,6 +8,10 @@ from sky surveys is to use the
 two-point correlation function (2PCF), or aperture-mass dispersion.
 % state what is a 2PCF 
 
+
+Manual PSF tweaking 
+
+
 We propose a flexible, generative regression model    
 that can specify the joint distribution of the input variables while 
 simultaneously capturing the rich physical relationships between the different
@@ -257,11 +261,13 @@ we make use of the weak shear approximation
 $g = \gamma / (1 - \kappa)  \approx \gamma$, so the observed ellipticity can be
 written as: 
 \begin{equation}
-	\epsilon_{\rm obs}(\xv_n) = \epsilon_{\rm int} + g(\xv_n) 
+	\epsilon_{\rm obs} = \epsilon_{\rm int} + g 
 \end{equation}
- 
 assume that the shape noise term $\epsilon_{\rm int}$ of each galaxy is 
 independent and follow the same Gaussian distribution.  
+
+
+
  
 \begin{table}%[htb]
 % \small
@@ -340,7 +346,7 @@ to separate the E and the B mode of the shear, those derivation can be seen in
 	\kappa^B & = 0 \\
 	\gamma^E &= \left[\frac{1}{2} (\psi^E_{,11} - \psi^E_{,22}) -
 	\psi^B_{,12}\right]\\
-	\gamma^B &= \left[\frac{1}{2} (\psi^E_{,12} - \psi^E_{,11}) - \psi^B_{,22}\right]
+	\gamma^B &= \left[\psi^E_{,12} + \frac{1}{2} (\psi^E_{,11} - \psi^B_{,22})\right]
 \end{align}
 
 
