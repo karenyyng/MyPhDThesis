@@ -3,17 +3,12 @@ This work was first discussed as a possibility in  \citep{Schneider2014}  and
 forms the basis of the analyses performed in Schneider et al. (in prep.).
 
 \section{Introduction} 
- 
-Conventional approach is to use the two-point correlation function (2PCF).
-
-
-
-
+Conventional approach to infer cosmological parameters from lensed galaxies
+from sky surveys is to use the two-point correlation function (2PCF).
 We need a flexible, generative regression model 
-that can specify the joint distribution of both the input and the output.
+that can specify the joint distribution of the input variables.
 Simultaneously capture the rich  physical relationship between the different
 lensing observables.  
-
 
 In this work, we 
 1) illustrate the basic properties of the Gaussian Process and how it is
@@ -27,7 +22,6 @@ with the Gaussian Process with the modified kernel \\
 Our method provides an alternative from having to use the 2PCF to represent the
 Gaussian perturbations and other higher order
 statistics for representing the non-Gaussian part of the cosmic shear information. 
-
 Source galaxies provide sparse constraints to probe the matter density along
 the line of sight. 
 
@@ -35,15 +29,18 @@ the line of sight.
 \subsection{the basics of a Gaussian Process}
 A Gaussian Process is one of the most highly published and studied 
 generative model. It allows the inference of the joint probability density 
-function of both the inputs and the outputs. 
+function (PDF) for describing the data. Having the PDF can carry more information 
+than summary statistics such as the two-point correlation function.
 This gives the model the flexibility for a wide range
 of successful applications in many fields. 
-It can be used for as a model for the light curve of
-exoplanets \citep{Ambikasaran2014a}, 
-or as a prior probability for optimizing the hyperparameters of
+In Astronomy, a GP has been used for modeling 
+the light curve of exoplanets \citep{Ambikasaran2014a}
+Or the GP can be used as a prior probability 
+for optimizing the model parameters of
 neural networks \citep{Snoek2012}, 
-or be used for other classification and pattern extraction tasks 
-\citep{Rasmussen2006}.
+It has also been used for other classification and pattern extraction tasks 
+(\citealt{Wilson2013}, \citealt{Duvenaud2013}, \citealt{Rasmussen2006}).
+ 
 
 It is helpful to understand the mathematical formulation of a GP 
 before discussing how we can adapt the GP to model the lensing observables. 
@@ -67,6 +64,20 @@ functions:
 \end{equation}
 % Specifically, the mean vector $m(x)$ is often set to be zero in the
 % GP. The data are usually mean-subtracted before fitting a GP.  
+\begin{figure}
+	\centering
+	\includegraphics[width=0.4\linewidth]{Gaussian_Process_Regression.png}
+	\caption{An illustration of a one-dimensional GP. The
+		function used to generate the data points 
+		is shown with the dashed line. The available data points are shown in
+		black. The mean interpolated prediction is shown in blue
+		along with the gray region showing the 68\% 
+		credible interval. This figure is taken from Cdipaolo96 at 
+		the Wikimedia Commons under the Creative Commons license 4.0
+\label{fig:one_d_gaussian_process}}
+\end{figure}
+
+
 This shows the probabilistic nature of the GP predictions.
 (See Fig. [TODO])
 Each drawn function represents one realization of the smoothed
@@ -79,7 +90,7 @@ predict values in unobserved regions, even though the
 observed part of the kernel is of finite size (e.g. $\ngal \times \ngal$). 
 By averaging the drawn realizations, we can
 obtain the mean prediction. The mean predictions from a GP are
-often more well behaved and do not show drastic changes 
+often more well behaved and do not show drastic increase or decrease 
 in the tail regions where there is no data as other polynomial interpolation schemes 
 would.  
 
@@ -92,17 +103,18 @@ When the input data is mean-subtracted, we can use a zero mean function in the
 GP and the covariance kernel completely specifies the GP. 
 There are several families of commonly used covariance kernel.
 The ones that are of the highest interest are kernels that can capture 
-the homogeneity and isotropy of the data, so the predicted fields can   
-be consistent with the large-scale statistical properties of 
-matter perturbations.
+the homogeneity and the isotropy of the data, so the predicted spatial fields
+$\psi$ can have consistent properties as the large-scale matter distribution.
 On the other hand, there are other types of periodic kernels that may be useful
 in modeling systematics such as masking or footprints of chip gaps due to the
 stacking of multiple exposures.
-In reality, composite kernels formed by the addition and/or multiplication of
-kernels are used to pick up (sometimes non-obvious) patterns in the data. 
+For spatial models with undetermined periodicity or patterns, 
+composite kernels with different covariance structures 
+are formed by the addition and/or multiplication of
+ to pick up (sometimes non-obvious) patterns in the data. 
 A GP with composite kernels is a
-famous example how both the short and long term trends of global carbon
-dioxide level can be modeled and predicted [TODO cite].
+famous example how both the short-and-long term trends of global carbon
+dioxide level can be modeled and predicted \citep{Duvenaud2013}.
 
 \subsection{Adapting the exponential squared kernel with lensing physics}
 One of the most popular kernels that can generate homogeneous and
@@ -115,7 +127,7 @@ where
 \begin{equation}
 	r^2 \equiv (\xv - \yv)^T \Matrix{D} (\xv - \yv), 
 \end{equation}
-which only depends on the
+It only depends on the
 squared magnitude of distances between pairs of galaxy locations. 
 This chosen form is therefore invariant
 under translational and rotational transformations.
@@ -124,7 +136,7 @@ can be generalized to account for anamorphic distortions.
 The precision parameter $\lambda$ affects the 
 amplitude of the density perturbation, while the correlation length $l^2$ 
 determines how fast the correlations between different spatial locations of the
-field $\psi$ fall off as a function of distance.
+field $\psi$ fall off as a function of the spatial distance.
 
 Additionally, the exponential squared kernel is infinitely differentiable. This
 differentiable kernel choice allows us to derive an analytical expression to
@@ -148,7 +160,8 @@ x_2} + \frac{\partial^2 \psi}{\partial x_2 \partial x_1}\right)
 where we have defined the shorthand for spatial derivatives with
 subscripts for $h,i,j,k = 1, 2$ after a comma.
 Since the covariance operator is linear,
-the derivatives for the covariance kernels of interests can be shown to be:
+the derivatives for the covariance kernels of interests $\kerngp_{\rm GP}$
+can be shown to be:
 \begin{align}
 	\label{eq:kernel_derivatives1}
 	\Cov (\kappa(\xv), \kappa(\yv))
@@ -194,26 +207,95 @@ $\kerngp$ by:
 \label{eq:4thderivatives}
 \end{equation}
 with $\beta = l^{-2}$. There are 6 permutations (abbreviated as perm.) of the terms in
-\ref{eq:4thderivatives}
+eq. \ref{eq:4thderivatives}
 multiplied to $\beta^3$ due
 to choosing two pairs of indices from the $h,i,j,k$ where the order of each
-pair of indices matters. Likewise, there are 3 possible permutations of
+pair of indices matters when we differentiate the terms by parts. 
+Likewise, there are 3 possible permutations of
 the terms the multiplied to $\beta^2$ due to choosing two pairs of indices from
 $h, i, j, k$ where the order of the pairs does not matter.
 The derivation of the relevant derivatives and terms are available 
 in the appendix for completeness. 
+Our implementation of $\kerngp$ is openly available at
+\href{https://github.com/karenyyng/george}{https://github.com/karenyyng/george}.
 
-\section{Preliminary results}
-Our work is the first attempt to represent the information in cosmic shear
-without assuming a Gaussian distribution for the density modes.  
 
-We can simultaneously draw the  
+\subsection{Probability framework for inferring cosmic shear}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.4\linewidth]{shear_gp_pgm.png}
+	\caption{A simplified probabilistic graphical model (pgm) for inferring
+		lensing observables from survey or simulation data.
+		\label{fig:simplified_pgm}}
+\end{figure}
+
+
+
+
+
+
+\section{Results}
+
+
+
+\subsection{Modeling cosmic shear with the GP}
+Throughout the analyses present in this work, 
+we make use of the weak shear approximation 
+$g = \gamma / (1 - \kappa)  \approx \gamma$, so the observed ellipticity can be
+written as: 
+\begin{equation}
+	\epsilon_{\rm obs}(\xv_n) = \epsilon_{\rm int} + g(\xv_n) 
+\end{equation}
+ 
+assume that the shape noise term $\epsilon_{\rm int}$ of each galaxy is 
+independent and follow the same Gaussian distribution.  
+ 
+\begin{table}%[htb]
+% \small
+\begin{center}
+\caption{Parameters for the statistical model.}
+\label{tab:sampling_parameters}
+\begin{tabular}{cl}
+\hline
+Parameter & Description \\
+\hline
+${\bf d_{n}}$ & data vector (measured $e_{1,2}$ for each galaxy $n$)  \\
+$\sigma_{{\rm ms}; n}$ & ellipticity measurement error for galaxy $n$ 
+\\
+$\xv$, $\yv$ & vector(s) of 2D spatial locations of galaxies \\
+$\epsilon_n^{\rm int}$ & intrinsic galaxy ellipticity for galaxy $n$ \\
+$\alpha\equiv\sigma_{e}^2$ & parameters of the distribution of galaxy parameters \\
+W & window function for the survey footprint \\
+$\lensparams$ & lensing shear and convergence ($\gamma_{1,2}, \kappa$) \\
+$\gpparams$ & parameters of the GP kernel\\
+% $\rho_{\rm GP}$ & correlation of the GP kernel (element of $\gpparams$) \\
+$\lambda$ & precision of the GP kernel (element of $\gpparams$) \\
+$l^2$ & squared GP correlation length (element of $\gpparams$) \\
+% $\lambda_{\epsilon}$ & precision for the nugget term (element of $\gpparams$) \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+
+
+\subsection{Verification using {\sc GalSim} simulated data}
+\subsection{Mass mapping for Deep Lens Survey Abell 781}
 
 % Is a non-trivial optimization problem 
 
 \section{Discussion}
 
 \subsection{Relating the lensing observables to a cosmological model}
+
+
+We can draw realizations of the lensing observables from the GP given a set of
+optimized GP parameters:
+\begin{equation}
+	\lensparams(\xv) \sim GP(\kerngp(\xv, \yv)) 
+\end{equation}
+
+
 The constraints on cosmological parameters need to be verified in a mock
 weak-lensing analysis of cosmological simulation. 
 It can enable the separation of E and B mode in the convergence field as shown
@@ -226,12 +308,13 @@ A more sophisticated model can be found in Schneider et al. 2016.
 
 
 
-% - [ ] add PGM 
+% - [ ] TODO add PGM 
 % talk about the lensing approximations that were made 
 
 
 % \subsection{Sampling grid and the correlation length}
 % A weakness of the method is the apparent reliance on having the sampling 
+
 
 
 \subsection{Separation of the E / B mode}
@@ -277,7 +360,8 @@ multiplication operations can be slow.
 Exploiting the symmetry of the covariance kernel can only provide both speed and
 memory saving of a factor of 2.
 The parallelized computation of each element of the kernel was achieved using 
-the OpenMP library.  
+the OpenMP library. 
+
 
 The slowest step of the entire computation, however, is the inversion of the
 covariance kernel matrix for the evaluation of the data fit, 
@@ -289,20 +373,158 @@ take $< 10s$ for 1000 galaxies.
 
 Rather than relying on manual intensive methods for parallelizing the
 computation of the kernel methods, a more promising way is to approximate the
-small elements in the covariance kernel structure as zero. With large amount of
+small elements in the covariance kernel structure as zero. 
+
+
+With large amount of
 sparsity, The inversion of the matrix can be sped up to [TODO]$O()$.
 The relevant field of literature about how the approximations may affect the
-final statistics is called covariance tapering. On the other hand,  
+statistical inference is called covariance tapering. On the other hand,  
 the Machine Learning community refer to the support for the approximate kernel
 as induce point methods.
 
 
 \section{Conclusion}
-Here, we have derived and implemented a fully probabilistic method for representing 
-the lensing observables. 
+Here, we have derived and implemented a fully probabilistic method for 
+representing the lensing observables. It can potentially  
 
 The potential of using a Gaussian Process for the inference of cosmological 
 Gaussian Process (GP)parameters remains to be proved. 
 
 \section{Acknowledgement}
-This work makes use of the supercomputing resources at the NERSC.
+We thank Chris Paciorek for discussion about the statistical
+framework for performing shear inference and the
+use of Gaussian Processes.
+This research
+used resources of the National Energy Research Scientific 
+Computing Center (NERSC), a DOE Office of Science
+User Facility supported by 
+of the U.S. Department of Energy under Contract No.
+DE-AC02-05CH11231.
+ This work uses a modified version
+of the public code {\sc George} available at \href{https://
+github.com/karenyyng/george}{https://
+github.com/karenyyng/george}, which was forked from
+\href{https://github.com/dfm/george}{https://github.com/dfm/george}.
+
+
+
+\appendix 
+\section{Derivation of GP kernel}
+
+\begin{equation*}
+\Sigma = \lambda^{-1} k 
+\end{equation*}
+
+\begin{align}
+k &= \exp{\left(\frac{-\beta}{2} r^2 \right)}\\
+k_{,x_i} &= \frac{-\beta}{2} k r^2_{,x_i} = -\beta k X_i\\ 
+k_{,y_h} &= \beta k X_h 
+\end{align}
+
+\begin{align}
+k_{,x_i x_j} &= \frac{-\beta}{2}(k_{,x_j} r^2_{,x_i} + k r^2_{,x_i x_j})\\
+k_{,x_i x_j y_h} &= \frac{-\beta}{2}(k_{,x_j y_h} r^2_{,x_i} + k_{,x_j}
+r^2_{,x_i y_h} + k_{,y_h} r^2_{,x_i x_j})\\
+k_{,x_i x_j y_h y_k} &= \frac{-\beta}{2} 
+(k_{,x_j y_h y_k} r^2_{,x_i} +
+k_{,x_j y_h} r^2_{,x_i y_k} + 
+k_{,x_j y_k} r^2_{,x_i y_h} + 
+k_{,y_h y_k} r^2_{,x_i x_j} )
+\end{align}
+
+Just work on terms that are parts of the 4th kernel derivative 
+\begin{align*}
+k_{,x_i x_j} &= \frac{\partial}{\partial x_j} (-\beta k X_i)\\
+&= -\beta(k_{,x_j X_i} + k X_{i, x_j})\\ 
+&= -\beta(-\beta k X_j X_i + k \delta_{ij} D_{ij}) \\ 
+&= (\beta^2 X_j X_i - \beta \delta_{ij} D_{ij})k 
+\end{align*}
+
+\begin{align*}
+k_{,x_i y_h} &= \frac{\partial}{\partial y_h} (-\beta k X_i)\\
+&= -\beta(k_{,y_h X_i} + k X_{i, y_h})\\ 
+&= -\beta(\beta k X_h X_i - k \delta_{ih} D_{ih}) \\ 
+&= -(\beta^2 X_h X_i - \beta \delta_{ih} D_{ih})k 
+\end{align*}
+
+\begin{align*}
+k_{,y_h y_k} &= \frac{\partial}{\partial y_h} (\beta k X_h)\\
+&= \beta(k_{,y_k X_h} + k X_{h, y_k})\\ 
+&= \beta(\beta k X_k X_h - k \delta_{hk} D_{hk}) \\ 
+&= (\beta^2 X_h X_k - \beta \delta_{hk} D_{hk})k 
+\end{align*}
+
+\begin{align}
+k_{,x_i x_j} &= (\beta^2 X_j X_i - \beta \delta_{ij} D_{ij})k\\ 
+k_{,x_i y_h} &= -(\beta^2 X_h X_i - \beta \delta_{ih} D_{ih})k\\ 
+k_{,y_h y_k} &= (\beta^2 X_h X_k - \beta \delta_{hk} D_{hk})k 
+\end{align}
+
+\subsection{Term 1 of the 4th derivative of eqn [TODO]}
+\begin{align*}
+k_{,x_j y_h y_k}
+&= \frac{\partial}{\partial y_k} k_{,x_j y_h}\\ 
+&= -\frac{\partial}{\partial y_k} (\beta^2 X_h X_j - \beta \delta_{jh} D_{jh})k\\
+&= (\beta^2 D_{hk} \delta_{hk} X_j + \beta^2 X_h D_{jk}\delta_{jk})k -
+(\beta^2 X_h X_j - \beta D_{jh} \delta_{jh})\beta X_k k
+\end{align*}
+
+\begin{align*}
+&k_{,x_j y_h y_k} r_{,x_i}^2\\
+&= 2[\beta^2 X_j D_{hk} \delta_{hk} + \beta^2 X_h D_{jk}\delta_{jk} +
+\beta^2 X_k D_{jh} \delta_{jh} - \beta^3 X_h X_j X_k] X_i k\\ 
+&=\boxed{2\beta^2[ 
+X_j X_i D_{hk} \delta_{hk} + 
+X_h X_i D_{jk} \delta_{jk} + 
+X_k X_i D_{jh} \delta_{jh}] k  
+- 2\beta^3 X_h X_j X_k X_i k} 
+\end{align*}
+
+\subsection{Term 2 of the 4th derivative}
+\begin{align*}
+k_{,x_j y_h} r^2_{,x_i y_k}
+&= - (\beta^2 X_h X_j - \beta D_{jh} \delta_{jh}) (-2D_{ik} \delta_{ik}k) \\  
+&= \boxed{( 2 \beta^2  X_h X_j D_{ik} \delta_{ik} 
+-2 \beta D_{jh} D_{ik} \delta_{jh} \delta_{ik}) k} 
+\end{align*}
+
+\subsection{Term 3 of the 4th derivative}
+This is completely analogous to term 2 except the subscripts are slightly
+different
+\begin{align*}
+k_{,x_j y_k} r^2_{,x_i y_h}
+&=\boxed { ( 2 \beta^2  X_k X_j D_{ih} \delta_{ih} 
+-2 \beta D_{jk} D_{ih} \delta_{jk} \delta_{ih}) k} 
+\end{align*}
+
+\subsection{Term 4 of the 4th derivative} 
+\begin{align*}
+k_{,y_h y_k} r^2_{,x_i x_j}
+&= (\beta^2 X_k X_h - \beta D_{hk}\delta_{hk})k 2 D_{ij} \delta_{ij}\\ 
+&= \boxed{(2\beta^2 X_k X_h D_{ij} \delta_{ij} - 2\beta D_{ij} D_{hk} \delta_{hk}
+\delta_{ij})k } 
+\end{align*}
+
+Collect terms of $\Sigma_{,x_i x_j y_h y_k}$ by plugging them in eqn 20 
+All the relevant terms are boxed above, 
+\begin{align}
+\nu_{,x_i x_j y_h y_k} &= (\beta^4 X_h X_j X_k X_i -  
+\beta^3 (X_j X_i D_{hk} \delta_{hk} + 5 {\rm perm.}) + \beta^2
+(D_{jh} D_{ik}\delta_{jh}\delta_{ik} + 2 {\rm perm.})) \nu \\
+&= \gamma \nu
+\end{align}
+
+Where $\nu$ is an entry in the matrix $\Sigma$
+\begin{equation}
+\Sigma  = 
+\left(
+\begin{array}{ccc}
+\nu_{11} & \cdots & \nu_{1n} \\
+\vdots & \ddots & \vdots \\
+\nu_{n1} & \cdots & \nu_{nn} \\
+\end{array}
+\right)
+\end{equation}
+
+
