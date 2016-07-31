@@ -1,7 +1,8 @@
  
 This work on using Gaussian Process for cosmic shear analysis 
 was first discussed as a possibility in  \citep{Schneider2014}  and 
-forms the basis of the analyses performed in Schneider et al. (in prep.).
+forms the basis of the analyses that I helped perform 
+in Schneider et al. (in prep.). 
 
 \section{Introduction} 
 Dark matter (DM) forms an invisible cosmic web that can only be
@@ -22,12 +23,13 @@ background galaxy tracers. We
 illustrate how and why we may improve the representation of cosmic shear
 information with the use of a Gaussian Process (GP). 
 
+In particular, we restrict our discussion to the linear part of matter density  
 
 % signal - E mode 
 
 
 % what are the noise - B mode ? 
-First we Noisy process 
+First we provide an overview of the   
 The inference starts from the measurement of the galaxy shapes [TODO: cite] as different
 ellipticities components. Then various corrections are usually applied to 
 account for the telescope systematics, exposure stacking and masking effects 
@@ -194,7 +196,12 @@ $\psi$ to have consistent properties as the large-scale matter distribution.
 
 The joint PDF can carry more information,
 such as the uncertainties from the inputs, 
-than summary statistics such as the 2PCF, peak statistics or .
+than summary statistics such as the 2PCF  
+
+
+
+Other statistic that have been explored for capturing cosmic shear information
+include aperture mass statistic $M_{\rm ap}$ or shear peak count \citep{Bard2014}.
 
 A statistical model that makes use of the GP usually decomposes 
 the signal and the noise in the following way: 
@@ -323,6 +330,28 @@ Our implementation of the GP kernels in eqn \ref{eq:kernel_derivatives1} -
 		\label{fig:simplified_pgm}}
 \end{figure}
 
+\begin{figure}
+	\centering
+	\includegraphics[width=0.4\linewidth]{shear_general_pgm.png}
+	\caption{A more general probabilistic graphical model (pgm) for inferring
+		the lensing observables $\Upsilon$. The circle denotes
+		latent variable, while the shaded circle denotes 
+		the observed variable. The plate notation shows the galaxy entries to sum
+		over.
+		\label{fig:general_pgm}}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\linewidth]{gp_cov_v2.png}
+	\caption{An illustration of the GP covariance kernel for the data set
+		presented in Schneider et al. (in prep.). The  
+		\label{fig:GP_kernel_vis}}
+\end{figure}
+
+
+
+
 Throughout the analyses present in this work, 
 we make use of the weak shear approximation 
 $g = \gamma / (1 - \kappa)  \approx \gamma$, so the observed ellipticity can be
@@ -341,7 +370,7 @@ derivatives are $O(\ngal^2)$, the large number of addition and
 multiplication operations can be slow.
 Exploiting the symmetry of the covariance kernel can only provide 
 memory saving of a factor of 2.
-To speed up the computation to make it practical, 
+To speed up the computation to make it feasible, 
 I implemented the parallelized computation of each element of the kernel using 
 the {\sc OpenMP} library. The slowest step of the entire computation, however, 
 is the inversion of the
@@ -361,7 +390,28 @@ We will discuss possible methods
 of speed up in section [TODO].
 
 \section{Results}
- 
+ \begin{figure}
+	\centering
+	\includegraphics[width=0.7\linewidth]{mass_map_comparison_galsim.png}
+	\caption{A comparison of mass maps for simulated inputs from {\sc GalSim} and
+	the mass map generated with the use of a GP prior \label{fig:simplified_pgm}. 
+	This figure is part of Schneider et al. (in prep.).
+}
+\end{figure}
+ \begin{figure}
+	\centering
+	\includegraphics[width=0.4\linewidth]{kappa_Abell781.png}
+	\includegraphics[width=0.4\linewidth]{kappa_Abell781_WD.png}
+	\caption{A comparison of mass maps for Abell 781 in the Deep Lens Survey (DLS) 
+		\label{fig:simplified_pgm}.  Left: The smoothed mass map of Abell 781 from 
+		Right: The output generated with 6000
+		galaxies. 
+	These figures are part of Schneider et al. (in prep.).
+}
+\end{figure}
+
+
+
 \begin{table}%[htb]
 % \small
 \begin{center}
