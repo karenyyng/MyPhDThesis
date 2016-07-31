@@ -5,28 +5,71 @@ forms the basis of the analyses that I helped perform
 in Schneider et al. (in prep.). 
 
 \section{Introduction} 
-Dark matter (DM) forms an invisible cosmic web that can only be
-probed by the influence of DM on visible galaxy tracers. 
-This cosmic web encodes valuable information for constraining cosmological
+
+% why study cosmic shear 
+A cornerstone of cosmology is found on the 
+observation of the highly Gaussian initial perturbations in the cosmic microwave 
+background (CMB), the first light after the big bang. 
+Many physical models can explain how these
+nearly Gaussian perturbations can arise from quantum perturbations in the 
+early universe. Furthermore, we know how these initial perturbations could grow
+through linear transfer over time to form a large-scale ($> 10 h^{-1} Mpc$) 
+dark matter (DM) density field that is consistent with present
+day observables. This cosmic web encodes valuable information for constraining cosmological
 parameters such as the matter density ($\Omega_m$) and the fluctuation amplitude 
 of the matter density ($\sigma_8$) on a particular characteristic scale (8
-$h^{-1} Mpc$). 
-As demonstrated in chapter 1 of this work, we have shown that gravitational
-lensing physics can relate the mass and spatial distribution of DM to the distortions
-of galaxy shapes.  
-The large scale lensing information that is used to constrain cosmological 
-parameters is also known as cosmic shear. 
-Here we discuss how to take into account other contributions to the galaxy shapes
-to isolate the cosmic shear signal. 
-This requires a multi-step and statistical approach with the use of many 
-background galaxy tracers. We
-illustrate how and why we may improve the representation of cosmic shear
-information with the use of a Gaussian Process (GP). 
+$h^{-1} Mpc$).  
 
-In particular, we restrict our discussion to the linear part of matter density  
+% how complicated is cosmic shear inference 
+The observables that encode the cosmological information, however,
+only give a weak signal among numerous sources of noise. 
+As discussed in chapter 1, the DM spatial distribution 
+can only be inferred indirectly through a large number of visible galaxy tracers. 
+The large-scale DM field distorts the shapes of galaxies and give signal 
+that is also known as cosmic shear ($\Upsilon$). 
 
-% signal - E mode 
+Many researchers have proposed different
+hierarchical models for this data analysis pipeline, starting from 
+1) the measurement of the ellipticities of the tracer galaxies, 
+2) the correction of telescope systematics and atmospheric aberrations on the
+ellipticities,
+3) estimation of the intrinsic shapes of galaxies, 
+4) inference of lensing signal,  
 
+Estimation of both the Gaussian and the non-gaussian features in the shear and
+convergence signal  
+exist due to gravitational collapse  
+
+
+% which part of the complicated cosmic shear inference do we address?
+In this work, we propose a new approach for modeling the 
+cosmic shear signal in the presence of a list of systematics and sources 
+of uncertainties. 
+% This procedure involves many steps and a statistical approach is needed to
+% extract the signal from many background galaxy tracers. 
+ 
+
+
+We focus our analysis on the linear part of the large scale 
+matter perturbations that has a cosmological origin.  
+
+ described by a Gaussian random field (multivariate 
+Gaussian). A mature past approach to summarize the matter distribution 
+involves computing a statistic, such
+as the two-point correlation function (2PCF) for each of the lensing
+observables $\Upsilon = [\kappa, \gamma_1, \gamma_2]$. 
+An implementation of the 2PCF from \cite{Jee2013a} is: 
+\begin{equation}
+	\xi_\Upsilon(\theta) = \frac{\sum_{i,j}w_i, w_j e_i, e_j}{\sum w_i, w_j}
+	\label{eqn:2PCF}
+\end{equation}
+for all pairs of source galaxies with subscripts $i < j$ at an angular separation 
+$\theta$, and $w_{(i, j)}$ is usually
+a weight factor taken to be a function of 
+the inverse of the measurement uncertainty $\sigma_{ms; (i, j)}$.  
+A closely related quantity is the Fourier transform of the 2PCF, which consists
+of the power spectrum. For a Gaussian random field, the power spectrum contains
+all the information about the Gaussian random field.
 
 % what are the noise - B mode ? 
 First we provide an overview of the   
@@ -143,9 +186,11 @@ The drawn collections of values $\psi(\xv)$ from a GP carry the correlation stru
 specified by the kernel $\kerngp(\xv, \yv)$, and can be thought of as
 functions: 
 \begin{equation}
-		[\psi_1(\xv), \psi_2(\xv) \ldots, \psi_m(\xv) ]^T \sim \gp(m(\xv), \kerngp(\xv, \xv')).
+	[\psi_1(\xv), \psi_2(\xv) \ldots, \psi_m(\xv) ]^T \sim \mathcal{N}(m(\xv),
+	\kerngp(\xv, \xv')),
 		\label{eq:GP}
 \end{equation}
+where $\mathcal{N}$ is a multivariate normal function.
 % Specifically, the mean vector $m(x)$ is often set to be zero in the
 % GP. The data are usually mean-subtracted before fitting a GP.  
 \begin{figure}
@@ -172,16 +217,6 @@ predict values in unobserved regions, even though the
 observed part of the kernel is of finite size (e.g. $\ngal \times \ngal$). 
 By averaging the drawn realizations, we can
 obtain the mean prediction. 
-
-
-\subsection{Making predictions with a GP}
-The mean predictions from a GP are
-often more well behaved and do not show drastic increase or decrease 
-in the tail regions where there is no data as other polynomial interpolation schemes 
-would.  
-
-
-
 
 
 When the input data is mean-subtracted, we can use a zero mean function in the
@@ -211,6 +246,14 @@ the signal and the noise in the following way:
 
 % likelihood 
 % prior 
+how how  
+
+
+The mean predictions from a GP are
+often more well behaved and do not show drastic increase or decrease 
+in the tail regions where there is no data as other polynomial interpolation schemes 
+would.  
+
 
 
 \subsection{Adapting the exponential squared kernel with lensing physics}
@@ -256,8 +299,8 @@ x_2} + \frac{\partial^2 \psi}{\partial x_2 \partial x_1}\right)
 \end{align}
 where we have defined the shorthand for spatial derivatives with
 subscripts for $h,i,j,k = 1, 2$ after a comma.
-Since the covariance operator is linear, the 4th derivatives of the covairance
-kernels have the following forms: 
+Since the covariance operator is linear, the 4th derivatives of the covariance
+kernels $\kerngp_{\rm GP}$ have the following forms: 
 \begin{align}
 	\label{eq:kernel_derivatives1}
 	\Cov (\kappa(\xv), \kappa(\yv))
@@ -362,6 +405,40 @@ written as:
 assume that the shape noise term $\epsilon_{\rm int}$ of each galaxy is 
 independent and follow the same Gaussian distribution.  
 
+\subsection{Making predictions (interpolation) with a GP}
+We know the joint probability density function for the observables of a GP:
+\begin{equation}
+	[\psi',\psi]^T \sim \mathcal{N}(0, \kerngp_{\rm GP})
+\end{equation}
+where we can represent the kernel matrix as several submatrices:
+\begin{equation}
+	\kerngp_{\rm GP} = \left[\begin{array}{cc}
+	A & B \\
+	B^T & C 
+\end{array} \right].	
+\end{equation}
+We can prove that the different observations from a multivariate Gaussian are 
+conditionally independent with the Schur complement:
+\begin{equation}
+	\mathbb{E}(\psi'|\psi) = \mathbb{E}(\psi) + BC^{-1}(\psi - \mathbb{E}(\psi))
+\end{equation}
+and
+\begin{equation}
+	\Cov(\psi'|\psi) = A - BC^{-1}B^T
+\end{equation}
+so we know how to draw new predictions $\psi'$ from the conditional distribution:
+\begin{equation} 
+	\psi' | \xv', \xv, \psi \sim \mathcal{N}(
+		\mathbb{E}(\psi'| \psi), \Cov(\psi'|\psi)
+	)
+\end{equation}
+
+In the presence of shape noise and measurement uncertainties, the actual 
+expression of the conditional distribution use for interpolation in the actual analysis 
+is slightly more complicated. But the general idea of the above derivation follows 
+since we also assume 
+the shape noise and the measurement uncertainties to be Gaussian.
+
 \subsection{The computational performance of our method}
 We implemented the covariance kernels in \ref{eq:kernel_derivatives1}
 via {\sc C++} along with a {\sc Python} wrapper. 
@@ -394,16 +471,17 @@ of speed up in section [TODO].
 	\centering
 	\includegraphics[width=0.7\linewidth]{mass_map_comparison_galsim.png}
 	\caption{A comparison of mass maps for simulated inputs from {\sc GalSim} and
-	the mass map generated with the use of a GP prior \label{fig:simplified_pgm}. 
+	the mass map generated with the use of a GP prior \label{fig:Galsim_massmaps}. 
 	This figure is part of Schneider et al. (in prep.).
 }
 \end{figure}
- \begin{figure}
+
+\begin{figure}
 	\centering
 	\includegraphics[width=0.4\linewidth]{kappa_Abell781.png}
 	\includegraphics[width=0.4\linewidth]{kappa_Abell781_WD.png}
 	\caption{A comparison of mass maps for Abell 781 in the Deep Lens Survey (DLS) 
-		\label{fig:simplified_pgm}.  Left: The smoothed mass map of Abell 781 from 
+		\label{fig:Abell781_massmap}.  Left: The smoothed mass map of Abell 781 from 
 		Right: The output generated with 6000
 		galaxies. 
 	These figures are part of Schneider et al. (in prep.).
@@ -597,6 +675,14 @@ github.com/karenyyng/george}, which was forked from \\
 \appendix 
 
 \section{Derivation of GP kernel}
+
+
+\subsection{The relevant 4th spatial derivatives}
+
+
+
+
+\subsection{The actual terms from the 4th derivatives}
 \begin{equation*}
 \Sigma = \lambda^{-1} \kerngp 
 \end{equation*}
