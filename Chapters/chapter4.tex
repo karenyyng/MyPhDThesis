@@ -8,61 +8,87 @@ in Schneider et al. (in prep.).
 
 % why study cosmic shear 
 A cornerstone of cosmology is found on the 
-observation of the highly Gaussian initial perturbations in the cosmic microwave 
-background (CMB), the first light after the big bang. 
-Many physical models can explain how these
-nearly Gaussian perturbations can arise from quantum perturbations in the 
-early universe. Furthermore, we know how these initial perturbations could grow
+observation of the highly Gaussian temperature fluctuations in the cosmic microwave 
+background (CMB), an ancient light emitted during the recombination in the early
+universe. Many physical models can explain how these
+nearly Gaussian fluctuations can arise from quantum perturbations in the 
+early universe. Furthermore, we know how these perturbations could grow
 through linear transfer over time to form a large-scale ($> 10 h^{-1} Mpc$) 
 dark matter (DM) density field that is consistent with present
-day observables. This cosmic web encodes valuable information for constraining cosmological
+day observables. 
+This cosmic web encodes valuable information for constraining cosmological
 parameters such as the matter density ($\Omega_m$) and the fluctuation amplitude 
 of the matter density ($\sigma_8$) on a particular characteristic scale (8
 $h^{-1} Mpc$).  
 
 % how complicated is cosmic shear inference 
-The observables that encode the cosmological information, however,
-only give a weak signal among numerous sources of noise. 
-As discussed in chapter 1, the DM spatial distribution 
-can only be inferred indirectly through a large number of visible galaxy tracers. 
-The large-scale DM field distorts the shapes of galaxies and give signal 
-that is also known as cosmic shear ($\Upsilon$). 
+The observables that encode the cosmological information , 
+however, only provide a weak, indirect gravitational lensing signal (known as cosmic
+shear; $\lensparams$). The signal is also buried among various sources of noise
+and can be contaminated by systematics. 
+% As first discussed in chapter 1, the presence of DM could distort background
+% galaxy shapes through gravitational lensing.
+In this work, we propose a new approach to represent the cosmic shear information, 
+and show how it can be used in a probabilistic framework. 
+This can allow 
+the joint inference of the signal, the noise and the systematics, 
+and may provide a less biased 
+estimate of the cosmological parameters (${\bf \theta}$). 
+The most relevant reference of such a probabilistic approach can be found in 
+\cite{Schneider2014} and Schneider et al. (in prep.), 
+while a similar hierarchical approach can be found in \cite{Alsing2015}. 
 
-Many researchers have proposed different
-hierarchical models for this data analysis pipeline, starting from 
-1) the measurement of the ellipticities of the tracer galaxies, 
-2) the correction of telescope systematics and atmospheric aberrations on the
-ellipticities,
-3) estimation of the intrinsic shapes of galaxies, 
-4) inference of lensing signal,  
+In general, there are many intertwined 
+stages of a cosmic shear analysis. Past analyses of cosmic shear using sky survey data, such as
+the Canadian-French-Haiwaiian Telescope Lens (CFHTLens;
+\citealt{Kilbinger2013}), the Deep Lens Survey
+(DLS; \citealt{Jee2013a}), the Dark Energy Survey (DES; \citealt{Abbott2016}) and others, 
+have already demonstrated cosmic shear as a promising approach for giving cosmological 
+constraints. To improve the constraints, there is a large number of ongoing 
+efforts to refine the analysis pipeline. 
+This is because new surveys such as the Large Synoptic Survey Telescope (LSST) will
+provide data of high enough quality and large enough volume such that the
+constraints will be systematics limited. This has sparked interests to
+come up with a comprehensive (statistical) framework to correct for the systematics. 
 
-Estimation of both the Gaussian and the non-gaussian features in the shear and
-convergence signal  
-exist due to gravitational collapse  
+The various stages of an example analysis framework usually include: \\ 
+(1) the identification and deblending of source galaxies from sky survey data 
+using software such as {\sc SEXtractor} \citep{Bertin1996}, {\sc Celeste}
+\citep{Regier2014}, and / or {\sc Tractor} \citep{Lang2010}, among others;\\
+(2) the measurement of the ellipticities of the tracer galaxies  
+and the estimation of the measurement error ($\sigma_{\rm
+ms}$) via some shape fitting routines; \\
+(3) the characterization of atmospheric aberrations  
+on the shapes of foreground stars using
+ a point-spread-function (PSF, which is represented by $\Pi$ in this work;
+and the associated correction for galaxy ellipticities  
+(\citealt{Jee2013a}, \citealt{Rowe2010}); \\
+(4) the representation of the intrinsic ellipticities of the tracer galaxies by a
+distribution, which is usually assumed to be a Gaussian with zero mean
+and a variance of $\sigma_e^2$;\\ 
+(5) the statistical inference and representation of the cosmic shear signal,
+which is the main theme of this chapter;
+and finally \\
+(6) the (cosmological) simulation efforts 
+for relating all the above contributions to isolate the cosmic shear signal and
+estimate the underlying (Gaussian part) of the DM distribution. 
+The non-Gaussian part of the DM distribution introduced by non-linear process
+such as gravitational collapse is also inferred from simulations before    
+ cosmological constraints are obtained from a fit to the data. 
 
-
-% which part of the complicated cosmic shear inference do we address?
-In this work, we propose a new approach for modeling the 
-cosmic shear signal in the presence of a list of systematics and sources 
-of uncertainties. 
-% This procedure involves many steps and a statistical approach is needed to
-% extract the signal from many background galaxy tracers. 
- 
-
-
-We focus our analysis on the linear part of the large scale 
-matter perturbations that has a cosmological origin.  
-
- described by a Gaussian random field (multivariate 
-Gaussian). A mature past approach to summarize the matter distribution 
+Although our proposed method is only one of the many stages needed for accurate 
+cosmic shear inference, we try to put our method into context by providing two
+basic analyses and show the predictive performance of shear observables.  
+A mature past approach to summarize the matter distribution 
 involves computing a statistic, such
 as the two-point correlation function (2PCF) for each of the lensing
-observables $\Upsilon = [\kappa, \gamma_1, \gamma_2]$. 
+observables, including the convergence and the two components of shear, $\Upsilon = [\kappa, \gamma_1, \gamma_2]$. 
 An implementation of the 2PCF from \cite{Jee2013a} is: 
 \begin{equation}
-	\xi_\Upsilon(\theta) = \frac{\sum_{i,j}w_i, w_j e_i, e_j}{\sum w_i, w_j}
+	\xi_\Upsilon(\theta) = \frac{\sum_{i,j}w_i, w_j e_i, e_j}{\sum w_i, w_j}.
 	\label{eqn:2PCF}
 \end{equation}
+This expression is computed 
 for all pairs of source galaxies with subscripts $i < j$ at an angular separation 
 $\theta$, and $w_{(i, j)}$ is usually
 a weight factor taken to be a function of 
@@ -138,7 +164,7 @@ lensing observables.
 marginalize nuisance parameter 
 
 
-In this work, we 
+The rest of this chapter will be presented as follows, we will  
 1) illustrate the basic properties of the Gaussian Process and how it is
 similar or different from other approaches for cosmic shear inference  \\ 
 2) show the derivation for incorporating the lensing physics in 
@@ -299,7 +325,9 @@ x_2} + \frac{\partial^2 \psi}{\partial x_2 \partial x_1}\right)
 \end{align}
 where we have defined the shorthand for spatial derivatives with
 subscripts for $h,i,j,k = 1, 2$ after a comma.
-Since the covariance operator is linear, the 4th derivatives of the covariance
+Since the covariance operator is linear, we can interchange the order of
+operation between the covariance operator and the differentiation operator. 
+The resulting 4th derivatives of the covariance
 kernels $\kerngp_{\rm GP}$ have the following forms: 
 \begin{align}
 	\label{eq:kernel_derivatives1}
@@ -408,7 +436,7 @@ independent and follow the same Gaussian distribution.
 \subsection{Making predictions (interpolation) with a GP}
 We know the joint probability density function for the observables of a GP:
 \begin{equation}
-	[\psi',\psi]^T \sim \mathcal{N}(0, \kerngp_{\rm GP})
+	[\lensparams',\lensparams]^T \sim \mathcal{N}(0, \kerngp_{\rm GP})
 \end{equation}
 where we can represent the kernel matrix as several submatrices:
 \begin{equation}
@@ -420,24 +448,27 @@ where we can represent the kernel matrix as several submatrices:
 We can prove that the different observations from a multivariate Gaussian are 
 conditionally independent with the Schur complement:
 \begin{equation}
-	\mathbb{E}(\psi'|\psi) = \mathbb{E}(\psi) + BC^{-1}(\psi - \mathbb{E}(\psi))
+	\mathbb{E}(\lensparams'|\lensparams) = \mathbb{E}(\lensparams) + BC^{-1}(\lensparams - \mathbb{E}(\lensparams))
 \end{equation}
 and
 \begin{equation}
-	\Cov(\psi'|\psi) = A - BC^{-1}B^T
+	\Cov(\lensparams'|\lensparams) = A - BC^{-1}B^T
 \end{equation}
-so we know how to draw new predictions $\psi'$ from the conditional distribution:
+so we know how to draw new predictions $\lensparams'$ from the conditional distribution:
 \begin{equation} 
-	\psi' | \xv', \xv, \psi \sim \mathcal{N}(
-		\mathbb{E}(\psi'| \psi), \Cov(\psi'|\psi)
+	\lensparams' | \xv', \xv, \lensparams \sim \mathcal{N}(
+		\mathbb{E}(\lensparams'| \lensparams), \Cov(\lensparams'|\lensparams)
 	)
 \end{equation}
 
+
 In the presence of shape noise and measurement uncertainties, the actual 
-expression of the conditional distribution use for interpolation in the actual analysis 
+expression of the conditional distribution used for interpolation in the actual analysis 
 is slightly more complicated. But the general idea of the above derivation follows 
-since we also assume 
-the shape noise and the measurement uncertainties to be Gaussian.
+since we also assume the shape noise and the measurement uncertainties to be Gaussian.
+Similarly, once we can find GP parameters $\gpparams$ that can allow us to fit
+the observed shear fields $\gamma_{(1, 2)}$ at $\xv$, we can compute $\kerngp_{(\kappa,
+\kappa)}$ and draw predictions for $\kappa$ from the conditional distribution. 
 
 \subsection{The computational performance of our method}
 We implemented the covariance kernels in \ref{eq:kernel_derivatives1}
@@ -453,18 +484,14 @@ the {\sc OpenMP} library. The slowest step of the entire computation, however,
 is the inversion of the
 covariance kernel matrix for the evaluation of the marginal likelihood, 
 which is an $O(\ngal^3)$ operation. 
-I made use of parallelized Cholesky decomposition via the {\sc Intel Math
-Kernel Library} to perform the inversion of the matrix and achieved $\sim10$ 
+I made use of a parallelized version of the Cholesky decomposition via the {\sc Intel Math
+Kernel Library} to invert the matrix and achieved $\sim10$ 
 times speed up so the
 computation and the evaluation of the likelihood of each set of GP parameter
 take $< 10s$ for 1600 galaxies, which translates to 
 the inversion of a 4200 $\times$ 4200 covariance matrix.
 With the use of distributed computational resources, it is possible 
 to probe the space of possible GP parameters.  
-
-
-We will discuss possible methods
-of speed up in section [TODO].
 
 \section{Results}
  \begin{figure}
@@ -678,115 +705,138 @@ github.com/karenyyng/george}, which was forked from \\
 
 
 \subsection{The relevant 4th spatial derivatives}
-
-
+We show how to derive one of the 6  covariance matrices that we can compute
+from $\lensparams = [\kappa, \gamma_1, \gamma_2]$. The computation of the other
+covariance kernels is completely analogous.
+\begin{align*}
+&{\rm Cov}_{m,n} (\kappa(\vec{x}), \kappa(\vec{y}))  \\ 
+&= \mathbb{E} \left[ 
+	(\kappa - \mathbb{E}[\kappa])|_m 
+( \kappa - \mathbb{E}[\kappa])|_n\right] 
+\\
+ &=\mathbb{E}\left[
+\frac{1}{2} \left(\frac{\partial^2}{\partial y_1^2} + 
+\frac{\partial^2}{\partial y_2^2}\right) 
+ (\psi - \mathbb{E}\left[\psi\right])|_n \frac{1}{2}
+\left(\frac{\partial^2}{\partial x_1^2} + \frac{\partial^2}{\partial x_2^2} \right)
+(\psi - \mathbb{E}\left[\psi\right])|_m \right]
+\\
+&= \frac{1}{4}\left(
+\frac{\partial^2}{\partial x_1^2} \frac{\partial^2}{\partial y_1^2} + 
+\frac{\partial^2}{\partial x_1^2} \frac{\partial^2}{\partial y_2^2} +  
+\frac{\partial^2}{\partial x_2^2} \frac{\partial^2}{\partial y_1^2} + 
+\frac{\partial^2}{\partial x_2^2} \frac{\partial^2}{\partial y_2^2}  
+\right) \kerngp_{mn}\\ 
+\end{align*}
 
 
 \subsection{The actual terms from the 4th derivatives}
 \begin{equation*}
-\Sigma = \lambda^{-1} \kerngp 
+\kerngp = \lambda^{-1} \Sigma 
 \end{equation*}
 
 \begin{align}
-\kerngp &= \exp{\left(\frac{-\beta}{2} r^2 \right)}\\
-\kerngp_{,x_i} &= \frac{-\beta}{2} \kerngp r^2_{,x_i} = -\beta \kerngp X_i\\ 
-\kerngp_{,y_h} &= \beta \kerngp X_h 
+\Sigma &= \exp{\left(\frac{-\beta}{2} r^2 \right)}\\
+\Sigma_{,x_i} &= \frac{-\beta}{2} \Sigma r^2_{,x_i} = -\beta \Sigma X_i\\ 
+\Sigma_{,y_h} &= \beta \Sigma X_h 
 \end{align}
 
 \begin{align}
-\kerngp_{,x_i x_j} &= \frac{-\beta}{2}(\kerngp_{,x_j} r^2_{,x_i} + \kerngp r^2_{,x_i x_j})\\
-\kerngp_{,x_i x_j y_h} &= \frac{-\beta}{2}(\kerngp_{,x_j y_h} r^2_{,x_i} + \kerngp_{,x_j}
-r^2_{,x_i y_h} + \kerngp_{,y_h} r^2_{,x_i x_j})\\
-\kerngp_{,x_i x_j y_h y_k} &= \frac{-\beta}{2} 
-(\kerngp_{,x_j y_h y_k} r^2_{,x_i} +
-\kerngp_{,x_j y_h} r^2_{,x_i y_k} + 
-\kerngp_{,x_j y_k} r^2_{,x_i y_h} + 
-\kerngp_{,y_h y_k} r^2_{,x_i x_j} )
+\Sigma_{,x_i x_j} &= \frac{-\beta}{2}(\Sigma_{,x_j} r^2_{,x_i} + \Sigma r^2_{,x_i x_j})\\
+\Sigma_{,x_i x_j y_h} &= \frac{-\beta}{2}(\Sigma_{,x_j y_h} r^2_{,x_i} + \Sigma_{,x_j}
+r^2_{,x_i y_h} + \Sigma_{,y_h} r^2_{,x_i x_j})\\
+\Sigma_{,x_i x_j y_h y_k} &= \frac{-\beta}{2} 
+(\Sigma_{,x_j y_h y_k} r^2_{,x_i} +
+\Sigma_{,x_j y_h} r^2_{,x_i y_k} + 
+\Sigma_{,x_j y_k} r^2_{,x_i y_h} + 
+\Sigma_{,y_h y_k} r^2_{,x_i x_j} )
 \label{eq:4th_derivative_intermediate_expression}
 \end{align}
 
 Just work on terms that are parts of the 4th kernel derivative 
 \begin{align*}
-\kerngp_{,x_i x_j} &= \frac{\partial}{\partial x_j} (-\beta \kerngp X_i)\\
-&= -\beta(\kerngp_{,x_j X_i} + \kerngp X_{i, x_j})\\ 
-&= -\beta(-\beta \kerngp X_j X_i + \kerngp \delta_{ij} \mathsf{D}_{ij}) \\ 
-&= (\beta^2 X_j X_i - \beta \delta_{ij} \mathsf{D}_{ij})\kerngp 
+\Sigma_{,x_i x_j} &= \frac{\partial}{\partial x_j} (-\beta \Sigma X_i)\\
+&= -\beta(\Sigma_{,x_j X_i} + \Sigma X_{i, x_j})\\ 
+&= -\beta(-\beta \Sigma X_j X_i + \Sigma \delta_{ij} \mathsf{D}_{ij}) \\ 
+&= (\beta^2 X_j X_i - \beta \delta_{ij} \mathsf{D}_{ij})\Sigma 
 \end{align*}
 
 \begin{align*}
-\kerngp_{,x_i y_h} &= \frac{\partial}{\partial y_h} (-\beta \kerngp X_i)\\
-&= -\beta(\kerngp_{,y_h X_i} + \kerngp X_{i, y_h})\\ 
-&= -\beta(\beta \kerngp X_h X_i - \kerngp \delta_{ih} \mathsf{D}_{ih}) \\ 
-&= -(\beta^2 X_h X_i - \beta \delta_{ih} \mathsf{D}_{ih})\kerngp 
+\Sigma_{,x_i y_h} &= \frac{\partial}{\partial y_h} (-\beta \Sigma X_i)\\
+&= -\beta(\Sigma_{,y_h X_i} + \Sigma X_{i, y_h})\\ 
+&= -\beta(\beta \Sigma X_h X_i - \Sigma \delta_{ih} \mathsf{D}_{ih}) \\ 
+&= -(\beta^2 X_h X_i - \beta \delta_{ih} \mathsf{D}_{ih})\Sigma 
 \end{align*}
 
 \begin{align*}
-\kerngp_{,y_h y_k} &= \frac{\partial}{\partial y_h} (\beta \kerngp X_h)\\
-&= \beta(\kerngp_{,y_k X_h} + \kerngp X_{h, y_k})\\ 
-&= \beta(\beta \kerngp X_k X_h - \kerngp \delta_{hk} \mathsf{D}_{hk}) \\ 
-&= (\beta^2 X_h X_k - \beta \delta_{hk} \mathsf{D}_{hk})\kerngp 
+\Sigma_{,y_h y_k} &= \frac{\partial}{\partial y_h} (\beta \Sigma X_h)\\
+&= \beta(\Sigma_{,y_k X_h} + \Sigma X_{h, y_k})\\ 
+&= \beta(\beta \Sigma X_k X_h - \Sigma \delta_{hk} \mathsf{D}_{hk}) \\ 
+&= (\beta^2 X_h X_k - \beta \delta_{hk} \mathsf{D}_{hk})\Sigma 
 \end{align*}
 
 \begin{align}
-\kerngp_{,x_i x_j} &= (\beta^2 X_j X_i - \beta \delta_{ij} \mathsf{D}_{ij})\kerngp\\ 
-\kerngp_{,x_i y_h} &= -(\beta^2 X_h X_i - \beta \delta_{ih} \mathsf{D}_{ih})\kerngp\\ 
-\kerngp_{,y_h y_k} &= (\beta^2 X_h X_k - \beta \delta_{hk} \mathsf{D}_{hk})\kerngp 
+\Sigma_{,x_i x_j} &= (\beta^2 X_j X_i - \beta \delta_{ij} \mathsf{D}_{ij})\Sigma\\ 
+\Sigma_{,x_i y_h} &= -(\beta^2 X_h X_i - \beta \delta_{ih} \mathsf{D}_{ih})\Sigma\\ 
+\Sigma_{,y_h y_k} &= (\beta^2 X_h X_k - \beta \delta_{hk} \mathsf{D}_{hk})\Sigma 
 \end{align}
 
 Term 1 of the 4th derivative of eqn \ref{eq:4th_derivative_intermediate_expression}
 
 \begin{align*}
-\kerngp_{,x_j y_h y_k}
-&= \frac{\partial}{\partial y_k} \kerngp_{,x_j y_h}\\ 
-&= -\frac{\partial}{\partial y_k} (\beta^2 X_h X_j - \beta \delta_{jh} \mathsf{D}_{jh})\kerngp\\
-&= (\beta^2 \mathsf{D}_{hk} \delta_{hk} X_j + \beta^2 X_h \mathsf{D}_{jk}\delta_{jk})\kerngp -
-(\beta^2 X_h X_j - \beta \mathsf{D}_{jh} \delta_{jh})\beta X_k \kerngp
+\Sigma_{,x_j y_h y_k}
+&= \frac{\partial}{\partial y_k} \Sigma_{,x_j y_h}\\ 
+&= -\frac{\partial}{\partial y_k} (\beta^2 X_h X_j - \beta \delta_{jh} \mathsf{D}_{jh})\Sigma\\
+&= (\beta^2 \mathsf{D}_{hk} \delta_{hk} X_j + \beta^2 X_h \mathsf{D}_{jk}\delta_{jk})\Sigma -
+(\beta^2 X_h X_j - \beta \mathsf{D}_{jh} \delta_{jh})\beta X_k \Sigma
 \end{align*}
 
 \begin{align*}
-&\kerngp_{,x_j y_h y_k} r_{,x_i}^2\\
+&\Sigma_{,x_j y_h y_k} r_{,x_i}^2\\
 &= 2[\beta^2 X_j \mathsf{D}_{hk} \delta_{hk} + \beta^2 X_h \mathsf{D}_{jk}\delta_{jk} +
-\beta^2 X_k \mathsf{D}_{jh} \delta_{jh} - \beta^3 X_h X_j X_k] X_i \kerngp\\ 
+\beta^2 X_k \mathsf{D}_{jh} \delta_{jh} - \beta^3 X_h X_j X_k] X_i \Sigma\\ 
 &=\boxed{2\beta^2[ 
 X_j X_i \mathsf{D}_{hk} \delta_{hk} + 
 X_h X_i \mathsf{D}_{jk} \delta_{jk} + 
-X_k X_i \mathsf{D}_{jh} \delta_{jh}] \kerngp 
-- 2\beta^3 X_h X_j X_k X_i \kerngp} 
+X_k X_i \mathsf{D}_{jh} \delta_{jh}] \Sigma 
+- 2\beta^3 X_h X_j X_k X_i \Sigma} 
 \end{align*}
 
 \subsection{Term 2 of the 4th derivative}
 \begin{align*}
-\kerngp_{,x_j y_h} r^2_{,x_i y_k}
+\Sigma_{,x_j y_h} r^2_{,x_i y_k}
 &= - (\beta^2 X_h X_j - \beta \mathsf{D}_{jh} \delta_{jh}) (-2\mathsf{D}_{ik}
-\delta_{ik} \kerngp) \\  
+\delta_{ik} \Sigma) \\  
 &= \boxed{( 2 \beta^2  X_h X_j \mathsf{D}_{ik} \delta_{ik} 
--2 \beta \mathsf{D}_{jh} \mathsf{D}_{ik} \delta_{jh} \delta_{ik}) \kerngp} 
+-2 \beta \mathsf{D}_{jh} \mathsf{D}_{ik} \delta_{jh} \delta_{ik}) \Sigma} 
 \end{align*}
 
 \subsection{Term 3 of the 4th derivative}
 This is completely analogous to term 2 except the subscripts are slightly
 different
 \begin{align*}
-\kerngp_{,x_j y_k} r^2_{,x_i y_h}
+\Sigma_{,x_j y_k} r^2_{,x_i y_h}
 &=\boxed { ( 2 \beta^2  X_k X_j \mathsf{D}_{ih} \delta_{ih} 
--2 \beta \mathsf{D}_{jk} \mathsf{D}_{ih} \delta_{jk} \delta_{ih}) \kerngp} 
+-2 \beta \mathsf{D}_{jk} \mathsf{D}_{ih} \delta_{jk} \delta_{ih}) \Sigma} 
 \end{align*}
 
 \subsection{Term 4 of the 4th derivative} 
 \begin{align*}
-\kerngp_{,y_h y_k} r^2_{,x_i x_j}
-&= (\beta^2 X_k X_h - \beta \mathsf{D}_{hk}\delta_{hk})\kerngp 2 \mathsf{D}_{ij} \delta_{ij}\\ 
+\Sigma_{,y_h y_k} r^2_{,x_i x_j}
+&= (\beta^2 X_k X_h - \beta \mathsf{D}_{hk}\delta_{hk})\Sigma 2 \mathsf{D}_{ij} \delta_{ij}\\ 
 &= \boxed{(2\beta^2 X_k X_h \mathsf{D}_{ij} \delta_{ij} - 2\beta \mathsf{D}_{ij} \mathsf{D}_{hk} \delta_{hk}
-\delta_{ij})\kerngp } 
+\delta_{ij})\Sigma } 
 \end{align*}
 
-Collect terms of $\Sigma_{,x_i x_j y_h y_k}$ by plugging them in eqn
+Collecting terms of $\Sigma_{,x_i x_j y_h y_k}$ by plugging them in eqn
 \ref{eq:4th_derivative_intermediate_expression}
-from the relevant terms that are boxed above, 
+, we have 
 \begin{align}
 \nu_{,x_i x_j y_h y_k} &= (\beta^4 X_h X_j X_k X_i -  
 \beta^3 (X_j X_i \mathsf{D}_{hk} \delta_{hk} + 5 {\rm perm.}) + \beta^2
 (\mathsf{D}_{jh} \mathsf{D}_{ik}\delta_{jh}\delta_{ik} + 2 {\rm perm.})) \nu \\
 &= \gamma \nu
 \end{align}
-where $\nu$ is an entry in the exponential squared kernel matrix $\kerngp$.
+
+Where $\nu$ is an entry in the matrix $\Sigma$
+
