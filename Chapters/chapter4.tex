@@ -17,7 +17,7 @@ through linear transfer over time to form a large-scale ($> 10 h^{-1} Mpc$)
 dark matter (DM) density field that is consistent with present
 day observables. 
 This cosmic web encodes valuable information for constraining cosmological
-parameters such as the matter density ($\Omega_m$) and the fluctuation amplitude 
+parameters. such as the matter density ($\Omega_m$) and the fluctuation amplitude 
 of the matter density ($\sigma_8$) on a particular characteristic scale (8
 $h^{-1} Mpc$). 
 % The observable, the subtle distortion signals of galaxy shapes 
@@ -79,20 +79,48 @@ are located at different distances from the observer and the source galaxies.
 % to infer the three-dimensional DM density along the line-of-sight;\\
 (6) the statistical inference and representation of the cosmic shear signal,
 which is the main theme of this chapter;
-and finally \\
-(7) the (cosmological) simulation efforts 
-for relating all the above contributions to isolate the cosmic shear signal and
+and finally \\ 
+(7) the (cosmological) simulation efforts for relating all the above contributions to isolate the cosmic shear signal and
 estimate the underlying (Gaussian part) of the DM distribution. 
 The non-Gaussian part of the DM distribution introduced by processes
 such as gravitational collapse is also inferred from the simulations before    
 cosmological constraints are obtained from a fit to a certain representation of
-the cosmic shear information.\\ 
-Even though we lay out the different stages of a cosmic shear analysis sequentially,
-performing the analysis separately may introduce unintended biases. This is
-because an estimation or a correction at separate stages may only provide a local
-best fit solution.   
+the cosmic shear information. 
+% Even though we lay out the different stages of a cosmic shear analysis sequentially,
+% performing the analysis separately may introduce unintended biases. This is
+% because an estimation or a correction at separate stages may only provide a local
+% best fit solution.   
 
-With the help of two graphical models, we will demonstrate how our method
+% Even though the representation of the cosmic shear information on constituents
+% one step in the entire pipeline, there are a large number of studies that try
+% to improve the current methods. Most of the studies make use of summary 
+% statistics. 
+
+There are many proposals for how to best represent the cosmic shear information
+(step 6). The technical details of each method differ, but most of them involve
+making use of an estimator that provides a summary of the data.
+Examples of commonly used estimators include, the two-point correlation function 
+(2PCF) and the power spectrum, which is part of the Fourier transform of the 2PCF, 
+the ring statistics, the aperture mass dispersion and the peak statistics.  
+A detail discussion of each of them can be found in 
+\cite{Kilbinger2013}, \cite{Bartelmann2001a}.
+An important concern for computing the summary statistics of the cosmic shear 
+comes from the lensing physics. As the lensing observables are the second derivatives of the
+scalar potential under the Born approximation, we expect them to be curl-free
+(i.e. only contain an E-mode, those name is analogous to the curl-free electric
+field). An desired property of the representation of the
+cosmic shear, is therefore to show a complete separation of the E-mode and the B-mode.
+However, there can be various sources of the B-mode signals. A well known
+cause of mode mixing is known as the finite-interval problem. It is due to
+imperfect observation conditions, such as blending of galaxies at small scales,
+or limitations from survey boundaries at large scales \citep{Kilbinger2013}.  
+Specific computational implementation of the summary statistics (e.g. the ring
+statistics or the 2PCF) that bins the 
+observed shear can also mix the E and B-modes (\citealt{Eifler2010},
+\citealt{Becker2013}). We provide a new model of cosmic shear that may
+alleviate some of the aforementioned problems. 
+ 
+With the use of two graphical models, we will demonstrate how our method
 (step 6) may enable better joint inference with the other relevant parts (e.g. 2, 3, 4). 
 The rest of this chapter will have the following structure, we will \\ 
 1) illustrate the basic properties of the Gaussian Process, the model that we
@@ -128,6 +156,10 @@ The crucial ingredient for describing cosmic shear is the deterministic
 lensing physics. However, 
 the choice of the representation of cosmic shear affects both the
 inference procedure and the estimation of cosmological parameters. 
+
+
+binning can cause the mixing of curl-free and the non-curl-free mode 
+of the signal.
 % The identification of the curl-free (E-mode) part of the signal that contain
 % the gravitational lensing signal and the remaining B-mode 
 % that can be caused by systematics or other  
@@ -147,7 +179,7 @@ It has also been used for other classification, dimensionality reduction
 and pattern extraction tasks
 with state-of-the-art predictive performance 
 (\citealt{Wilson2013}, \citealt{Duvenaud2013}, \citealt{Rasmussen2006}).
-We focus our analyses here on how the GP can be utilized to compute a prior
+We focus our analyses on how the GP can be utilized to compute a prior
 probability for cosmic shear inference.
  
 It is helpful to understand the mathematical formulation of a GP 
@@ -194,17 +226,20 @@ from the lensing potential $\psi$ later on.
 By drawing many realizations of $\psi$, we can obtain the
 corresponding credible levels.
 Note that the credible levels are wider for regions with less data to reflect
-higher uncertainty. A GP is said to have indefinite dimension due to its ability to
+the higher uncertainty. A GP is said to have indefinite dimension due to its ability to
 predict values in unobserved regions, even though the 
 observed part of the kernel is of finite size (e.g. $\ngal \times \ngal$). 
 By averaging the drawn realizations, we can also obtain the mean prediction. 
 
-The use of GP presents a drastic difference with the past representation of
-cosmic shear with summary statistics.  
+[TODO fix this awkward paragraph] 
+Compared with the past representation of
+cosmic shear with summary statistics, the GP gives probabilistic realizations.  
 The two-point correlation functions (2PCF), 
 the power spectrum, the peak statistics, aperture mass statistic and others, 
 which are more comparable to the parameters of the GP, such as the kernel, or the
-mean predictions, than the GP itself.
+mean predictions, than the GP itself. After drawing a particular realization of
+the lensing observables from the GP, all the physical relationships still
+applies. 
 
 
 % The probabilistic nature of the GP highlights the main differences of our
@@ -249,7 +284,7 @@ over smoothing or under smoothing the data.
 
 Additionally, the exponential squared kernel is infinitely differentiable. This
 differentiable kernel choice allows us to derive an analytical expression to
-relate the different lensing observables.  
+relate the different lensing observables to enforce a consistent representation.  
 With the use of Born approximation in the linear regime, the scalar lensing potential $\psi$ is related to 
 each of the lensing observables mentioned in chapter 1, e.g. 
 $\lensparams \equiv [\kappa, \gamma_1, \gamma_2]$, via the following derivatives:
@@ -431,6 +466,12 @@ as part of a composite GP kernel.
 
 \subsubsection{Formulating the likelihood}
 
+\subsection{Validation data}
+\subsubsection{{\sc GalSim} data}
+
+\subsubsection{Data centered on the Deep Lens Survey (DLS) galaxy cluster Abell 781}
+We illustrate that the GP can handle non-linear structures such as a galaxy cluster 
+by making a mass map of Abell 781 in the DLS. 
 
 
 
