@@ -11,7 +11,7 @@ A cornerstone of cosmology is found on the
 observation of the highly Gaussian temperature fluctuations in the cosmic microwave 
 background (CMB), an ancient light emitted during the recombination in the early
 universe. Many physical models can explain how these
-nearly Gaussian fluctuations can arise from quantum perturbations in the 
+nearly Gaussian fluctuations could arise from quantum perturbations in the 
 early universe. Furthermore, we know how these perturbations could grow
 through linear transfer over time to form a large-scale ($> 10 h^{-1} Mpc$) 
 dark matter (DM) density field that is consistent with present
@@ -19,18 +19,21 @@ day observables.
 This cosmic web encodes valuable information for constraining cosmological
 parameters such as the matter density ($\Omega_m$) and the fluctuation amplitude 
 of the matter density ($\sigma_8$) on a particular characteristic scale (8
-$h^{-1} Mpc$).   
+$h^{-1} Mpc$). 
+% The observable, the subtle distortion signals of galaxy shapes 
+% that is induced by the gravity of intervening DM
+% between far away galaxies and the observers, is also known as cosmic shear.  
 
+% as the Large Synoptic Survey Telescope (LSST) will
+% provide data of high enough quality and large enough volume such that the
+% constraints will be systematics limited. 
 % how complicated is cosmic shear inference 
 % Past analyses of large scale structures, such as
 % the Canadian-French-Haiwaiian Telescope Lens (CFHTLens;
 % \citealt{Kilbinger2013}), the Deep Lens Survey
 % (DLS; \citealt{Jee2013a}), the Dark Energy Survey (DES; \citealt{Abbott2016}) and others, 
-% have already shown how  
+% have already demonstrated the constraining power  
 % constraints.
-% This is because new surveys such as the Large Synoptic Survey Telescope (LSST) will
-% provide data of high enough quality and large enough volume such that the
-% constraints will be systematics limited. 
 % This has sparked interests to
 % come up with a comprehensive (statistical) framework to address the effects
 % from systematics.
@@ -41,18 +44,20 @@ The analysis of the DM density field, however, is far from trivial.
 The galaxies those shapes distortions reflect the density of intervening DM, 
 only provide a weak, indirect gravitational lensing signal (known as cosmic
 shear; $\lensparams$). The signal is also buried among various sources of noise
-and can be contaminated by systematics. 
+and systematics. 
 To improve the existing constraints, there are many ongoing 
 efforts to refine the analysis pipeline. 
-In this work, we propose a new approach to represent the cosmic shear information, 
+In this work, we propose a new, probabilistic approach for representing 
+the cosmic shear information, 
 and show how it can be used in a probabilistic framework. 
 This can allow the joint inference of the signal, the noise and the systematics, 
-and potentially provide a less biased estimate of the cosmological parameters (${\bf \theta}$). 
+and potentially provide a less biased estimate of the cosmological parameters 
+(${\bf \theta}$). 
 The most relevant reference of such a probabilistic approach can be found in 
 \cite{Schneider2014} and Schneider et al. (in prep.), 
 while an alternative hierarchical approach can be found in \cite{Alsing2015}. 
 
-In general, a simplified analysis framework for cosmic shear includes: \\ 
+In general, an analysis framework for cosmic shear includes: \\ 
 (1) the identification and deblending of source galaxies from sky survey data 
 using software such as {\sc SEXtractor} \citep{Bertin1996}, {\sc Celeste}
 \citep{Regier2014}, and / or {\sc Tractor} \citep{Lang2010}, among others;\\
@@ -78,7 +83,7 @@ and finally \\
 (7) the (cosmological) simulation efforts 
 for relating all the above contributions to isolate the cosmic shear signal and
 estimate the underlying (Gaussian part) of the DM distribution. 
-The non-Gaussian part of the DM distribution introduced by process
+The non-Gaussian part of the DM distribution introduced by processes
 such as gravitational collapse is also inferred from the simulations before    
 cosmological constraints are obtained from a fit to a certain representation of
 the cosmic shear information.\\ 
@@ -89,7 +94,7 @@ best fit solution.
 
 With the help of two graphical models, we will demonstrate how our method
 (step 6) may enable better joint inference with the other relevant parts (e.g. 2, 3, 4). 
-The rest of this chapter will be presented as follows, we will \\ 
+The rest of this chapter will have the following structure, we will \\ 
 1) illustrate the basic properties of the Gaussian Process, the model that we
 use to represent the cosmic shear signal\\ 
 2) show the derivation for incorporating the lensing physics in 
@@ -99,7 +104,6 @@ similar or different from other approaches for cosmic shear inference. \\
 3) lay out a hierarchical model for making several mass maps 
 with the modified Gaussian Process and show some preliminary results \\ 
 4) discuss the limitations and possible extensions to our method.\\
-
 In no part of this work do we explicitly assume a cosmological model. All our
 derivations follow from either the lensing physics or our statistical method.   
 % Our method provides an alternative from having to use the 2PCF to represent the
@@ -120,9 +124,18 @@ derivations follow from either the lensing physics or our statistical method.
 
 \section{Method}
 
+The crucial ingredient for describing cosmic shear is the deterministic
+lensing physics. However, 
+the choice of the representation of cosmic shear affects both the
+inference procedure and the estimation of cosmological parameters. 
+% The identification of the curl-free (E-mode) part of the signal that contain
+% the gravitational lensing signal and the remaining B-mode 
+% that can be caused by systematics or other  
+
 \subsection{The basics of a Gaussian Process}
 A Gaussian Process is one of the most studied and published 
-generative model. It allows the inference of the joint probability density 
+generative model for non-parametric regression. 
+It allows the inference of the joint probability density 
 function (PDF) for describing a set of data. 
 This gives the model the flexibility for a wide range
 of successful applications in many fields. 
@@ -130,10 +143,11 @@ In Astronomy, a GP has been used for modeling
 the light curve of exoplanets from discrete data points \citep{Ambikasaran2014a}.
 Or the GP can be used as a prior probability for optimizing the model parameters of
 neural networks \citep{Snoek2012}. 
-It has also been used for other classification and pattern extraction tasks
+It has also been used for other classification, dimensionality reduction 
+and pattern extraction tasks
 with state-of-the-art predictive performance 
 (\citealt{Wilson2013}, \citealt{Duvenaud2013}, \citealt{Rasmussen2006}).
-We focus our discussion here on how the GP can be utilized to compute a prior
+We focus our analyses here on how the GP can be utilized to compute a prior
 probability for cosmic shear inference.
  
 It is helpful to understand the mathematical formulation of a GP 
@@ -185,6 +199,14 @@ predict values in unobserved regions, even though the
 observed part of the kernel is of finite size (e.g. $\ngal \times \ngal$). 
 By averaging the drawn realizations, we can also obtain the mean prediction. 
 
+The use of GP presents a drastic difference with the past representation of
+cosmic shear with summary statistics.  
+The two-point correlation functions (2PCF), 
+the power spectrum, the peak statistics, aperture mass statistic and others, 
+which are more comparable to the parameters of the GP, such as the kernel, or the
+mean predictions, than the GP itself.
+
+
 % The probabilistic nature of the GP highlights the main differences of our
 % approach vs past analysis approaches. While past analysis computes summary 
 % statistics, such as the correlation-function to represent the  
@@ -194,12 +216,11 @@ When the input data is mean-subtracted, we can use a zero mean function in the
 GP and the covariance kernel completely specifies the GP. 
 There are several families of commonly used covariance kernel.
 The ones that are of the highest interest to cosmic shear modeling 
-are kernels that can capture 
+are stationary kernels that can capture 
 the homogeneity and the isotropy of the data. This allows predicted spatial fields
 $\psi$ to have consistent properties as the large-scale matter distribution.
 %
-One of the most popular kernels that can generate homogeneous and
-isotropic data is the exponential squared kernel: 
+One of such choices is the exponential squared kernel: 
 \begin{equation}
 	\kerngp(r^2) = \lambda^{-1} \exp\left(\frac{-r^2}{2 l^2}\right),
 	\label{eq:exp_sq_kernel}
@@ -217,14 +238,19 @@ can be generalized to account for anamorphic distortions. There are two
 additional parameters that specifies the GP which we call $\gpparams =
 [\lambda, l^2]$.
 The precision parameter $\lambda$ affects the 
-amplitude of the density perturbation, while the correlation length $l^2$ 
+amplitude of the density perturbation, while the correlation length (or
+the characteristic length scale) $l^2$ 
 determines how fast the correlations between different spatial locations of the
-field $\psi$ fall off as a function of the spatial distance.
+field $\psi$ fall off as a function of the spatial distance. The parameter
+$l^2$ therefore determines how smooth the spatial field $\psi$ is. When one
+examines the marginal likelihood of a GP when fitting it to the data, 
+one can see that there is a penalization term for preventing $l^2$ from
+over smoothing or under smoothing the data.
 
 Additionally, the exponential squared kernel is infinitely differentiable. This
 differentiable kernel choice allows us to derive an analytical expression to
 relate the different lensing observables.  
-In the Newtonian limit, the scalar lensing potential $\psi$ is related to 
+With the use of Born approximation in the linear regime, the scalar lensing potential $\psi$ is related to 
 each of the lensing observables mentioned in chapter 1, e.g. 
 $\lensparams \equiv [\kappa, \gamma_1, \gamma_2]$, via the following derivatives:
 \begin{align}
@@ -243,7 +269,7 @@ x_2} + \frac{\partial^2 \psi}{\partial x_2 \partial x_1}\right)
 where we have defined the shorthand for spatial derivatives with
 subscripts for $h,i,j,k = 1, 2$ after a comma.
 Since the covariance operator is linear, we can interchange the order of
-operation between the covariance operator and the differentiation operator. 
+operation between the covariance operator and the differentiation operators. 
 The resulting 4th derivatives of the covariance
 kernels $\kerngp_{\rm GP}$ have the following forms: 
 \begin{align}
@@ -293,23 +319,39 @@ $\kerngp$ by:
 with $\beta = l^{-2}$. There are 6 permutations (abbreviated as perm.) of the terms in
 eq. \ref{eq:4thderivatives}
 multiplied to $\beta^3$ as we can choose two pairs of indices from the $h,i,j,k$ 
-where the order of each
-pair of indices matters when we differentiate the terms by parts. 
+when we differentiate the terms by parts, assuming that the order of each
+pair of indices matters. 
 Likewise, there are 3 possible permutations of
 the terms the multiplied to $\beta^2$ as we can choose two pairs of indices from
 $h, i, j, k$ where the order of the pairs does not matter.
 The derivation of the relevant derivatives and terms are available 
-in the appendix for completeness. 
+in appendix \ref{app:GP_kernel_derivation} for completeness. 
 Our implementation of the GP kernels in eqn \ref{eq:kernel_derivatives1} - 
-\ref{eq:kernel_derivatives2} is openly available at
+\ref{eq:kernel_derivatives2} is also openly available at
 \href{https://github.com/karenyyng/george}{https://github.com/karenyyng/george}.
 
 \subsection{Making predictions (interpolation) with a GP}
-We know the joint probability density function for the observables of a GP:
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\linewidth]{gp_cov_v2.png}
+	\caption{An illustration of the GP covariance kernel for the data set
+		presented in Schneider et al. (in prep.). We can see the various covariance
+		and cross-covariance
+		structures for the training data $\Upsilon = [\kappa, \gamma_1, \gamma_2]$
+		and the interpolated data $\Upsilon' = [\kappa', \gamma_1', \gamma_2']$.
+		\label{fig:GP_kernel_vis}}
+\end{figure}
+Using a GP instead of a summary statistic also allows us to make predictions. 
+We know the joint probability density function for the observables of a GP to
+be:
 \begin{equation}
 	[\lensparams',\lensparams]^T \sim \mathcal{N}(0, \kerngp_{\rm GP})
 \end{equation}
-where we can represent the kernel matrix in terms of several submatrices:
+where $(\lensparams', \xv')$ represents the unobserved set of data,
+and the $(\lensparams, \xv)$ represents the existing (training) data.
+We can then represent the kernel matrix in terms of several submatrices 
+(See Fig. \ref{fig:GP_kernel_vis} for an example):
 \begin{equation}
 	\kerngp_{\rm GP} = \left[\begin{array}{cc}
 	A & B \\
@@ -325,20 +367,21 @@ and
 \begin{equation}
 	\Cov(\lensparams'|\lensparams) = A - BC^{-1}B^T
 \end{equation}
-so we know how to draw new predictions $\lensparams'$ from the conditional distribution:
+which enables us to draw new predictions $\lensparams'$ from the conditional distribution:
 \begin{equation} 
 	\lensparams' | \xv', \xv, \lensparams \sim \mathcal{N}(
 		\mathbb{E}(\lensparams'| \lensparams), \Cov(\lensparams'|\lensparams)
 	)
 \end{equation}
 In the presence of shape noise and measurement uncertainties, the actual 
-expression of the conditional distribution used for interpolation in the actual analysis 
+expression of the conditional covariance kernel used for interpolation in the actual analysis 
 is slightly more complicated as we will show. 
 But the general idea of the above derivation follows 
 since we also assume the shape noise and the measurement uncertainties to be Gaussian.
-Similarly, once we can find GP parameters $\gpparams$ that can allow us to fit
+
+Similarly, once we can find GP parameters $\gpparams^*$ that optimizes the fit to
 the observed shear fields $\gamma_{(1, 2)}$ at $\xv$, we can compute $\kerngp_{(\kappa,
-\kappa)}$ and draw predictions for $\kappa$ from the conditional distribution. 
+\kappa)}$ and draw predictions of $\kappa$ from the conditional distribution. 
 Compared with an interpolation method, the mean predictions from a GP are
 often more well behaved and do not show drastic increase or decrease 
 in the tail regions where there is no data.  
@@ -367,13 +410,6 @@ in the tail regions where there is no data.
 		\label{fig:general_pgm}}
 \end{figure}
 
-\begin{figure}
-	\centering
-	\includegraphics[width=0.8\linewidth]{gp_cov_v2.png}
-	\caption{An illustration of the GP covariance kernel for the data set
-		presented in Schneider et al. (in prep.). The  
-		\label{fig:GP_kernel_vis}}
-\end{figure}
 
 \subsubsection{Specifying the GP prior}
 Throughout the analyses present in this work, 
@@ -384,10 +420,12 @@ written as:
 	\epsilon_{\rm obs} = \epsilon_{\rm int} + g 
 \end{equation}
 Assume that the shape noise term $\epsilon_{\rm int}$ of each galaxy is 
-independent and follow the same Gaussian distribution, we can rewrite  
-the noise as part of a composite GP kernel. 
+independent and follow the same Gaussian distribution, we can model  
+the shape noise ($\sigma_e$) and measurement uncertainty ($\sigma_{\rm ms}$)
+as part of a composite GP kernel. 
 \begin{equation}
-	\mathbb{S} = \kerngp_{GP} + \sigma_e^2 \mathsf{1}   
+	\mathsf{S} = \kerngp_{GP} + \sigma_e^2 \mathds{1} + \sigma_{\rm ms}^2
+	\mathds{1}   
 \end{equation}
 
 
@@ -482,33 +520,24 @@ A closely related quantity is the Fourier transform of the 2PCF, which consists
 of the power spectrum. For a Gaussian random field, the power spectrum contains
 all the information about the Gaussian random field. 
 
-
 Other statistic that have been explored for capturing cosmic shear information
-include aperture mass statistic $M_{\rm ap}$ or shear peak count \citep{Bard2014}.
+include aperture mass dispersion $M_{\rm ap}$ or shear peak count \citep{Bard2014}.
 
-A statistical model that makes use of the GP usually decomposes 
-the signal and the noise in the following way: 
-\begin{equation}
-	e_{\rm obs} = g(\xv) + \epsilon_n^{\rm int}  
-\end{equation}
-
-% likelihood 
-% prior 
-how how  
 
 \subsection{The computational performance of our method}
 We implemented the covariance kernels in \ref{eq:kernel_derivatives1}
 via {\sc C++} along with a {\sc Python} wrapper. 
 Although the operation of computing and assembling the
 derivatives are $O(\ngal^2)$, the large number of addition and 
-multiplication operations can be slow.
+multiplication operations can be slow in eq. [TODO].
 Exploiting the symmetry of the covariance kernel can only provide 
 memory saving of a factor of 2.
-To speed up the computation to make it feasible, 
+To make the computation feasible, 
 I implemented the parallelized computation of each element of the kernel using 
 the {\sc OpenMP} library. The slowest step of the entire computation, however, 
 is the inversion of the
-covariance kernel matrix for the evaluation of the marginal likelihood, 
+covariance kernel matrix for the evaluation of the marginal likelihood in eqn.
+[TODO], 
 which is an $O(\ngal^3)$ operation. 
 I made use of a parallelized version of the Cholesky decomposition via the {\sc Intel Math
 Kernel Library} to invert the matrix and achieved $\sim10$ 
@@ -519,99 +548,11 @@ the inversion of a 4200 $\times$ 4200 covariance matrix.
 With the use of distributed computational resources, it is possible 
 to probe the space of possible GP parameters.  
 
-
-\subsection{Alternative kernel choice(s) for encoding the lensing physics}
-Alternative choices for a covariance kernel for describing the lensing physics 
-include the family of Mat\'{e}rn kernels:
-% \begin{equation}
-% 
-% \end{equation}
-
-The smoothness of the data generated from a Mat\'{e}rn kernel is closely
-related to the degree of freedom of the kernel. 
-The higher degree of freedom it has, the smoother the spatial variations of the
-drawn $\psi$ would be for the same correlation length.
-Note that a Mat\'{e}rn kernel is also only differentiable to the $i$-th order,
-where $i$ is [TODO] related to the degree of freedom by [TODO].
-This restricts us to use kernels with degree of freedom above [TODO]. 
-When we take the limit of the degree of freedom of a Mat\'{e}rn kernel to infinity, 
-we recover the exponential squared kernel.
-
-It is possible to generalize the derivation of derivatives by using automatic
-differentiation. Automatic differentiation may allow evaluation of other
-kernels that generates isotropic and homogeneous data, 
-such as the Mat\'{e}rn kernels.  
-% An implementation via numerical differentiation may
-% or may not be more computationally intensive to
-% compute, depending on the required numerical precision (aka order of accuracy).
-Differentiation technology such as automatic differentiation, 
-that spreads factors of the derivatives over a tree like structure for
-almost exact computation can be considered, but is outside the scope of this work.
-
-
-
-
-\subsection{Relating the lensing observables to a cosmological model}
-We can draw realizations of the lensing observables from the GP given a set of
-optimized GP parameters:
-\begin{equation}
-	\lensparams(\xv) \sim GP(0, \kerngp_{\rm GP}(\xv, \yv)) 
-\end{equation}
-
-
-The constraints on cosmological parameters need to be verified in a mock
-weak-lensing analysis of cosmological simulation. 
-It can enable the separation of E and B mode in the convergence field as shown
-in Schneider et al. (in prep.) 
-
-\subsection{Modeling the systematics and noise via a B-mode kernel}
-Besides kernels that describes homogeneous and isotropic data,
-there are other types of periodic kernels that may be useful
-in modeling systematics such as masking or footprints of the telescope due to the
-stacking of multiple exposures.
-For spatial models with undetermined periodicity or patterns, 
-composite kernels with different covariance structures 
-can be formed by the addition and/or multiplication of several kernels
- to pick up (sometimes non-obvious) patterns in the data. 
-A GP with composite kernels is a
-famous example how both the short-and-long term trends of global carbon
-dioxide level can be modeled and predicted \citep{Duvenaud2013}.
-
-While a GP kernel for modeling the systematics 
-can be discovered by trial and error, 
-it can be hard to relate the systematics in the shear to those in the
-convergence map with the same mathematical formalism. 
-
-
-% - [ ] describe why the lensing observables shouldn't have a B mode 
-Since the lensing observables are the second derivatives of a scalar field,
-it is known that they should not exhibit a B-mode,  
-
- \begin{align}
-	\kappa^E & = \kappa\\
-	\kappa^B & = 0 \\
-	\gamma^E &= \left[\frac{1}{2} (\psi^E_{,11} - \psi^E_{,22}) -
-	\psi^B_{,12}\right]\\
-	\gamma^B &= \left[\psi^E_{,12} + \frac{1}{2} (\psi^B_{,11} - \psi^B_{,22})\right]
-\end{align}
-
-While it is conceivable to come up with a GP kernel that can fit systematics 
-in the shear fields, it is hard to imagine how one may relate the inferred
-shear field to the convergence field. 
-
-
-
-
-% Can handle sharp boundaries from stacking images 
-% cite Jee2013a  
-% cite Rowe2010 paper for interpolating star fields for 
-% PSF ellipticity corrections 
-
-\subsection{Speeding up the matrix operations}
 Currently, our method is not as computationally competitive as the 2PCF. One of
-the fastest implementation has a computational complexity of $O(N\sqrt{N})$.
-The 2PCF algorithm has also been demonstrated to scale well with a distributed and parallelized
-implementation \citep{Chhugani2012}.
+the fastest implementation of 2PCF has a computational complexity of $O(N\sqrt{N})$.
+The 2PCF algorithm has also been demonstrated to scale almost linearly with
+computational resources 
+with a distributed and parallelized implementation \citep{Chhugani2012}.
 
 Rather than relying on manual intensive methods for parallelizing the
 computation of the kernel methods, a more promising way is to approximate the
@@ -628,6 +569,91 @@ sparsity, the inversion of the matrix can be sped up to [TODO]$O(M^2N)$ for
 building the model and $O(M^2)$ for interpolating / predicting output functions
 at new input locations \citep{Snelson2006}.
   
+
+
+
+\subsection{Alternative kernel choice(s) for encoding the lensing physics}
+Alternative choices for a covariance kernel for describing the lensing physics 
+include the family of Mat\'{e}rn kernels:
+\begin{equation}
+	\kerngp(\xv, \xv') = \frac{1}{\Gamma(\nu)2^{\nu-1}}\left[
+		\frac{\sqrt{2\nu}}{l}|\xv - \xv'|
+	\right]^\nu K_\nu \left(\frac{\sqrt{2\nu}}{l}|\xv-\xv'|\right) 
+\end{equation}
+where $K_\nu$ is the modified Bessel function of the second kind, with an order
+$\nu$, whereas $l$ is the characteristic length scale.
+The smoothness of the data generated from a Mat\'{e}rn kernel is closely
+related to the degree of freedom $\nu$ of the kernel. 
+The higher degree of freedom it has, the smoother the spatial variations of the
+drawn $\psi$ would be for the same characteristic length scale $l$.
+Note that a Mat\'{e}rn kernel is also only differentiable to the $(\nu-1/2)$ order.
+This restricts us to use kernels with $\nu > 9/2$ . 
+When we take the limit of the degree of freedom of a Mat\'{e}rn kernel to infinity, 
+we recover the exponential squared kernel. The inclusion of a Mat\'{e}rn kernel
+in addition to an exponential squared kernel, therefore, will pick up features
+that are less smooth.
+
+As the manual differentiation of the analytical form of the kernels can be tedious,
+it may desirable to generalize the derivation of derivatives. Technologies such
+as automatic differentiation 
+can spreads factors of the derivatives over a tree structure for
+almost exact computation.
+ 
+% An implementation via numerical differentiation may
+% or may not be more computationally intensive to
+% compute, depending on the required numerical precision (aka order of accuracy).
+
+
+
+
+% \subsection{Relating the lensing observables to a cosmological model}
+% We can draw realizations of the lensing observables from the GP given a set of
+% optimized GP parameters:
+% \begin{equation}
+% 	\lensparams(\xv) \sim GP(0, \kerngp_{\rm GP}(\xv, \yv)) 
+% \end{equation}
+% 
+% 
+% The constraints on cosmological parameters need to be verified in a mock
+% weak-lensing analysis of cosmological simulation. 
+% It can enable the separation of E and B mode in the convergence field as shown
+% in Schneider et al. (in prep.) 
+
+\subsection{Modeling the systematics and noise via a composite kernel}
+Besides kernels that describes homogeneous and isotropic data,
+there are other types of periodic kernels that may be useful
+in modeling systematics such as masking or footprints of the telescope due to the
+stacking of multiple exposures.
+For spatial models with undetermined periodicity or patterns, 
+composite kernels with different covariance structures 
+can be formed by the addition and/or multiplication of several kernels,
+\begin{equation}
+	\kerngp = \sum_i \kerngp_i(\gpparams^i).
+\end{equation}
+By fitting for the best values for $\gpparams^i$, it is possible  
+to pick up (sometimes non-obvious) patterns in the data \citep{Duvenaud2013},
+and in this case, the two shear components. 
+
+% - [ ] describe why the lensing observables shouldn't have a B mode 
+% Since the lensing observables are the second derivatives of a scalar field,
+% it is known that they should be curl free and only contain E-mode signal. 
+
+% It is well known that gravitational lensing, as presented in chapter 1,
+% only induces a curl-free (E-mode) shear signal. However, the computation of 
+% summary statistics at certain length scale can induce a B-mode (with non-zero
+% curl) signal. 
+
+%  \begin{align}
+% 	\kappa^E & = \kappa\\
+% 	\kappa^B & = 0 \\
+% 	\gamma^E &= \left[\frac{1}{2} (\psi^E_{,11} - \psi^E_{,22}) -
+% 	\psi^B_{,12}\right]\\
+% 	\gamma^B &= \left[\psi^E_{,12} + \frac{1}{2} (\psi^B_{,11} - \psi^B_{,22})\right]
+% \end{align}
+% Can handle sharp boundaries from stacking images 
+% cite Jee2013a  
+% cite Rowe2010 paper for interpolating star fields for 
+% PSF ellipticity corrections 
 
 \section{Conclusion}
 Here, we have derived and implemented a fully probabilistic method for 
@@ -665,6 +691,7 @@ github.com/karenyyng/george}, which was forked from \\
 \appendix 
 
 \section{Derivation of GP kernel}
+\label{app:GP_kernel_derivation}
 
 
 \subsection{The relevant 4th spatial derivatives}
@@ -800,6 +827,5 @@ Collecting terms of $\Sigma_{,x_i x_j y_h y_k}$ by plugging them in eqn
 (\mathsf{D}_{jh} \mathsf{D}_{ik}\delta_{jh}\delta_{ik} + 2 {\rm perm.})) \nu \\
 &= \gamma \nu
 \end{align}
-
-Where $\nu$ is an entry in the matrix $\Sigma$
+where $\nu$ is an entry in the matrix $\Sigma$.
 
