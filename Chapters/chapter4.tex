@@ -294,11 +294,10 @@ operation between the covariance operator and the differentiation operators.
 The resulting 4th derivatives of the covariance
 kernels $\kerngp_{\rm GP}$ have the following forms: 
 \begin{align}
-	\label{eq:kernel_derivatives1}
 	\Cov (\kappa(\xv), \kappa(\yv))
 &= \frac{1}{4}\left(
 \kerngp_{,1111} + \kerngp_{,1122} + \kerngp_{,2211} + \kerngp_{,2222}
-\right), \\
+\right), \label{eq:kernel_derivatives1}\\
 \Cov(\kappa(\xv), \gamma_1(\yv)) &= \frac{1}{4}\left(
 \kerngp_{,1111} + \kerngp_{,2211} - \kerngp_{,1122} - \kerngp_{,2222}
 \right), \\
@@ -313,8 +312,7 @@ kernels $\kerngp_{\rm GP}$ have the following forms:
 \right), \\
 \Cov(\gamma_2(\xv), \gamma_2(\yv)) &= \frac{1}{4}\left(
 \kerngp_{,1212} + \kerngp_{,1221} + \kerngp_{,2112} + \kerngp_{,2121}
-\right),
-	\label{eq:kernel_derivatives2}
+\right), \label{eq:kernel_derivatives2}
 \end{align}
 where
 \begin{equation}
@@ -418,8 +416,9 @@ data differently.
 		the lensing observables $\Upsilon$ from survey or simulation data. The dots
 		denote fixed parameters in the statistical procedure. The circle denotes
 		latent variable, while the shaded circle denotes 
-		the observed variable. The plate notation shows the galaxy entries to sum
-		over.
+		the observed variable. The plate notation shows the galaxy entries that are
+		implicitly summed over during the computation of matrix-vector
+		products in the log marginal likelihood.
 		\label{fig:simplified_pgm}}
 \end{figure}
 
@@ -467,16 +466,18 @@ $\gpparams^*$:
 	\log p(\epsilon_{(1,2)} | \xv) = \frac{-1}{2}\epsilon_{(1,2)}^T \mathsf{S}^{-1}
 \epsilon_{(1, 2)}
 - \frac{1}{2}\log|\mathsf{S}| - \frac{n}{2}\log(2\pi),
+\label{eq:log_marginal_likelihood}
 \end{equation}
 which consists of a first term that represents how good the fit is,
 and a second term that penalizes complex model assumptions \citep{Rasmussen2006}. 
-The complexity penalization term can prevent the GP from oversmoothing the data.
+The complexity penalization term can prevent the GP from overfitting the data.
 This allows us to infer the best fit model for the observed shear, which still
 contains contributions from both the shape noise and the measurement
 uncertainties. 
 
+\subsubsection{Reconstructing the signal using a Wiener filter}
 From our formulation of the observed shear, 
-we can reconstruct the signal using a Wiener filter (Wiener 1949). 
+we can reconstruct the shear signal using a Wiener filter (Wiener 1949). 
 The Wiener filter is a linear operator $G$ that transforms the noisy
 data to the signal:
 \begin{equation}
@@ -487,19 +488,22 @@ signal. This technique has proven success in the reconstruction of CMB signal
 and power spectrum signals (\citealt{Elsner2013} and the references therein).
 For signal and noise that are both Gaussian, the Wiener filter gives 
 \begin{equation}
-	p(\lensparams| \gpparams) = \mathcal{N}(\mu_\lensparams,
+	p(\lensparams| \mathbf{d}, \gpparams, \sigma_{\rm ms}, \sigma_e) = \mathcal{N}(\mu_\lensparams,
 	\mathsf{S}_\lensparams),
 	\label{eq:Wiener_filter_distribution}
 \end{equation}
-where
+with the data vector being $\mathbf{d} = \epsilon_{(1, 2)}$ and we plug in the
+optimal GP parameters $\gpparams^*$ to obtain:
 \begin{align}
 \mu_\lensparams & = \kerngp_{\rm GP}(\kerngp_{\rm GP} + \mathsf{N})^{-1}
 \epsilon_{(1, 2)}, \\
 \mathsf{S}_\lensparams & = \kerngp_{\rm GP}(\kerngp_{\rm GP} +
 \mathsf{N})^{-1}\mathsf{N}.
 \end{align}
-We use eq. \ref{eq:Wiener_filter_distribution} to process two sets of
-data as a demonstration.
+We use eq. \ref{eq:Wiener_filter_distribution}, which represents the posterior
+of our Bayesian model to process two sets of
+data for demonstration purposes. An alternative, but equivalent way of explaining this
+model formulation can be found in more detail in Schneider et al. (in prep.).
 
 \subsection{Validation data}
 \subsubsection{{\sc GalSim} data}
@@ -572,13 +576,16 @@ A big consideration for any cosmic shear inference method is the computational p
 As upcoming sky surveys such as the Large Synoptic Survey Telescope (LSST) will
 provide data from billions of source galaxies, any
 computationally expensive methods may become infeasible. 
+In our case, the computational cost is already an obstacle that keeps us from
+analyzing the entire DLS survey. This is despite an parallelized implementation
+in fast programming languages.   
 We implemented the covariance kernels in eq. \ref{eq:kernel_derivatives1} to
 \ref{eq:kernel_derivatives2}
 via {\sc C++} along with a {\sc Python} wrapper. 
 Although the operation of computing and assembling the
 derivatives are $O(\ngal^2)$, the large number of addition and 
 multiplication operations in eq. \ref{eq:kernel_derivatives1} to
-\ref{eq:kernel_derivatives2} can be slow.
+\ref{eq:kernel_derivatives2}, and \ref{eq:4thderivatives} can be slow.
 Exploiting the symmetry of the covariance kernel can only provide 
 a memory saving of a factor of 2.
 
@@ -586,24 +593,26 @@ To make the computation run reasonably fast,
 I implemented the parallelized computation of each element of the kernel using 
 the {\sc OpenMP} library. The slowest step of the entire computation, however, 
 is the inversion of the
-covariance kernel matrix for the evaluation of the marginal likelihood in eqn.
-[TODO], 
+covariance kernel matrix for the evaluation of the marginal likelihood in eq.
+\ref{eq:log_marginal_likelihood}, 
 which is an $O(\ngal^3)$ operation. 
-I made use of a parallelized version of the Cholesky decomposition via the {\sc Intel Math
+I made use of a multi-threaded version of the Cholesky decomposition via the {\sc Intel Math
 Kernel Library} to invert the matrix. I achieved a $\sim10$ 
 times speed up so the computation and the evaluation of the likelihood of each set of GP parameter
 take $\lesssim 3s$ for 1600 galaxies, which translates to 
 the inversion of a 4200 $\times$ 4200 covariance matrix.
 With the use of distributed computational resources, it is possible 
-to probe the space of possible GP parameters. But the scalability of our method
-is limited.
+to probe the space of possible GP parameters by assigning each node to only
+evaluate the log marginal likehood for one set of parameters. 
+But the scalability of our method is limited by the available memory on each
+computer node.
 
 Our method is also not as computationally competitive as the 2PCF. One of
 the fastest implementation of 2PCF has a computational complexity of
 $O(n_{\rm gal}\sqrt{n_{\rm gal}})$.
 The 2PCF algorithm has also been demonstrated to scale almost linearly with
 computational resources 
-with a distributed and parallelized implementation \citep{Chhugani2012}. 
+using a distributed and multi-threaded implementation \citep{Chhugani2012}. 
 A science task of higher priority is to show that the GP can allow better estimation of
 cosmological parameters than the 2PCF before a proper speed optimization. 
 
@@ -616,11 +625,16 @@ computational representations. The relevant field of literature that studies how
 approximation may affect the statistical inference is called covariance tapering. 
 On the other hand, there have been successes of further speedups for a GP when 
  synthetic data sets called inducing points are used (\citealt{Snelson2006},
-\citealt{Rasmussen2006}). The inversion of the matrix can be sped up to
+\citealt{Rasmussen2006}). Inducing points are latent variables that represents
+hidden connections between the training data set and the test set. With the help 
+of inducing points,
+the inversion of the covariance kernel can be sped up to
 $O(M^2 n_{\rm gal})$ for
 building the model and $O(M^2)$ for interpolating / predicting output functions
 at a new number of synthetic data locations M, with M $\ll n_{\rm gal}$ 
-\citep{Snelson2006}.
+\citep{Snelson2006}. While the speedups from inducing point methods are
+promising, careful studies need to be done to see how it affects the
+inference of cosmological parameters.
   
 \subsection{Alternative kernel choice(s) for encoding the lensing physics}
 Alternative choices for a covariance kernel for describing the lensing physics 
@@ -646,9 +660,8 @@ that are less smooth.
 
 As the manual differentiation of the analytical form of the kernels can be tedious,
 it may be desirable to generalize the derivation of derivatives. Technologies such
-as automatic differentiation can spreads factors of the derivatives over a tree structure for
-almost exact computation. We note that the most urgent tasks for showing the
-strength of the GP model is to 
+as automatic differentiation can spreads factors of the derivatives over a tree
+structure to allow almost exact computation. 
  
 % An implementation via numerical differentiation may
 % or may not be more computationally intensive to
@@ -716,9 +729,9 @@ Some of the remaining challenges include the generalization of the method for sp
 coordinates. 
 
 
-Requires the understanding of the underlying physical observable, how the statistical
-approach can carry the information and how to actual execute the computation in
-a tractable way.
+% Requires the understanding of the underlying physical observable, how the statistical
+% approach can carry the information and how to actual execute the computation in
+% a tractable way.
 
 
 \section{Acknowledgement}
@@ -732,7 +745,7 @@ User Facility supported by
 of the U.S. Department of Energy under Contract No.
 DE-AC02-05CH11231.
  This work uses a modified version
-of the public code {\sc George} available at \href{https://
+of the public code for GP inference {\sc George} available at \href{https://
 github.com/karenyyng/george}{https://
 github.com/karenyyng/george}, which was forked from \\
 \href{https://github.com/dfm/george}{https://github.com/dfm/george}.
