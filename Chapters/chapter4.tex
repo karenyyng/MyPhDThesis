@@ -531,7 +531,8 @@ model formulation can be found in more detail in Schneider et al. (in prep.).
 \subsection{Validation data}
 We check our GP and probabilistic model in eq. \ref{eq:Wiener_filter_posterior}
 against one set of synthetic data and one set of real data.
-Please refer to Schneider et al. (in prep.) for more details.
+More details about the analysis and the related discussions are in Schneider et 
+al. (in prep.).
 
 \subsubsection{{\sc GalSim} data}
 The first set of synthetic data that we analyzed were generated via the following procedure: 
@@ -553,8 +554,9 @@ $40 \times 40$ grid.
 \subsubsection{The Deep Lens Survey (DLS) galaxy cluster Abell 781}
 The second set of real data is obtained from the DLS, an optical imaging survey 
 designed for cosmic shear measurements.  The data points
-are centered on the galaxy cluster, Abell 781, which has an estimated redshift
-of $z \approx 0.43$ \citep{Wittman2014}. A galaxy cluster is a
+are centered on the galaxy cluster called Abell 781 in DLS field 2.
+There are several previous lensing studies of this cluster and it has an estimated redshift
+of $z \approx 0.43$ (\citealt{Wittman2014}, \citealt{}). A galaxy cluster is a
 non-linear structure resulted from gravitational collapse. We illustrate that
 our GP method can handle non-linear features in the convergence map without 
 problem. We selected source galaxies that have photometric redshift $z_b >
@@ -577,7 +579,7 @@ cuts for this analysis.
 }
 \end{figure}
 We show the mean posterior mass map obtained in Fig. \ref{fig:Galsim_massmap}. 
-It shows features that are general agreement between the true signal. 
+It shows features that are in general agreement with the true signal. 
 It is noteworthy that the resolutions of the posterior maps are coarser (with $24 \times 24$
 spacing) than the input galaxy
 spacing ($40 \times 40$). This reflects how the log marginal likelihood disfavors a sampling
@@ -586,12 +588,18 @@ $l^2 = 0.0123$ from the fitting routine of the log marginal likelihood are also
 larger than this Nyquist scale. As we speed up our code to handle a larger
 volume and finer
 resolution of input data, this limitation from the sampling scheme should
-become negligible. We will discuss ways to speed up the computation in section
+become negligible. We will discuss ways to speed up the computation to enable
+the analysis of a denser catalog of data in section
 \ref{subsec:computational_performance}. 
 
-Our GP posterior map for the {\sc GalSim} data also retains very little B-mode
-features. The B-mode amplitudes are $< 2e^{-3}$ in the center of the field,  
-and only have larger amplitudes $< 2e^{-2}$ at the field boundaries.  
+From the averaged posterior map, we also computed the B-mode power spectrum.
+The B-mode amplitudes are $< 2e^{-3}$ in the center of the field. 
+The B-modes only have larger amplitudes $< 2e^{-2}$ at field boundaries.  
+This is expected as \cite{Bunn2003} have shown in a study of the CMB that 
+the E and B modes can be mixed when the field of view is incomplete.
+Although the B-mode amplitudes from our GP inference are small, improvements can be made 
+if we understand how to fit the B-mode amplitudes to achieve complete E/B mode
+separation.
 
 \subsection{Mass mapping for Deep Lens Survey Abell 781}
 \begin{figure}[h!]
@@ -607,12 +615,17 @@ and only have larger amplitudes $< 2e^{-2}$ at the field boundaries.
 	These figures are from Schneider et al. (in prep.).
 }
 \end{figure}
-We also see a general agreement of the features in the mass map of Abell 781 in
-Fig. \ref{fig:Abell781_massmap} with previous studies of the same cluster \cite{Wittman2014}. 
+We also see a general agreement of the features in the mass map of Abell 781
+(Fig. \ref{fig:Abell781_massmap}) with previous studies of the same cluster 
+\cite{Wittman2014}.  
 We are restricted by the Nyquist frequency to give a coarser map as discussed
-before. Due to the small number of galaxies used for probing $\lensparams$ and
-the lack of characterization of the systematics, we
-have not yet pursued the inference of cosmological parameters from the DLS data.
+before.   
+As the lensing signal from Abell 781 is higher than other other fields of the
+DLS, we see better agreement of the inferred $\lensparams$ in field 2 than
+other fields. 
+Due to the small number of galaxies used for probing $\lensparams$,we
+have not yet pursued the inference of cosmological parameters from the
+posterior maps of the DLS data.
 % We have not inferred the existence of B-mode for the DLS data. 
 % There are distortion from stacking exposures (e.g. visible chip gaps features) 
 % and other observational limitations (e.g. masking of bright
@@ -624,6 +637,24 @@ have not yet pursued the inference of cosmological parameters from the DLS data.
 \section{Discussion}
 
 \subsection{Relating the lensing observables to a cosmological model}
+There are efforts to explore different ways to relate the posterior lensing signal 
+to a cosmological model in Schneider et al. (in prep.). We outline some general
+ideas or concerns for such an effort. First, it is possible to use conventional techniques 
+ to find the cosmological dependence from simulations.  
+We can compute the power spectrum from our mean posterior map. The resulting
+power spectrum will have reduced shape noise which may enable direct comparison to
+simulations. 
+Second, if we were to explore how to relate the GP outputs to cosmological constraints,  
+it may be interesting to investigate the sensitivity of the GP parameters (and
+covariance kernel models) to cosmological parameters. 
+We note that the GP parameters may not be very sensitive to cosmological parameters
+due to its flexibility to model a large range of data. The sampling strategy of
+the galaxy locations may also affect the sensitivity. A sensitivity test can be
+done by repeating our {\sc GalSim} study using convergence power spectrum of different cosmology 
+parameters and different sampling. It is also possible to use dimensionality
+techniques to find the features in the posterior map that can best determine the
+underlying cosmology. 
+
 % \begin{figure}
 % 	\centering
 % 	\includegraphics[width=0.4\linewidth]{shear_general_pgm.png}
@@ -637,14 +668,18 @@ have not yet pursued the inference of cosmological parameters from the DLS data.
 
 \subsection{The computational performance of the GP}
 \label{subsec:computational_performance}
-A big consideration for any cosmic shear inference method is the computational performance.
-As upcoming sky surveys such as the Large Synoptic Survey Telescope (LSST) will
-provide data from billions of source galaxies, any
-computationally expensive methods may become infeasible. 
-In our case, the computational cost is already an obstacle that keeps us from
-analyzing the entire DLS survey. This is despite an parallelized implementation
-in fast programming languages.   
-We implemented the covariance kernels in eq. \ref{eq:kernel_derivatives1} to
+Another big consideration for any cosmic shear inference method is the computational performance.
+% As upcoming sky surveys such as the Large Synoptic Survey Telescope (LSST) will
+% provide data from billions of source galaxies, 
+Any
+computationally expensive methods may become infeasible if the algorithm cannot 
+analyze enough galaxies to beat cosmic variance. 
+% In our case, the computational cost is already an obstacle that keeps us from
+% analyzing the entire DLS survey. 
+% despite we have a parallelized implementation
+% in a fast programming language.   
+To achieve high speed performance, we  
+implemented the covariance kernels in eq. \ref{eq:kernel_derivatives1} to
 \ref{eq:kernel_derivatives2}
 via {\sc C++} along with a {\sc Python} wrapper. 
 Although the operation of computing and assembling the
@@ -681,25 +716,27 @@ using a distributed and multi-threaded implementation \citep{Chhugani2012}.
 A science task of higher priority is to show that the GP can allow better estimation of
 cosmological parameters than the 2PCF before a proper speed optimization. 
 
-In terms of speed optimization, rather than relying on manual intensive methods 
-for parallelizing the computation of the kernel methods, there are several 
+In terms of speed optimization, rather than relying on 
+parallel computation of the kernel methods, there are several 
 possible approximations that can provide huge speedups. 
 Since there are many zero entries in the covariance kernel as shown in
 Fig. \ref{fig:GP_kernel_vis}, it may be acceptable to put the kernel in sparse
 computational representations. Thus, numerical libraries for sparse matrix 
-operations can then provide speedups from looping over less data entries.
-The relevant field of literature that studies how the sparsity
+operations (such as {\sc ScaLAPACK} or {\sc PLAPACK})
+can then provide speedups from looping over less data entries.
+An existing field of study that shows how the sparsity
 approximation may affect the statistical inference is called covariance tapering. 
 
-On the other hand, there have been successes of further speedups for a GP when 
- synthetic data sets called inducing points are used (\citealt{Snelson2006},
+On the other hand, there have been successes of further speedups for a GP than
+pure sparsity approximations. This requires the introduction of  
+ synthetic data sets called inducing points (\citealt{Snelson2006},
 \citealt{Rasmussen2006}). Inducing points are latent variables that represents
 hidden connections between the training data set and the test set. 
-It relies on fact that the majority of the information content 
- may be embedded in certain direction (principal components) 
-in the high dimension of the data.
-The large number of data points specifies more about the initial conditions than the
-underlying cosmology.
+% It relies on fact that the majority of the information content 
+%  may be embedded in certain direction (principal components) 
+% in the high dimension of the data.
+% The large number of data points specifies more about the initial conditions than the
+% underlying cosmology.
 With the help 
 of inducing points,
 the inversion of the covariance kernel can be sped up to
@@ -744,18 +781,26 @@ numerical experiments.
 Besides kernels that describes homogeneous and isotropic data,
 there are other types of periodic kernels that may be useful
 in modeling systematics such as masking or footprints of the telescope due to the
-stacking of multiple exposures.
-For spatial models with undetermined periodicity or patterns, 
-composite kernels with different covariance structures 
-can be formed by the addition and/or multiplication of several kernels,
+stacking of multiple exposures. Previous studies of modeling the systematics
+have made use of interpolation for such a task (\citealt{Rowe2010},
+\citealt{Jee2013a}). However, we have demonstrated a GP can accomplish
+interpolate in a much more generalizable way.
+
+To pick up undetermined periodicity or patterns, 
+we can use composite kernels with different covariance structures, 
+which can be formed by the addition and/or multiplication of several kernels,
 \begin{equation}
 	\kerngp = \sum_i \kerngp_i(\gpparams^i).
 \end{equation}
 By fitting for the best values for $\gpparams^i$, it is possible  
 to pick up (sometimes non-obvious) patterns in the data. 
-For a best illustration for pattern discovery with a GP, see \cite{Duvenaud2013} which
-shows an example of how kernels of different periodicity can represent 
-the short and long terms trends for carbon dioxide emission at Mauna Loa.
+For a best illustration for pattern discovery with a GP, see
+\cite{Duvenaud2013}.
+It contains a famous example of GP made use of a composite kernel to pick up both the 
+the short and long term periodic trends for carbon dioxide emission at Mauna Loa.
+Additionally, it is physically interesting to examine whether the kernels that best 
+fit systematics and incompleteness can allow better E / B mode separation. 
+
 
 % - [ ] describe why the lensing observables shouldn't have a B mode 
 % Since the lensing observables are the second derivatives of a scalar field,
