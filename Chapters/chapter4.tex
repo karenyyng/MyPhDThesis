@@ -17,8 +17,8 @@ through linear transfer over time to form a large-scale ($> 10 h^{-1} Mpc$)
 dark matter (DM) density field that is consistent with present
 day observables. 
 This cosmic web encodes valuable information for constraining cosmological
-parameters. Many analyses of the large scale DM density field, such as those from
-the Canadian-French-Haiwaiian Telescope Lens survey (CFHTLens;
+parameters. Many analyses of the large-scale DM density field, such as those from
+the Canadian-French-Hawaiian Telescope Lens survey (CFHTLens;
 \citealt{Kilbinger2013}), the Deep Lens Survey
 (DLS; \citealt{Jee2013a}, \citealt{Wittman2002}), the Dark Energy Survey (DES; \citealt{Abbott2016}) and others, 
 have already given competitive cosmological constraints for 
@@ -112,7 +112,7 @@ scalar potential under the Born approximation, we expect them to be curl-free
 field). An ideal representation of the
 cosmic shear, therefore should allow a complete separation of the E-mode and the B-mode.
 However, various causes can
-introduce B-mode signals to the observed cosmic shear signal. A well known
+introduce B-mode signals to the observed cosmic shear signal. A well-known
 cause of mode mixing is known as the finite-interval problem. It is due to
 imperfect observation conditions, such as the blending of galaxies at small scales,
 or limitations from survey boundaries at large scales \citep{Kilbinger2013}.  
@@ -210,7 +210,7 @@ where $\mathcal{N}$ is a multivariate normal function.
 		black. The average of many interpolated predictions is shown in blue
 		along with the gray region showing the 68\% 
 		credible interval. This figure is taken from Cdipaolo96 at 
-		the Wikimedia Commons under the Creative Commons license 4.0
+		the Wikimedia Commons under the Creative Commons license 4.0.
 \label{fig:one_d_gaussian_process}}
 \end{figure}
 This shows the probabilistic nature of the GP predictions
@@ -220,13 +220,13 @@ field, which can be used to model the lensing observables derived
 from the lensing potential $\psi$ later on. 
 By drawing many realizations of $\psi$, we can obtain the
 corresponding credible levels.
-Note that the credible levels are wider for regions with less data to reflect
+Note that the credible levels are wider for regions with fewer data points to reflect
 the higher uncertainty. A GP is said to have indefinite dimension due to its ability to
 predict values in unobserved regions, even though the 
 observed part of the kernel is of finite size (e.g. $\ngal \times \ngal$). 
 
 By drawing realizations of the relevant GP, we can compute various 
-physical quantities of interest. If the goal is to give a best prediction of a
+physical quantities of interest. If the goal is to give the best prediction of a
 mass map, it is possible to average over many drawn realizations of the
 convergence $\kappa$. And we will show an example of this as a demonstration of
 the consistency of our method with other known method for making mass maps.
@@ -257,11 +257,11 @@ where
 \end{equation}
 This kernel only depends on the
 squared magnitude of distances between pairs of galaxy locations. 
-This chosen form is therefore invariant
+This chosen form is, therefore, invariant
 under translational and rotational transformations.
 The metric $\Matrix{D}$ is taken to be a diagonal matrix in this discussion but  
 can be generalized to account for anamorphic distortions. There are two
-additional parameters that specifies the GP which we call $\gpparams =
+additional parameters that specify the GP which we call $\gpparams =
 [\lambda, l^2]$.
 The precision parameter $\lambda$ affects the 
 amplitude of the density perturbation, while the correlation length (or
@@ -387,8 +387,8 @@ $l^2$ & squared GP correlation length (element of $\gpparams$) \\
 \begin{figure}
 	\centering
 	\includegraphics[width=0.8\linewidth]{gp_cov_v2.png}
-	\caption{An illustration of the GP covariance kernel for the data set
-		presented in Schneider et al. (in prep.). We can see the various covariance
+	\caption{An illustration of the GP covariance kernel for the data set.
+		The same plot is also present in Schneider et al. (in prep.). We can see the various covariance
 		and cross-covariance
 		structures for the training data $\Upsilon = [\kappa, \gamma_1, \gamma_2]$
 		and the interpolated data $\Upsilon' = [\kappa', \gamma_1', \gamma_2']$.
@@ -445,15 +445,16 @@ data differently.
 \begin{figure}
 	\centering
 	\includegraphics[width=0.4\linewidth]{shear_gp_pgm.png}
-	\caption{A simplified probabilistic graphical model (pgm) for inferring
+	\caption{A simplified probabilistic graphical model (PGM) for inferring
 		the lensing observables $\Upsilon$ from survey or simulation data. The dots
 		denote fixed parameters in the statistical procedure. The circle denotes
 		latent variable, while the shaded circle denotes 
 		the observed variable. The plate notation shows the observables that are
 		implicitly summed over different galaxies during the computation of matrix-vector
-		products in the log marginal likelihood. The way that the observed
+		products in the log marginal likelihood (eq. \ref{eq:log_marginal_likelihood}). The way that the observed
 		ellipticity is connected to other branches hints that a joint analysis of
-		those variables will provide better predictive performance. 
+		the connected quantities will provide better predictive performance than if
+		they were inferred separately. 
 		\label{fig:simplified_pgm}}
 \end{figure}
 
@@ -534,7 +535,7 @@ al. (in prep.).
 
 \subsubsection{{\sc GalSim} data}
 The first set of synthetic data that we analyzed was generated via the following procedure: 
-We create a angular power spectrum of the convergence signal using {\sc
+We created an angular power spectrum of the convergence signal using {\sc
 CHOMP}, a cosmology and halo model code\footnote{A fork of {\sc CHOMP} can be
 found at \href{https://github.com/karenyyng/chomp}{https://github.com/karenyyng/chomp}}. 
 With the convergence power spectrum, we generated lensed   
@@ -625,10 +626,11 @@ We also see a general agreement of the features in the mass map of Abell 781
 \cite{Wittman2014}.  
 We are restricted by the Nyquist frequency to give a coarser map as discussed
 before.   
-As the lensing signal from Abell 781 is higher than other other fields of the
-DLS, we see better agreement of the inferred $\lensparams$ in field 2 than
-other fields. 
-Due to the small number of galaxies used for probing $\lensparams$, we
+As the lensing signal from Abell 781 is higher than other fields of the
+DLS, we see a better agreement of the inferred $\lensparams$ in field 2 than
+other fields. We have not included enough galaxies to allow a good signal and
+noise separation for blank fields. 
+This is also one of the reasons why  we
  have not inferred cosmological parameters using the
 posterior maps of the DLS data.
 % We have not inferred the existence of B-mode for the DLS data. 
@@ -721,7 +723,7 @@ computational resources
 using a distributed and multi-threaded implementation \citep{Chhugani2012}. 
 
 In terms of speed optimization for our method, rather than relying on 
-parallel computation of the kernel, there are several 
+a parallel computation of the kernel, there are several 
 possible approximations that can provide huge speedups. 
 Since there are many zero entries in the covariance kernel as shown in
 Fig.\ref{fig:GP_kernel_vis}, it may be acceptable to put the kernel in sparse
@@ -811,12 +813,12 @@ which can be formed by the addition and/or multiplication of several kernels,
 \end{equation}
 By fitting for the best values for $\gpparams^i$, it is possible  
 to pick up (sometimes non-obvious) patterns in the data. 
-For a best illustration for pattern discovery with a GP, see
+For the best illustration for pattern discovery with a GP, see
 \cite{Duvenaud2013}.
 It contains a famous example of GP made use of a composite kernel to pick up both the 
-the short and long term periodic trends for carbon dioxide emission at Mauna Loa.
+short and long term periodic trends for carbon dioxide emission at Mauna Loa.
 Additionally, it is physically interesting to examine whether the kernels that best 
-fit systematics and incompleteness can represent most of the B mode components. 
+fit systematics and incompleteness can represent most of the B-mode components. 
 
 
 % - [ ] describe why the lensing observables shouldn't have a B mode 
@@ -847,7 +849,7 @@ we have demonstrated reasonable agreement between our method and either the true
 simulated signal or with past analysis techniques.  
 Due to the computational performance restriction,  
 the potential of using a Gaussian Process for the inference of cosmological
-contraints from outputs of our model remains to be proven. 
+constraints from outputs of our model remains to be proven. 
 If those challenges can be solved with some of our
 suggestions, the GP model can be 
 extended to provide a joint analysis of the systematics and noise. 
