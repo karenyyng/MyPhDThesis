@@ -83,8 +83,9 @@ which is the main theme of this chapter;
 and finally \\ 
 (7) the (cosmological) simulation efforts for relating all the above contributions to isolate the cosmic shear signal and
 estimate the underlying (Gaussian part) of the DM distribution. 
-The non-Gaussian part of the DM distribution introduced by processes
-such as gravitational collapse is also inferred from the simulations before    
+There is also a non-Gaussian part of the DM distribution that is introduced by processes
+such as gravitational collapse. Such a non-Gaussian distribution 
+is also inferred from the simulations before    
 cosmological constraints are obtained from a fit to a certain representation of
 the cosmic shear information. 
 % Even though we lay out the different stages of a cosmic shear analysis sequentially,
@@ -115,9 +116,9 @@ introduce B-mode signals to the observed cosmic shear signal. A well known
 cause of mode mixing is known as the finite-interval problem. It is due to
 imperfect observation conditions, such as the blending of galaxies at small scales,
 or limitations from survey boundaries at large scales \citep{Kilbinger2013}.  
-Specific computational implementation of the summary statistics (e.g. the ring
-statistics or the 2PCF) that bins the 
-observed shear can also mix the E and B-modes (\citealt{Eifler2010},
+Specific computational implementation of the summary statistics that bins the 
+observed shear can also mix the E and B-modes 
+(\citealt{Eifler2010},
 \citealt{Becker2013}). Instead of a summary statistic, we provide a new 
 {\it statistical model} of cosmic shear that may either provide an alternative
 perspective to some of the aforementioned problems, or in the best case
@@ -168,9 +169,10 @@ function (PDF) for describing a set of data.
 While we focus our analyses on how the GP can be utilized to compute a prior
 probability for cosmic shear inference, a GP can be extended to 
 allow a variety of other uses. In Astronomy, a GP has been used for modeling 
-the light curve of exoplanet transits from discrete data points \citep{Ambikasaran2014a}.
-A GP can also be used as a prior probability for optimizing the model parameters of
-neural networks \citep{Snoek2012}, in addition to 
+the light curve of exoplanet transits from discrete data points
+\citep{Ambikasaran2014a}. It is commonly used in Geophysics as spatial models
+called Kriging. A GP can also be used as a prior probability for optimizing the 
+model parameters of neural networks \citep{Snoek2012}, in addition to 
 other classification, dimensionality reduction 
 and pattern extraction tasks
 (\citealt{Wilson2013}, \citealt{Duvenaud2013}, \citealt{Rasmussen2006}).
@@ -398,8 +400,8 @@ be:
 \begin{equation}
 	[\lensparams',\lensparams]^T \sim \mathcal{N}(0, \kerngp_{\rm GP})
 \end{equation}
-where we use the symbol $(\lensparams', \xv')$ to denote the unobserved set of data,
-and the $(\lensparams, \xv)$ for the existing (training) data.
+where we use the symbols $(\lensparams', \xv')$ to denote the unobserved set of data,
+and the symbols $(\lensparams, \xv)$ for the existing (training) data.
 We can then represent the kernel matrix in terms of several submatrices 
 (See Fig. \ref{fig:GP_kernel_vis} for an example):
 \begin{equation}
@@ -449,7 +451,9 @@ data differently.
 		latent variable, while the shaded circle denotes 
 		the observed variable. The plate notation shows the observables that are
 		implicitly summed over different galaxies during the computation of matrix-vector
-		products in the log marginal likelihood.
+		products in the log marginal likelihood. The way that the observed
+		ellipticity is connected to other branches hints that a joint analysis of
+		those variables will provide better predictive performance. 
 		\label{fig:simplified_pgm}}
 \end{figure}
 
@@ -491,7 +495,7 @@ uncertainties.
 
 \subsubsection{Reconstructing the signal using a Wiener filter}
 From our formulation of the observed shear, 
-we can reconstruct the shear signal using a Wiener filter (Wiener 1949). 
+we can reconstruct the noise-free shear signal using a Wiener filter (Wiener 1949). 
 The Wiener filter is a linear operator $G$ that transforms the noisy
 data to the signal:
 \begin{equation}
@@ -506,8 +510,10 @@ For signal and noise that are both Gaussian, the Wiener filter gives
 	\mathsf{S}_\lensparams),
 	\label{eq:Wiener_filter_posterior}
 \end{equation}
-with the data vector being $\mathbf{d} = \epsilon_{(1, 2)}$ and we plug in the
-optimal GP parameters $\gpparams^*$ to obtain:
+with the data vector being $\mathbf{d} = \epsilon_{(1, 2)}$. We have assumed 
+a GP model for the signal as a prior, and we plug in the
+optimal GP parameters $\gpparams^*$ obtained from maximizing the log marginal
+likelihood for the following quantities derived from the Wiener filter:
 \begin{align}
 \mu_\lensparams & = \kerngp_{\rm GP}(\kerngp_{\rm GP} + \mathsf{N})^{-1}
 \epsilon_{(1, 2)}, \\
@@ -516,9 +522,7 @@ optimal GP parameters $\gpparams^*$ to obtain:
 \end{align}
 We use eq. \ref{eq:Wiener_filter_posterior}, which represents the posterior
 of our Bayesian model to process two sets of
-data for demonstration purposes. During the computation of the posterior
-realizations, we used the optimized $a_{\rm GP}^*$ values as a prior. 
-An representation of our map-making inference procedure can be seen in Fig. 
+data for demonstration purposes. A representation of our map-making inference procedure can be seen in Fig. 
 \ref{fig:simplified_pgm}. An alternative, but equivalent way of explaining this
 model formulation can be found in more detail in Schneider et al. (in prep.).
 
@@ -529,24 +533,24 @@ More details about the analysis and the related discussions are in Schneider et
 al. (in prep.).
 
 \subsubsection{{\sc GalSim} data}
-The first set of synthetic data that we analyzed were generated via the following procedure: 
-We first generate a angular power spectrum of the convergence signal using {\sc
+The first set of synthetic data that we analyzed was generated via the following procedure: 
+We create a angular power spectrum of the convergence signal using {\sc
 CHOMP}, a cosmology and halo model code\footnote{A fork of {\sc CHOMP} can be
 found at \href{https://github.com/karenyyng/chomp}{https://github.com/karenyyng/chomp}}. 
-With the convergence power spectrum, we can then generate lensed   
-galaxy ellipticities generated using {\sc GalSim}, a modular galaxy image
+With the convergence power spectrum, we generated lensed   
+galaxy ellipticities using {\sc GalSim}, a modular galaxy image
 simulation toolkit \citep{Rowe2015}.
-In the process of generating the data, we have specified 
+In the process of generating the data, we specified 
 the standard Lambda Cold-Dark Matter ($\Lambda$CDM) cosmology with $\Omega_m =
 0.3$ and $\sigma_8 = 0.8$, using a narrowly peaked source redshift distribution
 at around $z = 1$. As we can specify the intrinsic ellipticity variance
-$\sigma_e^2$ from {\sc GalSim}, we make it deliberately small $\sigma_e^2 =
+$\sigma_e^2$ from {\sc GalSim}, we made it deliberately small $\sigma_e^2 =
 0.00258$ to speed up our computationally expensive model. 
 We also only made use of 1600 source galaxies, each centered on a pixel in a 
 $40 \times 40$ grid. 
  
 \subsubsection{The Deep Lens Survey (DLS) galaxy cluster Abell 781}
-The second set of real data is obtained from the DLS, an optical imaging survey 
+The second set of real data was obtained from the DLS, an optical imaging survey 
 designed for cosmic shear measurements.  The data points
 are centered on the galaxy cluster called Abell 781 in DLS field 2.
 There are several previous lensing studies of this cluster and it has an estimated redshift
@@ -561,7 +565,10 @@ major (a) and minor axis (b) of the galaxies to satisfy $\sqrt{a^2 + b^2} > 0.8"
 to avoid selecting stars. We randomly selected 6000 galaxies that satisfy our
 cuts for this analysis. From the selected galaxies, we evaluated the shape
 root mean squared amplitude to be $\sim 0.21$, which we take to be the
-intrinsic ellipticity value.
+intrinsic ellipticity value $\sigma_e$ in our inference.
+Instead of fixing the value, the amplitude
+$\sigma_e^2$ can also be inferred with a prior that brackets a reasonable range of
+shape noise value.  
  
 \section{Results}
 
@@ -593,8 +600,9 @@ The B-mode amplitudes are $< 2e^{-3}$ in the center of the field.
 The B-modes only have larger amplitudes $< 2e^{-2}$ at field boundaries.  
 This is expected as \cite{Bunn2003} have shown in a study of the CMB that 
 the E and B modes can be mixed when the field of view is incomplete.
-Although the B-mode amplitudes from our GP inference are small, improvements can be made 
-if we understand how to fit the B-mode amplitudes to achieve complete E/B mode
+Although the B-mode amplitudes from our GP inference are small, 
+improvements can be made 
+if we understand what GP covariance kernel can represent the B-mode amplitudes to achieve complete E/B mode
 separation.
 
 \subsection{Mass mapping for Deep Lens Survey Abell 781}
@@ -605,9 +613,10 @@ separation.
 	\caption{A comparison of mass maps for Abell 781 in the Deep Lens Survey (DLS) 
 		\label{fig:Abell781_massmap}.  Left: The smoothed mass (convergence) map of Abell 781 from 
 		our GP analysis of 6000 galaxies.
-		Right: The output generated with 6000 galaxies for the training set. 
-		There are four white crosses on each figure showing the location of inferred mass
-		peak locations from previous studies. 
+		Right: The higher resolution output generated with $\sim 50000$ galaxies using an aperture
+		mass algorithms from \cite{Wittman2014}. 
+		There are five white crosses on each figure showing the locations of inferred mass
+		peak locations from \cite{Sehgal2008}. 
 	These figures are from Schneider et al. (in prep.).
 }
 \end{figure}
@@ -619,8 +628,8 @@ before.
 As the lensing signal from Abell 781 is higher than other other fields of the
 DLS, we see better agreement of the inferred $\lensparams$ in field 2 than
 other fields. 
-Due to the small number of galaxies used for probing $\lensparams$,we
-have not yet pursued the inference of cosmological parameters from the
+Due to the small number of galaxies used for probing $\lensparams$, we
+ have not inferred cosmological parameters using the
 posterior maps of the DLS data.
 % We have not inferred the existence of B-mode for the DLS data. 
 % There are distortion from stacking exposures (e.g. visible chip gaps features) 
@@ -633,7 +642,7 @@ posterior maps of the DLS data.
 \section{Discussion}
 
 \subsection{Relating the lensing observables to a cosmological model}
-There are efforts to explore different ways to relate the posterior lensing signal 
+There is an ongoing effort to explore different ways to relate the posterior lensing signal 
 to a cosmological model in Schneider et al. (in prep.). We outline some general
 ideas or concerns for such an effort. First, it is possible to use conventional techniques 
  to find the cosmological dependence from simulations.  
@@ -642,13 +651,14 @@ power spectrum will have reduced shape noise which may enable direct comparison 
 simulations. 
 Second, if we were to explore how to relate the GP outputs to cosmological constraints,  
 it may be interesting to investigate the sensitivity of the GP parameters (and
-covariance kernel models) to cosmological parameters. 
+the covariance kernel models) to cosmological parameters. 
 We note that the GP parameters may not be very sensitive to cosmological parameters
-due to its flexibility to model a large range of data. The sampling strategy of
-the galaxy locations may also affect the sensitivity. A sensitivity test can be
+due to its flexibility to model a large variety of data. The sampling strategy of
+the galaxy locations may also affect the sensitivity. Such a sensitivity test can be
 done by repeating our {\sc GalSim} study using convergence power spectrum of different cosmology 
-parameters and different sampling. It is also possible to use dimensionality
-techniques to find the features in the posterior map that can best determine the
+parameters and different sampling. Lastly, if the GP parameters are shown to be
+insensitive to cosmological parameters, it is also possible to use dimensionality
+techniques to find alternative features in the posterior map that can best determine the
 underlying cosmology. 
 
 % \begin{figure}
@@ -703,30 +713,29 @@ evaluate the log marginal likehood for one set of parameters.
 But the scalability of our method is limited by the available memory on each
 computer node.
 
-Our method is also not as computationally competitive as the 2PCF. One of
+Currently, our method is not as computationally competitive as the 2PCF. One of
 the fastest implementation of 2PCF has a computational complexity of
 $O(n_{\rm gal}\sqrt{n_{\rm gal}})$.
 The 2PCF algorithm has also been demonstrated to scale almost linearly with
 computational resources 
 using a distributed and multi-threaded implementation \citep{Chhugani2012}. 
-A science task of higher priority is to show that the GP can allow better estimation of
-cosmological parameters than the 2PCF before a proper speed optimization. 
 
-In terms of speed optimization, rather than relying on 
-parallel computation of the kernel methods, there are several 
+In terms of speed optimization for our method, rather than relying on 
+parallel computation of the kernel, there are several 
 possible approximations that can provide huge speedups. 
 Since there are many zero entries in the covariance kernel as shown in
-Fig. \ref{fig:GP_kernel_vis}, it may be acceptable to put the kernel in sparse
-computational representations. Thus, numerical libraries for sparse matrix 
+Fig.\ref{fig:GP_kernel_vis}, it may be acceptable to put the kernel in sparse
+computational representation \citep{Snelson2007}. 
+Thus, numerical libraries for sparse matrix 
 operations (such as {\sc ScaLAPACK} or {\sc PLAPACK})
-can then provide speedups from looping over less data entries.
+can provide speedups from looping over fewer data entries. 
 An existing field of study that shows how the sparsity
 approximation may affect the statistical inference is called covariance tapering. 
 
 On the other hand, there have been successes of further speedups for a GP than
 pure sparsity approximations. This requires the introduction of  
  synthetic data sets called inducing points (\citealt{Snelson2006},
-\citealt{Rasmussen2006}). Inducing points are latent variables that represents
+\citealt{Rasmussen2006}). Inducing points are latent variables that represent
 hidden connections between the training data set and the test set. 
 % It relies on fact that the majority of the information content 
 %  may be embedded in certain direction (principal components) 
@@ -738,12 +747,17 @@ of inducing points,
 the inversion of the covariance kernel can be sped up to
 $O(M^2 n_{\rm gal})$ for
 building the model and $O(M^2)$ for interpolating / predicting output functions
-at a new number of synthetic data locations M, with M $\ll n_{\rm gal}$ 
+at a new number of inducing data locations M, with M $\ll n_{\rm gal}$ 
 \citep{Snelson2006}. While the speedups from inducing point methods are
 promising, careful studies need to be done to see how it affects the
-inference of cosmological parameters.
+inference of cosmological parameters. 
+% We note that the vast amount of data
+% points in other methods for cosmic shear information may contain more
+% information about the initial condition than the cosmological parameters.
   
 \subsection{Alternative kernel choice(s) for encoding the lensing physics}
+Besides improving the computational performance, the model design of our GP can
+also be refined.
 Alternative choices for a covariance kernel for describing the lensing physics 
 include the family of Mat\'{e}rn kernels:
 \begin{equation}
@@ -776,11 +790,18 @@ numerical experiments.
 \subsection{Modeling the systematics and noise via a composite kernel}
 Besides kernels that describes homogeneous and isotropic data,
 there are other types of periodic kernels that may be useful
-in modeling systematics such as masking or footprints of the telescope due to the
-stacking of multiple exposures. Previous studies of modeling the systematics
-have made use of interpolation for such a task (\citealt{Rowe2010},
-\citealt{Jee2013a}). However, we have demonstrated a GP can accomplish
-interpolation in a much more generalizable way.
+in modeling systematics. 
+Patterns such as masking or footprints of the telescope due to the
+stacking of multiple exposures are obvious during the visualization of the
+galaxy density for DLS. 
+Previous studies of modeling the PSF
+have made use of interpolation with polynomial splines of foreground stars 
+for such a task (\citealt{Rowe2010},
+\citealt{Jee2013a}).  A GP can be used instead to infer the PSF distortions
+of foreground stars in a more generalizable way and be
+applied as a prior. This allows a probabilistic connection of the noise correction to the rest of the
+analysis. The successful examples of noise removal with a GP can go beyond 
+the aforementioned Wiener filter formulation \citep{Perez-Cruz2013}.
 
 To pick up undetermined periodicity or patterns, 
 we can use composite kernels with different covariance structures, 
@@ -795,12 +816,8 @@ For a best illustration for pattern discovery with a GP, see
 It contains a famous example of GP made use of a composite kernel to pick up both the 
 the short and long term periodic trends for carbon dioxide emission at Mauna Loa.
 Additionally, it is physically interesting to examine whether the kernels that best 
-fit systematics and incompleteness can allow better E / B mode separation. 
+fit systematics and incompleteness can represent most of the B mode components. 
 
-In addition, we note that there is no strong reason to fix the amplitude of the diagonal 
-shape noise kernel in eq. \ref{eq:composite_kernel}. The amplitude
-$\sigma_e^2$ can be inferred with a prior that brackets a reasonable range of
-shape noise value.  
 
 % - [ ] describe why the lensing observables shouldn't have a B mode 
 % Since the lensing observables are the second derivatives of a scalar field,
@@ -827,12 +844,12 @@ shape noise value.
 We have derived and implemented a fully probabilistic method for 
 representing the lensing observables. By analyzing two sets of data, 
 we have demonstrated reasonable agreement between our method and either the true
-simulated signal or with past analytical techniques.  
+simulated signal or with past analysis techniques.  
 Due to the computational performance restriction,  
 the potential of using a Gaussian Process for the inference of cosmological
 contraints from outputs of our model remains to be proven. 
 If those challenges can be solved with some of our
-suggestions, the GP model can be
+suggestions, the GP model can be 
 extended to provide a joint analysis of the systematics and noise. 
 
 
