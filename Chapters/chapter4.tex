@@ -477,6 +477,7 @@ for each galaxy using a composite GP kernel:
 	\mathsf{S} = \kerngp_{\rm GP} + \sigma_e^2 \mathds{1}  + \sigma_{\rm ms}^2
 	\mathds{1}
 	\equiv \kerngp_{\rm GP} + \mathsf{N}
+	\label{eq:composite_kernel}
 \end{equation}
 where $\sigma_e^2$ is the variance of the shape noise, and $\sigma_{\rm ms}^2$
 represents the measurement error.
@@ -556,7 +557,8 @@ The second set of real data is obtained from the DLS, an optical imaging survey
 designed for cosmic shear measurements.  The data points
 are centered on the galaxy cluster called Abell 781 in DLS field 2.
 There are several previous lensing studies of this cluster and it has an estimated redshift
-of $z \approx 0.43$ (\citealt{Wittman2014}, \citealt{}). A galaxy cluster is a
+of $z \approx 0.43$ (\citealt{Wittman2014}, \citealt{Cook2012}, \citealt{Sehgal2008}). 
+A galaxy cluster is a
 non-linear structure resulted from gravitational collapse. We illustrate that
 our GP method can handle non-linear features in the convergence map without 
 problem. We selected source galaxies that have photometric redshift $z_b >
@@ -801,6 +803,10 @@ the short and long term periodic trends for carbon dioxide emission at Mauna Loa
 Additionally, it is physically interesting to examine whether the kernels that best 
 fit systematics and incompleteness can allow better E / B mode separation. 
 
+In addition, we note that there is no strong reason to fix the amplitude of the diagonal 
+shape noise kernel in eq. \ref{eq:composite_kernel}. The amplitude
+$\sigma_e^2$ can be inferred with a prior that brackets a reasonable range of
+shape noise value.  
 
 % - [ ] describe why the lensing observables shouldn't have a B mode 
 % Since the lensing observables are the second derivatives of a scalar field,
@@ -827,11 +833,13 @@ fit systematics and incompleteness can allow better E / B mode separation.
 We have derived and implemented a fully probabilistic method for 
 representing the lensing observables. By analyzing two sets of data, 
 we have demonstrated reasonable agreement between our method and either the true
-simulated signal or with past analyses.  
+simulated signal or with past analytical techniques.  
 Due to the computational performance restriction,  
-the potential of using a Gaussian Process for the inference of cosmological 
-from either the GP parameters or the realization of the lensing observables
-$\Upsilon$ remains to be proved. 
+the potential of using a Gaussian Process for the inference of cosmological
+contraints from outputs of our model remains to be proven. 
+If those challenges can be solved with some of our
+suggestions, the GP model can be
+extended to provide a joint analysis of the systematics and noise. 
 
 
 % Requires the understanding of the underlying physical observable, how the statistical
