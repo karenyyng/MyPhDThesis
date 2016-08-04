@@ -123,7 +123,7 @@ observed shear can also mix the E and B-modes (\citealt{Eifler2010},
 perspective to some of the aforementioned problems, or in the best case
 scenario, alleviate the problems. 
  
-With the use of two graphical models, we will also demonstrate how our method
+We will also demonstrate how our method
 (step 6) are connected to the other relevant analyses (e.g. steps 2, 3, 4). 
 The rest of this chapter will have the following structure, we will \\ 
 1) illustrate the basic properties of the Gaussian Process (GP), the model that we
@@ -466,13 +466,6 @@ modeled as:
 and we can express the contribution of the shape noise $\epsilon_{\rm int}$
 and the measurement error
 for each galaxy using a composite GP kernel:
-%   of each galaxy is 
-% independent and each follow a Gaussian distribution, we can model  
-% the shape noise variance ($\sigma_e$) as part of a composite GP kernel. 
-% Furthermore, we can also model the measurement error $\epsilon_{\rm int}$ of
-% each galaxy to be drawn independently from a Gaussian with a zero mean.
-% % (The possible use of composite GP kernels can be found
-% in detail in \cite{Duvenaud2013} and \cite{Wilson2013}).
 \begin{equation}
 	\mathsf{S} = \kerngp_{\rm GP} + \sigma_e^2 \mathds{1}  + \sigma_{\rm ms}^2
 	\mathds{1}
@@ -566,9 +559,10 @@ problem. We selected source galaxies that have photometric redshift $z_b >
 a R-band magnitude cut of $22 < R < 23$ and require the ellipticity for the
 major (a) and minor axis (b) of the galaxies to satisfy $\sqrt{a^2 + b^2} > 0.8"$ 
 to avoid selecting stars. We randomly selected 6000 galaxies that satisfy our
-cuts for this analysis. 
+cuts for this analysis. From the selected galaxies, we evaluated the shape
+root mean squared amplitude to be $\sim 0.21$, which we take to be the
+intrinsic ellipticity value.
  
-
 \section{Results}
 
 \subsection{Validation using simulated data from {\sc GalSim}}
@@ -786,7 +780,7 @@ in modeling systematics such as masking or footprints of the telescope due to th
 stacking of multiple exposures. Previous studies of modeling the systematics
 have made use of interpolation for such a task (\citealt{Rowe2010},
 \citealt{Jee2013a}). However, we have demonstrated a GP can accomplish
-interpolate in a much more generalizable way.
+interpolation in a much more generalizable way.
 
 To pick up undetermined periodicity or patterns, 
 we can use composite kernels with different covariance structures, 
