@@ -20,7 +20,7 @@ This cosmic web encodes valuable information for constraining cosmological
 parameters. Many analyses of the large scale DM density field, such as those from
 the Canadian-French-Haiwaiian Telescope Lens survey (CFHTLens;
 \citealt{Kilbinger2013}), the Deep Lens Survey
-(DLS; \citealt{Jee2013a}), the Dark Energy Survey (DES; \citealt{Abbott2016}) and others, 
+(DLS; \citealt{Jee2013a}, \citealt{Wittman2002}), the Dark Energy Survey (DES; \citealt{Abbott2016}) and others, 
 have already given competitive cosmological constraints for 
  the matter density ($\Omega_m$) and the fluctuation amplitude 
 of the matter density ($\sigma_8$) on a particular characteristic scale (8
@@ -160,7 +160,7 @@ derivations follow from either the lensing physics or our statistical method.
 % the choice of the representation of cosmic shear affects both the
 % inference procedure and the estimation of cosmological parameters. 
 
-\subsection{The basics of a Gaussian Process}
+\subsection{The basics of a Gaussian Process (GP)}
 A Gaussian Process is one of the most studied and published 
 generative statistical model for non-parametric regression. 
 It allows the inference of the joint probability density 
@@ -349,6 +349,37 @@ Our implementation of the GP kernels in eqn \ref{eq:kernel_derivatives1} -
 \ref{eq:kernel_derivatives2} is also openly available at
 \href{https://github.com/karenyyng/george}{https://github.com/karenyyng/george}.
 
+\begin{table}%[htb]
+% \small
+\begin{center}
+\caption{Parameters for our Bayesian model.}
+\label{tab:sampling_parameters}
+\begin{tabular}{cl}
+\hline
+Parameter & Description \\
+\hline
+$\kerngp$ & a general GP covariance kernel \\
+$\kerngp_{\rm GP}$  & the modified GP covariance kernel that has incorporated
+lensing physics\\
+${\bf d_{n}}$ & data vector (measured $e_{1,2}$ for each galaxy $n$)  \\
+$\sigma_{{\rm ms}; n}$ & ellipticity measurement error for galaxy $n$ 
+\\
+$\xv$, $\yv$ & vector(s) of 2D spatial locations of galaxies \\
+$\epsilon_n^{\rm int}$ & intrinsic galaxy ellipticity for galaxy $n$ \\
+$\alpha\equiv\sigma_{e}^2$ & parameters of the distribution of galaxy parameters \\
+W & window function for the survey footprint \\
+$\lensparams$ & lensing shear and convergence ($\gamma_{1,2}, \kappa$) \\
+$\gpparams$ & parameters of the GP kernel\\
+% $\rho_{\rm GP}$ & correlation of the GP kernel (element of $\gpparams$) \\
+$\lambda$ & precision of the GP kernel (element of $\gpparams$) \\
+$l^2$ & squared GP correlation length (element of $\gpparams$) \\
+% $\lambda_{\epsilon}$ & precision for the nugget term (element of $\gpparams$) \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+
 \subsection{Making predictions (interpolation) with a GP}
 
 \begin{figure}
@@ -367,8 +398,8 @@ be:
 \begin{equation}
 	[\lensparams',\lensparams]^T \sim \mathcal{N}(0, \kerngp_{\rm GP})
 \end{equation}
-where $(\lensparams', \xv')$ represents the unobserved set of data,
-and the $(\lensparams, \xv)$ represents the existing (training) data.
+where we use the symbol $(\lensparams', \xv')$ to denote the unobserved set of data,
+and the $(\lensparams, \xv)$ for the existing (training) data.
 We can then represent the kernel matrix in terms of several submatrices 
 (See Fig. \ref{fig:GP_kernel_vis} for an example):
 \begin{equation}
@@ -416,21 +447,10 @@ data differently.
 		the lensing observables $\Upsilon$ from survey or simulation data. The dots
 		denote fixed parameters in the statistical procedure. The circle denotes
 		latent variable, while the shaded circle denotes 
-		the observed variable. The plate notation shows the galaxy entries that are
-		implicitly summed over during the computation of matrix-vector
+		the observed variable. The plate notation shows the observables that are
+		implicitly summed over different galaxies during the computation of matrix-vector
 		products in the log marginal likelihood.
 		\label{fig:simplified_pgm}}
-\end{figure}
-
-\begin{figure}
-	\centering
-	\includegraphics[width=0.4\linewidth]{shear_general_pgm.png}
-	\caption{A more general probabilistic graphical model (pgm) for inferring
-		the lensing observables $\Upsilon$. The circle denotes
-		latent variable, while the shaded circle denotes 
-		the observed variable. The plate notation shows the galaxy entries to sum
-		over.
-		\label{fig:general_pgm}}
 \end{figure}
 
 
@@ -454,9 +474,9 @@ for each galaxy using a composite GP kernel:
 % % (The possible use of composite GP kernels can be found
 % in detail in \cite{Duvenaud2013} and \cite{Wilson2013}).
 \begin{equation}
-	\mathsf{S} = \kerngp_{GP} + \sigma_e^2 \mathds{1}  + \sigma_{\rm ms}^2
+	\mathsf{S} = \kerngp_{\rm GP} + \sigma_e^2 \mathds{1}  + \sigma_{\rm ms}^2
 	\mathds{1}
-	\equiv \kerngp_{GP} + \mathsf{N}
+	\equiv \kerngp_{\rm GP} + \mathsf{N}
 \end{equation}
 where $\sigma_e^2$ is the variance of the shape noise, and $\sigma_{\rm ms}^2$
 represents the measurement error.
@@ -468,7 +488,7 @@ $\gpparams^*$:
 - \frac{1}{2}\log|\mathsf{S}| - \frac{n}{2}\log(2\pi),
 \label{eq:log_marginal_likelihood}
 \end{equation}
-which consists of a first term that represents how good the fit is,
+which consists of a first term that describes how good the fit is,
 and a second term that penalizes complex model assumptions \citep{Rasmussen2006}. 
 The complexity penalization term can prevent the GP from overfitting the data.
 This allows us to infer the best fit model for the observed shear, which still
@@ -490,7 +510,7 @@ For signal and noise that are both Gaussian, the Wiener filter gives
 \begin{equation}
 	p(\lensparams| \mathbf{d}, \gpparams, \sigma_{\rm ms}, \sigma_e) = \mathcal{N}(\mu_\lensparams,
 	\mathsf{S}_\lensparams),
-	\label{eq:Wiener_filter_distribution}
+	\label{eq:Wiener_filter_posterior}
 \end{equation}
 with the data vector being $\mathbf{d} = \epsilon_{(1, 2)}$ and we plug in the
 optimal GP parameters $\gpparams^*$ to obtain:
@@ -500,78 +520,123 @@ optimal GP parameters $\gpparams^*$ to obtain:
 \mathsf{S}_\lensparams & = \kerngp_{\rm GP}(\kerngp_{\rm GP} +
 \mathsf{N})^{-1}\mathsf{N}.
 \end{align}
-We use eq. \ref{eq:Wiener_filter_distribution}, which represents the posterior
+We use eq. \ref{eq:Wiener_filter_posterior}, which represents the posterior
 of our Bayesian model to process two sets of
-data for demonstration purposes. An alternative, but equivalent way of explaining this
+data for demonstration purposes. During the computation of the posterior
+realizations, we used the optimized $a_{\rm GP}^*$ values as a prior. 
+An representation of our map-making inference procedure can be seen in Fig. 
+\ref{fig:simplified_pgm}. An alternative, but equivalent way of explaining this
 model formulation can be found in more detail in Schneider et al. (in prep.).
 
 \subsection{Validation data}
-\subsubsection{{\sc GalSim} data}
+We check our GP and probabilistic model in eq. \ref{eq:Wiener_filter_posterior}
+against one set of synthetic data and one set of real data.
+Please refer to Schneider et al. (in prep.) for more details.
 
-\subsubsection{the Deep Lens Survey (DLS) galaxy cluster Abell 781}
-We illustrate that the GP can handle non-linear structures such as a galaxy cluster 
-by making a mass map of Abell 781 in the DLS. 
+\subsubsection{{\sc GalSim} data}
+The first set of synthetic data that we analyzed were generated via the following procedure: 
+We first generate a angular power spectrum of the convergence signal using {\sc
+CHOMP}, a cosmology and halo model code\footnote{A fork of {\sc CHOMP} can be
+found at \href{https://github.com/karenyyng/chomp}{https://github.com/karenyyng/chomp}}. 
+With the convergence power spectrum, we can then generate lensed   
+galaxy ellipticities generated using {\sc GalSim}, a modular galaxy image
+simulation toolkit \citep{Rowe2015}.
+In the process of generating the data, we have specified 
+the standard Lambda Cold-Dark Matter ($\Lambda$CDM) cosmology with $\Omega_m =
+0.3$ and $\sigma_8 = 0.8$, using a narrowly peaked source redshift distribution
+at around $z = 1$. As we can specify the intrinsic ellipticity variance
+$\sigma_e^2$ from {\sc GalSim}, we make it deliberately small $\sigma_e^2 =
+0.00258$ to speed up our computationally expensive model. 
+We also only made use of 1600 source galaxies, each centered on a pixel in a 
+$40 \times 40$ grid. 
+ 
+\subsubsection{The Deep Lens Survey (DLS) galaxy cluster Abell 781}
+The second set of real data is obtained from the DLS, an optical imaging survey 
+designed for cosmic shear measurements.  The data points
+are centered on the galaxy cluster, Abell 781, which has an estimated redshift
+of $z \approx 0.43$ \citep{Wittman2014}. A galaxy cluster is a
+non-linear structure resulted from gravitational collapse. We illustrate that
+our GP method can handle non-linear features in the convergence map without 
+problem. We selected source galaxies that have photometric redshift $z_b >
+0.45$ and with small measurement uncertainties $\sigma_{\rm ms} < 0.1$. We also apply  
+a R-band magnitude cut of $22 < R < 23$ and require the ellipticity for the
+major (a) and minor axis (b) of the galaxies to satisfy $\sqrt{a^2 + b^2} > 0.8"$ 
+to avoid selecting stars. We randomly selected 6000 galaxies that satisfy our
+cuts for this analysis. 
+ 
 
 \section{Results}
- \begin{figure}
+
+\subsection{Validation using simulated data from {\sc GalSim}}
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.7\linewidth]{mass_map_comparison_galsim.png}
-	\caption{A comparison of mass maps for simulated inputs from {\sc GalSim} and
-	the mass map generated with the use of a GP prior. 
-	This figure is a part of Schneider et al. (in prep.).  \label{fig:Galsim_massmaps}
+	\caption{A comparison of the maps for simulated inputs from {\sc GalSim} and
+	the maps generated with the use of a GP prior. 
+	This figure is a part of Schneider et al. (in prep.). \label{fig:Galsim_massmap}
 }
 \end{figure}
+We show the mean posterior mass map obtained in Fig. \ref{fig:Galsim_massmap}. 
+It shows features that are general agreement between the true signal. 
+It is noteworthy that the resolutions of the posterior maps are coarser (with $24 \times 24$
+spacing) than the input galaxy
+spacing ($40 \times 40$). This reflects how the log marginal likelihood disfavors a sampling
+scheme that is higher than the Nyquist frequency. The optimal smoothing length
+$l^2 = 0.0123$ from the fitting routine of the log marginal likelihood are also
+larger than this Nyquist scale. As we speed up our code to handle a larger
+volume and finer
+resolution of input data, this limitation from the sampling scheme should
+become negligible. We will discuss ways to speed up the computation in section
+\ref{subsec:computational_performance}. 
 
-\begin{figure}
+Our GP posterior map for the {\sc GalSim} data also retains very little B-mode
+features. The B-mode amplitudes are $< 2e^{-3}$ in the center of the field,  
+and only have larger amplitudes $< 2e^{-2}$ at the field boundaries.  
+
+\subsection{Mass mapping for Deep Lens Survey Abell 781}
+\begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.4\linewidth]{kappa_Abell781.png}
-	\includegraphics[width=0.4\linewidth]{kappa_Abell781_WD.png}
+	\includegraphics[width=0.45\linewidth]{kappa_Abell781.png}
+	\includegraphics[width=0.45\linewidth]{kappa_Abell781_WD.png}
 	\caption{A comparison of mass maps for Abell 781 in the Deep Lens Survey (DLS) 
-		\label{fig:Abell781_massmap}.  Left: The smoothed mass map of Abell 781 from 
+		\label{fig:Abell781_massmap}.  Left: The smoothed mass (convergence) map of Abell 781 from 
+		our GP analysis of 6000 galaxies.
 		Right: The output generated with 6000 galaxies for the training set. 
+		There are four white crosses on each figure showing the location of inferred mass
+		peak locations from previous studies. 
 	These figures are from Schneider et al. (in prep.).
 }
 \end{figure}
+We also see a general agreement of the features in the mass map of Abell 781 in
+Fig. \ref{fig:Abell781_massmap} with previous studies of the same cluster \cite{Wittman2014}. 
+We are restricted by the Nyquist frequency to give a coarser map as discussed
+before. Due to the small number of galaxies used for probing $\lensparams$ and
+the lack of characterization of the systematics, we
+have not yet pursued the inference of cosmological parameters from the DLS data.
+% We have not inferred the existence of B-mode for the DLS data. 
+% There are distortion from stacking exposures (e.g. visible chip gaps features) 
+% and other observational limitations (e.g. masking of bright
+% stars) that we have not corrected for. 
 
-
-
-\begin{table}%[htb]
-% \small
-\begin{center}
-\caption{Parameters for the statistical model.}
-\label{tab:sampling_parameters}
-\begin{tabular}{cl}
-\hline
-Parameter & Description \\
-\hline
-${\bf d_{n}}$ & data vector (measured $e_{1,2}$ for each galaxy $n$)  \\
-$\sigma_{{\rm ms}; n}$ & ellipticity measurement error for galaxy $n$ 
-\\
-$\xv$, $\yv$ & vector(s) of 2D spatial locations of galaxies \\
-$\epsilon_n^{\rm int}$ & intrinsic galaxy ellipticity for galaxy $n$ \\
-$\alpha\equiv\sigma_{e}^2$ & parameters of the distribution of galaxy parameters \\
-W & window function for the survey footprint \\
-$\lensparams$ & lensing shear and convergence ($\gamma_{1,2}, \kappa$) \\
-$\gpparams$ & parameters of the GP kernel\\
-% $\rho_{\rm GP}$ & correlation of the GP kernel (element of $\gpparams$) \\
-$\lambda$ & precision of the GP kernel (element of $\gpparams$) \\
-$l^2$ & squared GP correlation length (element of $\gpparams$) \\
-% $\lambda_{\epsilon}$ & precision for the nugget term (element of $\gpparams$) \\
-\hline
-\end{tabular}
-\end{center}
-\end{table}
-
-
-
-\subsection{Verification using {\sc GalSim} simulated data}
-\subsection{Mass mapping for Deep Lens Survey Abell 781}
 
 % Is a non-trivial optimization problem 
 
 \section{Discussion}
 
+\subsection{Relating the lensing observables to a cosmological model}
+% \begin{figure}
+% 	\centering
+% 	\includegraphics[width=0.4\linewidth]{shear_general_pgm.png}
+% 	\caption{A more general probabilistic graphical model (pgm) for inferring
+% 		the lensing observables $\Upsilon$. The circle denotes
+% 		latent variable, while the shaded circle denotes 
+% 		the observed variable. The plate notation shows the galaxy entries to sum
+% 		over.
+% 		\label{fig:general_pgm}}
+% \end{figure}
+
 \subsection{The computational performance of the GP}
+\label{subsec:computational_performance}
 A big consideration for any cosmic shear inference method is the computational performance.
 As upcoming sky surveys such as the Large Synoptic Survey Telescope (LSST) will
 provide data from billions of source galaxies, any
@@ -618,15 +683,24 @@ cosmological parameters than the 2PCF before a proper speed optimization.
 
 In terms of speed optimization, rather than relying on manual intensive methods 
 for parallelizing the computation of the kernel methods, there are several 
-approximations that have been proposed. 
+possible approximations that can provide huge speedups. 
 Since there are many zero entries in the covariance kernel as shown in
 Fig. \ref{fig:GP_kernel_vis}, it may be acceptable to put the kernel in sparse
-computational representations. The relevant field of literature that studies how the sparsity
+computational representations. Thus, numerical libraries for sparse matrix 
+operations can then provide speedups from looping over less data entries.
+The relevant field of literature that studies how the sparsity
 approximation may affect the statistical inference is called covariance tapering. 
+
 On the other hand, there have been successes of further speedups for a GP when 
  synthetic data sets called inducing points are used (\citealt{Snelson2006},
 \citealt{Rasmussen2006}). Inducing points are latent variables that represents
-hidden connections between the training data set and the test set. With the help 
+hidden connections between the training data set and the test set. 
+It relies on fact that the majority of the information content 
+ may be embedded in certain direction (principal components) 
+in the high dimension of the data.
+The large number of data points specifies more about the initial conditions than the
+underlying cosmology.
+With the help 
 of inducing points,
 the inversion of the covariance kernel can be sped up to
 $O(M^2 n_{\rm gal})$ for
@@ -656,32 +730,15 @@ derivative, we can use Mat\'{e}rn kernels with $\nu > 9/2$.
 When we take the limit of the degree of freedom of a Mat\'{e}rn kernel to infinity, 
 we recover the exponential squared kernel. The inclusion of a Mat\'{e}rn kernel
 in addition to an exponential squared kernel, therefore, can pick up features
-that are less smooth.
+that are less smooth. The use of an additional Mat\'{e}rn kernel may mitigate the
+restrictions from Nyquist sampling but this hypothesis should be verified with
+numerical experiments. 
 
-As the manual differentiation of the analytical form of the kernels can be tedious,
-it may be desirable to generalize the derivation of derivatives. Technologies such
-as automatic differentiation can spreads factors of the derivatives over a tree
-structure to allow almost exact computation. 
+%  The manual differentiation of the analytical form of the kernels can be tedious,
+% it may be desirable to generalize the derivation of derivatives. Technologies such
+% as automatic differentiation can spreads factors of the derivatives over a tree
+% structure to allow almost exact computation. 
  
-% An implementation via numerical differentiation may
-% or may not be more computationally intensive to
-% compute, depending on the required numerical precision (aka order of accuracy).
-
-
-
-
-% \subsection{Relating the lensing observables to a cosmological model}
-% We can draw realizations of the lensing observables from the GP given a set of
-% optimized GP parameters:
-% \begin{equation}
-% 	\lensparams(\xv) \sim GP(0, \kerngp_{\rm GP}(\xv, \yv)) 
-% \end{equation}
-% 
-% 
-% The constraints on cosmological parameters need to be verified in a mock
-% weak-lensing analysis of cosmological simulation. 
-% It can enable the separation of E and B mode in the convergence field as shown
-% in Schneider et al. (in prep.) 
 
 \subsection{Modeling the systematics and noise via a composite kernel}
 Besides kernels that describes homogeneous and isotropic data,
@@ -695,8 +752,10 @@ can be formed by the addition and/or multiplication of several kernels,
 	\kerngp = \sum_i \kerngp_i(\gpparams^i).
 \end{equation}
 By fitting for the best values for $\gpparams^i$, it is possible  
-to pick up (sometimes non-obvious) patterns in the data \citep{Duvenaud2013},
-and in this case, the two shear components. 
+to pick up (sometimes non-obvious) patterns in the data. 
+For a best illustration for pattern discovery with a GP, see \cite{Duvenaud2013} which
+shows an example of how kernels of different periodicity can represent 
+the short and long terms trends for carbon dioxide emission at Mauna Loa.
 
 % - [ ] describe why the lensing observables shouldn't have a B mode 
 % Since the lensing observables are the second derivatives of a scalar field,
@@ -720,13 +779,14 @@ and in this case, the two shear components.
 % PSF ellipticity corrections 
 
 \section{Conclusion}
-Here, we have derived and implemented a fully probabilistic method for 
-representing the lensing observables.   
-
-The potential of using a Gaussian Process for the inference of cosmological 
-Gaussian Process (GP)parameters remains to be proved. 
-Some of the remaining challenges include the generalization of the method for spherical
-coordinates. 
+We have derived and implemented a fully probabilistic method for 
+representing the lensing observables. By analyzing two sets of data, 
+we have demonstrated reasonable agreement between our method and either the true
+simulated signal or with past analyses.  
+Due to the computational performance restriction,  
+the potential of using a Gaussian Process for the inference of cosmological 
+from either the GP parameters or the realization of the lensing observables
+$\Upsilon$ remains to be proved. 
 
 
 % Requires the understanding of the underlying physical observable, how the statistical
@@ -835,7 +895,8 @@ Just work on terms that are parts of the 4th kernel derivative
 \Sigma_{,y_h y_k} &= (\beta^2 X_h X_k - \beta \delta_{hk} \mathsf{D}_{hk})\Sigma 
 \end{align}
 
-Term 1 of the 4th derivative of eqn \ref{eq:4th_derivative_intermediate_expression}
+Term 1 of the 4th derivative of eqn
+\ref{eq:4th_derivative_intermediate_expression} is:
 
 \begin{align*}
 \Sigma_{,x_j y_h y_k}
