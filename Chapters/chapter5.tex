@@ -117,7 +117,7 @@ enough number of galaxy clusters, provide  the
 (joint or conditional) probability density function\footnote{This is {\it not}
 the same as a histogram. Histograms are lossy representations of the information 
 available. See Chapter 3 for a discussion of why a kernel density estimate or
-other regression methods should be used instead.} of the physical quantities
+other regression methods should be used instead.} (PDF) of the physical quantities
 of galaxy clusters. 
 
 \subsection{Cosmic shear inference with a Gaussian Process}
@@ -125,11 +125,11 @@ We proposed a new probabilistic method
 for inferring a cosmic shear signal in the last chapter (chapter 4) of this dissertation. 
 Cosmic shear is the weak 
 gravitational lensing signal of background galaxies due to the large-scale DM density field. 
-There can be many sources of noise and uncertainty during the observation and
+There can be many sources of noise and uncertainty that can complicate the observation and
 the analysis of the cosmic shear. 
-The proposed probabilistic method, a GP, is a powerful regression method that
-allows us to simultaneously infer the signal (both the convergence and the shear)
-and the noise contribution. 
+Our proposed method, a GP, is a powerful regression method that
+allows us to simultaneously infer the joint PDF of the signal (both the convergence and the shear)
+and the noise. 
 With a set of simulated and a set of real data, we demonstrated that our GP
 method can recover the signal.  
 Remaining challenges for extending this method include: 1) reducing the
