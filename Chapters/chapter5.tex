@@ -8,7 +8,161 @@
 \doublespacing
 
 \setcounter{chapter}{4}
-\chapter{Conclusion}{}{}
+\chapter{Conclusions}{}{}
 \label{chapter5}
 
+\epigraph{``Every great and deep difficulty bears in itself its own solution. It forces
+us to change our thinking in order to find it."}{Niels Bohr}
 
+\section{Overview}
+The main theme of my dissertation is on the analysis and the modeling of
+large-scale astrophysical systems. 
+Due to the low signal-to-noise of the systems, my work relies on probabilistic
+methods for representing both the physical signal and the associated uncertainties. 
+% \begin{itemize}
+% \item chapter 2: incorporating observation and simulation findings 
+% as prior information for tightening parameter estimates 
+% \item chapter 3: evaluating the contribution of statistical noise to observations 
+% \item chapter 4: signal reconstruction using a Gaussian Process (GP)  
+% \end{itemize}
+
+\section{Implications of my projects}
+\subsection{Understanding the merger state of galaxy clusters}
+We performed a study of the merging galaxy cluster, El Gordo. 
+By drawing the distributions of the observed
+physical variables as part of a Monte Carlo simulation, 
+we evolve the motion of the merger of El Gordo analytically
+and gave estimates of the latent variables. 
+We (re)discovered how the qualitative spatial location 
+of cluster components, such as the cool core 
+and the radio relic, can be used to construct   
+broad quantitative prior distributions for 
+constraining the merger phase.  
+We showed that it is not only possible, 
+but more likely that the merging galaxy cluster, El Gordo, is in a return phase
+than an outgoing phase. 
+ 
+\subsection{Inferring the spatial offsets of the components of galaxy clusters}
+A second related but more general analysis of galaxy clusters was done using the
+cosmological simulation, the Illustris simulation. 
+During the analysis, we found the best 
+representation of the galaxy populations of galaxy clusters. 
+The Brightest Cluster
+Galaxy (BCG) and the peak from a cross-validated kernel density estimate (KDE)
+can give high precision estimates of the DM peak to within $\sim$ 30 kpc.
+Other methods such as the shrinking aperture peak estimate and the peak estimate 
+from the number density have large one-sigma uncertainties $\sim 80$ kpc.   
+Knowing the best summary statistic can help pin down the uncertainties from  
+the offset between the galaxy population and the dark matter (DM).
+
+The second main finding of the analysis was from the hypothesis test that we
+conducted.
+It is possible to compute the spatial 
+offset between the DM and the galaxies, i.e.
+\begin{equation}
+	\offset =  {\bf s}_{\rm gal} - {\bf s}_{\rm DM}
+\end{equation}
+using ${\bf s}_{\rm gal}$ a precise statistic for representing the galaxy population,
+and ${\bf s}_{\rm DM}$ the peak of the DM spatial distribution.
+We can decompose the observed spatial offsets according to the different
+contributions: 
+\begin{equation}
+	\offset_{\rm obs} = \offset_{\SIDM} + \offset_{\rm dyn} + n + \cdots
+\end{equation}
+where $\offset_{\SIDM}$ is the offset due to the self-interaction of dark matter, 
+$\offset_{\rm dyn}$ is the offset due to dynamical friction, $n$ is the
+contribution from noise and measurement uncertainties, while ``$\cdots$" denotes
+any other possible contributions that we have not accounted for. 
+We have shown that $\offset_{\rm obs} \approx  n > \offset_{\SIDM}$, i.e. 
+statistical noise can match observations of merging galaxy clusters, better than 
+the self-interaction of DM can match observations. 
+The observed offset levels are possible even under  
+a Lambda Cold Dark Matter ($\Lambda$CDM) cosmology. 
+
+% With the distributions of offsets obtained from my analysis, we were able to perform a
+% preliminary hypothesis test to see if uncertainties can explain 
+% the level of offset. We showed that 
+% the observed level of offsets between the member galaxy population and the
+% dark matter (DM) is mostly consistent with Cold Dark Matter cosmology. 
+
+% To make a more scientific statement from the comparison of the model for
+% self-interaction dark matter (SIDM) with observations, 
+% we need a proper Bayesian model comparison.  
+% This requires curating the probability density functions of merger
+% configurations with SIDM observables from (cosmological) simulations, 
+% where the required merger configurations (\phi), according to Kim et al. include:
+% the merging velocities, the concentration of the DM components of the clusters,
+% the impact parameter, and the time-since-pericenter.
+% We can write down the marginal likelihood term as:
+% \begin{equation}
+% 	Pr(\Delta s | \sigmaSIDM) = \int Pr(\Delta s | \phi)  Pr(\phi | \sigmaSIDM) d \phi
+% \end{equation}
+% 
+% The proper Bayes factor from model comparison is then: 
+% \begin{align}
+% 	\frac{Pr(\sigmaSIDM = \sigma | {\bf d})}{Pr(\sigmaSIDM = 0 | {\bf d})} &= 
+% 	\frac{Pr()}{}
+% \end{align}
+% 
+% where the evaluation of the evidence term needs to be evaluated separately for
+% each $\sigmaSIDM$ model.
+
+For future studies of galaxy clusters, 
+it is desirable to obtain more quantitative version of the 
+prior information so a more robust statistical framework can be built for model
+comparison. 
+I advocate that simulation studies of merging galaxy cluster  
+to 1) make the simulation data available for reanalysis, or 2) if there is
+enough number of galaxy clusters, provide  the
+(joint or conditional) probability density function\footnote{This is {\it not}
+the same as a histogram. Histograms are lossy representations of the information 
+available. See Chapter 3 for a discussion of why a kernel density estimate or
+other regression methods should be used instead.} of the physical quantities
+of galaxy clusters. 
+
+\subsection{Cosmic shear inference with a Gaussian Process}
+We proposed a new probabilistic method
+for inferring a cosmic shear signal in the last chapter (chapter 4) of this dissertation. 
+Cosmic shear is the weak 
+gravitational lensing signal of background galaxies due to the large-scale DM density field. 
+There can be many sources of noise and uncertainty during the observation and
+the analysis of the cosmic shear. 
+The proposed probabilistic method, a GP, is a powerful regression method that
+allows us to simultaneously infer the signal (both the convergence and the shear)
+and the noise contribution. 
+With a set of simulated and a set of real data, we demonstrated that our GP
+method can recover the signal.  
+Remaining challenges for extending this method include: 1) reducing the
+inherit computational complexity of the method to achieve a speed up. This can
+be done via the use of latent variables (inducing points) to achieve a sparse representation of
+the physical generating mechanism of the shear field.  
+2) constructing the extension to the probabilistic 
+framework for fitting cosmological parameters such as $\Omega_m$ and
+$\sigma_8$.
+
+
+% The representation of our knowledge about different physical systems
+% affects our ability for verifying our physical theories. 
+% Throughout this work, I have shown several instances when the 
+% ancillary information from other studies on similar subjects 
+% can give us a better understanding of our systems, e.g. the spatial location
+% and velocity
+% estimates of the radio relic can be used to constrain the merger phase.     
+% However, point estimates or qualitative descriptions 
+% often give insufficient information for a proper statistical analysis.   
+% A next step that I advocate, is to minimize the use of point estimates for
+% presenting results, and to present the probability density function (pdf) 
+% of the estimated parameters.  how to curate prior information for proper 
+% statistical learning 
+% to incorporate in a inference framework.
+
+% Bayesian methods can allow a more consistent framework 
+% 
+% The theoretical computational complexity of an algorithm can be a 
+% formidable obstacle. 
+% 
+% employ dimensionality reduction approach such as inducing points 
+% it is possible to gain an understanding of how effects of the cosmological
+% parameters are manifested the matter distribution 
+% most of the spatial locations of density fluctuations may describe the initial
+% condition of the spatial distribution than the cosmological parameters  

@@ -454,7 +454,8 @@ data differently.
 		products in the log marginal likelihood (eq. \ref{eq:log_marginal_likelihood}). The way that the observed
 		ellipticity is connected to other branches hints that a joint analysis of
 		the connected quantities will provide better predictive performance than if
-		they were inferred separately. 
+		they were inferred separately. This figure is also present in Schneider et
+		al. (in prep.).
 		\label{fig:simplified_pgm}}
 \end{figure}
 
@@ -650,15 +651,16 @@ ideas or concerns for such an effort. First, it is possible to use conventional 
  to find the cosmological dependence from simulations.  
 We can compute the power spectrum from our mean posterior map. The resulting
 power spectrum will have reduced shape noise which may enable direct comparison to
-simulations. 
-Second, if we were to explore how to relate the GP outputs to cosmological constraints,  
+simulations as outlined in previous studies (\citealt{Jee2013a},
+\citealt{Semboloni2007}). 
+Second, if we were to explore new ways to relate the GP outputs to cosmological constraints,  
 it may be interesting to investigate the sensitivity of the GP parameters (and
 the covariance kernel models) to cosmological parameters. 
 We note that the GP parameters may not be very sensitive to cosmological parameters
 due to its flexibility to model a large variety of data. The sampling strategy of
 the galaxy locations may also affect the sensitivity. Such a sensitivity test can be
 done by repeating our {\sc GalSim} study using convergence power spectrum of different cosmology 
-parameters and different sampling. Lastly, if the GP parameters are shown to be
+and different sampling. Lastly, if the GP parameters are shown to be
 insensitive to cosmological parameters, it is also possible to use dimensionality
 techniques to find alternative features in the posterior map that can best determine the
 underlying cosmology. 
@@ -775,7 +777,7 @@ The higher degree of freedom it has, the smoother the spatial variations of the
 drawn $\psi$ would be for the same characteristic length scale $l$.
 Note that a Mat\'{e}rn kernel is also only differentiable to the $(\nu-1/2)$ order.
 If we wish to relate our kernels to the lensing potential through the 4th
-derivative, we can use Mat\'{e}rn kernels with $\nu > 9/2$. 
+derivative, we can only use Mat\'{e}rn kernels with $\nu > 9/2$. 
 When we take the limit of the degree of freedom of a Mat\'{e}rn kernel to infinity, 
 we recover the exponential squared kernel. The inclusion of a Mat\'{e}rn kernel
 in addition to an exponential squared kernel, therefore, can pick up features
@@ -802,7 +804,7 @@ for such a task (\citealt{Rowe2010},
 \citealt{Jee2013a}).  A GP can be used instead to infer the PSF distortions
 of foreground stars in a more generalizable way and be
 applied as a prior. This allows a probabilistic connection of the noise correction to the rest of the
-analysis. The successful examples of noise removal with a GP can go beyond 
+analysis. The successful examples of noise removal with a GP can also go beyond 
 the aforementioned Wiener filter formulation \citep{Perez-Cruz2013}.
 
 To pick up undetermined periodicity or patterns, 
