@@ -298,7 +298,7 @@
       $\:\underline{~~~~ \mbox{\rule{0in}{0.40in} \hspace{3.5in}}}\:$ \\
      % \vspace{\@approvalspace}
          \vspace{.05in}
-      Professor J. Anthony Tyson\\
+      Professor Maru{\v s}a Brada{\v c}\\
       %\vspace{.25in}
       \ifnum \@numberofmembers > 3
         $\:\overline{~~~~ \mbox{\rule{0in}{0.16in} \hspace{3.5in}}}\:$ \\
@@ -315,7 +315,7 @@
      
       $\:\underline{~~~~ \mbox{\rule{0in}{0.40in} \hspace{3.5in}}}\:$ \\
           \vspace{.05in}
-      Professor Maru{\v s}a Brada{\v c} \\
+      Professor Annika Peter\\
      % \vspace{\@approvalspace}
       \vspace{.15in}
       Committee in Charge

@@ -198,13 +198,13 @@ functions:
 	\kerngp(\xv, \xv')),
 		\label{eq:GP}
 \end{equation}
-where $\mathcal{N}$ is a multivariate normal function.
+where $\mathcal{N}$ is a multivariate Gaussian function.
 % Specifically, the mean vector $m(x)$ is often set to be zero in the
 % GP. The data are usually mean-subtracted before fitting a GP.  
 \begin{figure}
 	\centering
 	\includegraphics[width=0.4\linewidth]{Gaussian_Process_Regression.png}
-	\caption{An illustration of a one-dimensional GP. The
+	\caption{An illustration of a GP with a one-dimensional input vector ${\bf x}$. The
 		function used to generate the data points 
 		is shown with the dashed line. The available data points are shown in
 		black. The average of many interpolated predictions is shown in blue
@@ -223,7 +223,8 @@ corresponding credible levels.
 Note that the credible levels are wider for regions with fewer data points to reflect
 the higher uncertainty. A GP is said to have indefinite dimension due to its ability to
 predict values in unobserved regions, even though the 
-observed part of the kernel is of finite size (e.g. $\ngal \times \ngal$). 
+observed part of the kernel is of finite size (e.g. $\ngal \times \ngal$ where
+$\ngal$ is the number of source galaxies in our example). 
 
 By drawing realizations of the relevant GP, we can compute various 
 physical quantities of interest. If the goal is to give the best prediction of a
@@ -255,7 +256,7 @@ where
 \begin{equation}
 	r^2 \equiv (\xv - \yv)^T \Matrix{D} (\xv - \yv), 
 \end{equation}
-This kernel only depends on the
+This kernel matrix $\kerngp(r^2)$ only depends on the
 squared magnitude of distances between pairs of galaxy locations. 
 This chosen form is, therefore, invariant
 under translational and rotational transformations.
@@ -289,8 +290,8 @@ $\lensparams \equiv [\kappa, \gamma_1, \gamma_2]$, via the following derivatives
 x_2} + \frac{\partial^2 \psi}{\partial x_2 \partial x_1}\right)
 = \frac{1}{2} (\psi_{,12} + \psi_{,21}), 
 \end{align}
-where we have defined the shorthand for spatial derivatives with
-subscripts for $h,i,j,k = 1, 2$ after a comma.
+where we have defined the shorthand for the derivatives of the two spatial dimensions with
+subscripts $h,i,j,k = 1, 2$ after a comma.
 Since the covariance operator is linear, we can interchange the order of
 operation between the covariance operator and the differentiation operators. 
 The resulting 4th derivatives of the covariance
@@ -387,7 +388,7 @@ $l^2$ & squared GP correlation length (element of $\gpparams$) \\
 \begin{figure}
 	\centering
 	\includegraphics[width=0.8\linewidth]{gp_cov_v2.png}
-	\caption{An illustration of the GP covariance kernel for the data set.
+	\caption{An illustration of the GP covariance kernel matrix for the {\sc GalSim} data set.
 		The same plot is also present in Schneider et al. (in prep.). We can see the various covariance
 		and cross-covariance
 		structures for the training data $\Upsilon = [\kappa, \gamma_1, \gamma_2]$
@@ -410,8 +411,8 @@ We can then represent the kernel matrix in terms of several submatrices
 	B^T & C 
 \end{array} \right].	
 \end{equation}
-We can prove that the different observations from a multivariate Gaussian are 
-conditionally independent with the use of the Schur complement to give the following:
+It is well known that the different observations from a multivariate Gaussian are 
+conditionally independent. This fact can be proven using the Schur complement to give the following:
 \begin{equation}
 	\mathbb{E}(\lensparams'|\lensparams) = \mathbb{E}(\lensparams) + BC^{-1}(\lensparams - \mathbb{E}(\lensparams))
 \end{equation}
@@ -425,7 +426,7 @@ which enables us to draw new predictions $\lensparams'$ from the conditional dis
 		\mathbb{E}(\lensparams'| \lensparams), \Cov(\lensparams'|\lensparams)
 	)
 \end{equation}
-In the presence of shape noise and measurement uncertainties, the actual 
+In the presence of shape noise (intrinsic ellipticity) and measurement uncertainties, the actual 
 expression of the conditional covariance kernel used for interpolation in the actual analysis 
 is slightly more complicated as we will show. 
 But the general idea of the above derivation follows 
@@ -538,7 +539,9 @@ al. (in prep.).
 The first set of synthetic data that we analyzed was generated via the following procedure: 
 We created an angular power spectrum of the convergence signal using {\sc
 CHOMP}, a cosmology and halo model code\footnote{A fork of {\sc CHOMP} can be
-found at \href{https://github.com/karenyyng/chomp}{https://github.com/karenyyng/chomp}}. 
+found at \href{https://github.com/karenyyng/chomp}{https://github.com/karenyyng/chomp}
+The original authors of CHOMP are Christopher Morrison, Ryan Scranton and Michael Schneider.
+}. 
 With the convergence power spectrum, we generated lensed   
 galaxy ellipticities using {\sc GalSim}, a modular galaxy image
 simulation toolkit \citep{Rowe2015}.
@@ -578,8 +581,8 @@ shape noise value.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.7\linewidth]{mass_map_comparison_galsim.png}
-	\caption{A comparison of the maps for simulated inputs from {\sc GalSim} and
-	the maps generated with the use of a GP prior. 
+	\caption{A comparison of (right: truth) the maps of the simulated data from {\sc GalSim}  and
+	(left: posterior.mean) the maps generated with the use of a GP prior. 
 	This figure is a part of Schneider et al. (in prep.). \label{fig:Galsim_massmap}
 }
 \end{figure}
