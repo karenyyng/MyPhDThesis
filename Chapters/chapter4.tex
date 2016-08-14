@@ -243,7 +243,7 @@ different spatial entries $\psi$ at different distances should relate to one ano
 \end{equation}
 and gives a covariance {\it matrix}.
 We illustrate how the precision parameter $\lambda$ and the correlation
-length $l^2$ affect the covariance kernel in a simple example. 
+length $l^2$ affect the GP predictions in a simple example. 
 
 % Specifically, the mean vector $m(x)$ is often set to be zero in the
 % GP. The data are usually mean-subtracted before fitting a GP.  
@@ -293,19 +293,20 @@ $\psi$:
 	% &\sim \frac{1}{\sqrt{2\pi |\kerngp(\xv_{\mathds{1}}, \yv_{\mathds{1}};\gpparams)|}}
 	% \exp\left( \psi_0^T \kerngp(\xv_{\mathds{1}}, \yv_{\mathds{1}};\gpparams) \psi_0 \right)\label{eq:GP}
 \end{align}
-In particular in eq.\ref{eq:GP}, the multiplication of the kernel to
-the training points $\psi_0$ allows the kernel to weight several neighboring
-spatial entries of the vector of $\psi_0$ as a form of smoothing. 
+In eq.\ref{eq:GP}, the multiplication of the kernel to
+the training points $\psi_0$ allows the kernel to weight $\psi_0$ to compute
+the output $\psi$. 
 Recall from eq. \ref{eqn:exp_sq_kernel} that 
 the precision parameter $\lambda$ affects the 
 amplitude of the correlations, while the correlation length (or
 the characteristic length scale) $l^2$ 
 determines how fast the correlations of  $\psi$ 
 fall off across the spatial distance $\xv$. 
-The form of exponential squared function creates noticeable structures in the covariance matrix, i.e. the yellow,
+The form of exponential squared function creates noticeable structures in the
+kernel matrix, i.e. the yellow,
 overlapping squares in the top right panel. 
-Such structures allow each entries in the output vector $\psi$ to be weighted by
-several neighboring spatial entries in $\psi_0$ in eq. \ref{eq:GP}.
+Such structures allow each entry in the output vector $\psi$ to be weighted by
+several neighboring spatial entries in $\psi_0$ as a form of smoothing.
 
 As a result of different correlation lengths for smoothing, 
 the predictions fluctuate on specific spatial scales accordingly.
@@ -508,7 +509,7 @@ A prediction model can be any mathematical or numerical function that maps
 the input data to the output appropriately. In the case of a GP, it relies on the covariance
 kernel structure to characterize this mapping.  
 
-The joint probability density function for the data of a GP is:
+The joint probability density function for the (mean-subtracted) data of a GP is:
 \begin{equation}
 	[\lensparams',\lensparams]^T \sim \mathcal{N}(0, \kerngp_{\rm GP})
 \end{equation}
