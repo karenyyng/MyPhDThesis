@@ -180,57 +180,64 @@ and pattern extraction tasks
  
 It is helpful to understand the mathematical formulation of a GP, 
 before discussing how we can adapt the GP to model the lensing observables. 
+A statistical (or machine learning) model can be any mathematical or stochastic
+function that maps the inputs $\xv$ to the outputs $\psi$. 
+We can quantify how good the mapping is by a loss function to characterize the
+difference between the
+predicted output and the actual outputs. For example, a loss function can be the log
+marginal likelihood, the posterior, or the
+$\chi^2$ function which is commonly used by physicists. 
+There is no unique form of a loss function, a loss function
+should be designed according to the purpose of the analysis.
 In a nutshell, a GP smooths the input data using a non-parametric kernel
-\citep{Hastie1990}. 
-It is the generalization of a multivariate Gaussian 
+\citep{Hastie1990} to map to a set of outputs. 
+
+A GP is the generalization of a multivariate Gaussian 
 to infinite dimension \citep{Rasmussen2006}. While a multivariate Gaussian is
 specified by a mean vector $\mu$ and a covariance matrix $\Sigma$, 
 a GP is specified by a mean vector function $m(\xv)$ and a
 covariance kernel function $\kerngp(\xv, \yv)$, based on some input spatial or
-temporal coordinates $\xv$. 
-A multivariate Gaussian has dimension specified by the number of features 
-of the input data vector.
-If each galaxy observation contains 2 spatial dimensions, then the resulting
-multivariate Gaussian only has 2 dimensions, the covariance matrix $\Sigma$ has
-a size $2 \times 2$. However, this is not true for a GP. 
-Even if the input galaxy data has two spatial dimensions, the visible dimension 
-of a GP kernel matrix is of dimension $\ngal \times \ngal$.  
-The mean vector function has the same length as input observations, e.g. number
-of source galaxies.
-The covariance kernel function $\kerngp(\xv, \yv)$
-gives a matrix as outputs, and we will refer to it as one of the following names
-interchangeably depending on the context, such as the 
-covariance kernel matrix, the kernel, the covariance
-function or the covariance matrix. 
-In our case, the vector $\xv$ (and the
+temporal coordinates $\xv$. In our case, the vector $\xv$ (and the
 notation $\yv$ that is used interchangeably) denotes the
 two-dimensional spatial coordinates of $\ngal$ source galaxy locations. 
-The drawn collections of values $\psi$ from a GP carry the correlation structures
-specified by the kernel $\kerngp(\xv, \yv)$: 
-\begin{equation}
-	[\psi_1, \psi_2, \ldots, \psi_m ]^T \sim GP(m(\xv),
-	\kerngp(\xv, \xv')),
-		\label{eq:GP}
-\end{equation}
-where $\mathcal{N}$ is a multivariate Gaussian function.
+For a multivariate Gaussian model of $\xv$, 
+its dimensionality is given by the number of features of $\xv$.
+When $\xv$ that has two spatial coordinates for each observation, 
+a corresponding multivariate Gaussian model also has 2 dimensions, 
+i.e. the length of $\mu$ and $\Sigma$ are 2 and $2 \times 2$ respectively. 
+However, this is not the case for a GP model of $\xv$. 
+The mean vector function of a GP $m(\xv)$ is of length $\ngal$, 
+whereas the covariance kernel function $\kerngp(\xv, \yv)$
+gives a $\ngal \times \ngal$ matrix as its output for the observed dimensions.
+But the GP covariance kernel function does not limit the dimension of the
+unobserved inputs, thus a GP is said to be of infinite dimension. 
+In this work, we will refer to the covariance kernel function with one of 
+the following names interchangeably, such as the 
+covariance kernel matrix, the kernel, the covariance
+function or the covariance matrix. 
 
-For example, given a list of galaxy 2D spatial coordinates $\xv$ or $\yv$, 
-We can compute the covariance matrix kernel function. 
+When the input data $\xv$ is mean subtracted, the covariance function  
+completely specifies the GP.
+Given  $\xv$, we can compute the covariance matrix kernel function. 
 Part of the matrix kernel function is a distance matrix that 
-measures how different or similar of the observed lensing observable 
-$\lensparams$ are at different spatial coordinates $\xv$.
-A convenient distance matrix uses Euclidean distance in the form of $r^2$: 
+measures how different or similar the observed quantities 
+are at different spatial coordinates $\xv$ with the covariances. 
+In our case, we are interested in
+modeling the spatial fields of the lensing observables $\lensparams\equiv [\kappa, \gamma_1, \gamma_2]$
+at locations $\xv$. The spatial fields $[\kappa, \gamma_1, \gamma_2]$ 
+are the convergence and the two components of shear.
+One possible distance matrix uses Euclidean distance in the form of $r^2$: 
 \begin{equation}
 	r^2 \equiv (\xv - \yv)^T \Matrix{D} (\xv - \yv), 
 \end{equation}
-where $\Matrix{D}$ is a diagonal matrix.
-
-One of these choices is the exponential squared kernel: 
+where the metric $\Matrix{D}$ is diagonal. A commonly used covariance kernel 
+is the exponential squared kernel. There are two
+additional parameters that specify the exponential squared kernel $\kerngp$ 
+which we call $\gpparams = [\lambda, l^2]$.
 \begin{equation}
-	\kerngp(r^2) = \lambda^{-1} \exp\left(\frac{-r^2}{2 l^2}\right),
+	\kerngp(r^2) = \lambda^{-1} \exp\left(\frac{-r^2}{2 l^2}\right).
 	\label{eqn:exp_sq_kernel}
 \end{equation}
-
 % Specifically, the mean vector $m(x)$ is often set to be zero in the
 % GP. The data are usually mean-subtracted before fitting a GP.  
 \begin{figure}
@@ -238,16 +245,46 @@ One of these choices is the exponential squared kernel:
 	\includegraphics[width=0.9\linewidth]{expSq_kernel_demo_lsq_0pt01.png}
 	\includegraphics[width=0.9\linewidth]{expSq_kernel_demo_lsq_0pt3.png}
 	\includegraphics[width=0.9\linewidth]{expSq_kernel_demo_lsq_1pt1.png}
-	\caption{Left: An illustration of a GP with a one-dimensional input vector ${\bf x}$. 
-	
-
-	
+	\caption{
+		Left: An illustration of a GP with a one-dimensional input vector $\xv_\mathds{1}$
+		of length 20. The data points (($\psi, \xv_\mathds{1}$); black dots) 
+		are generated from a sine function (blue dashed lines).  
+		We added some Gaussian noise to the data points as indicated by the error bars. 
+		The grey lines indicate the different realizations of
+		the predictions given by the corresponding GP, while the red line indicates the
+		average of all the realizations. 
 		function used to generate the data points 
 		is shown with the dashed line. 
 		The available data points are shown in
 		black. \label{fig:one_d_gaussian_process}}
 \end{figure}
 
+
+The precision parameter $\lambda$ affects the 
+amplitude of the density perturbation, while the correlation length (or
+the characteristic length scale) $l^2$ in eq. \ref{eqn:exp_sq_kernel} 
+determines how fast the correlations between different spatial locations of the
+field $\psi$ fall off as a function of the spatial distance. The parameter
+$l^2$ therefore determines how smooth the spatial field $\psi$ is. 
+where $\lambda$ is called the precision and $l^2$ is the characteristic 
+spatial correlation length.
+The predictions of a GP carry the correlation structures that we
+specify in the covariance kernel.
+
+\subsubsection{An example GP with one-dimensional spatial inputs}
+We illustrate the properties of an exponential squared covariance kernel
+$\kerngp$ with a set of one-dimensional spatial inputs.
+A set of one-dimensional spatial inputs $\xv_\mathds{1}$ can be thought of a set of 
+2D coordinates along a line. Given $\xv_\mathds{1}$, we can compute $\kerngp$. 
+We can see difference instances of the computed $\kerngp$ with different $l^2$
+values in Fig. \ref{fig:one_d_gaussian_process}.
+
+
+% \begin{equation}
+% 	[\psi_1, \psi_2, \ldots, \psi_m ]^T \sim GP(m(\xv),
+% 	\kerngp(\xv, \xv')),
+% 		\label{eq:GP}
+% \end{equation}
 This shows the probabilistic nature of the GP predictions
 (see Fig. \ref{fig:one_d_gaussian_process}).
 Each drawn function represents one realization of the smoothed
@@ -275,7 +312,7 @@ after averaging over many realizations of the GP.
 \begin{table}%[htb]
 % \small
 \begin{center}
-\caption{Parameters for our Bayesian model.}
+\caption{Parameters for our probabilistic model.}
 \label{tab:sampling_parameters}
 \begin{tabular}{cl}
 \hline
@@ -304,8 +341,6 @@ $l^2$ & squared GP correlation length (element of $\gpparams$) \\
 
 
 \subsection{Adapting the exponential squared kernel (matrix function) with lensing physics}
-When the input data is mean-subtracted, we can use a zero mean function in the
-GP and the covariance kernel completely specifies the GP. 
 There are several families of commonly used covariance kernel.
 The ones that are of the highest interest to cosmic shear modeling 
 are stationary kernels that can capture 
@@ -317,15 +352,9 @@ squared magnitude of distances between pairs of galaxy locations.
 This chosen form is, therefore, invariant
 under translational and rotational transformations.
 The metric $\Matrix{D}$ is taken to be a diagonal matrix in this discussion but  
-can be generalized to account for anamorphic distortions. There are two
-additional parameters that specify the GP which we call $\gpparams =
-[\lambda, l^2]$.
-The precision parameter $\lambda$ affects the 
-amplitude of the density perturbation, while the correlation length (or
-the characteristic length scale) $l^2$ in eq. \ref{eqn:exp_sq_kernel} 
-determines how fast the correlations between different spatial locations of the
-field $\psi$ fall off as a function of the spatial distance. The parameter
-$l^2$ therefore determines how smooth the spatial field $\psi$ is. 
+can be generalized to account for anamorphic distortions due to the 
+flat sky approximation. Actual astronomical coordinates uses spherical
+coordinates instead of flat, 2D Euclidean coordinates. 
 
 Additionally, the exponential squared kernel is infinitely differentiable. This
 differentiable kernel choice allows us to derive an analytical expression to
@@ -420,13 +449,14 @@ Our implementation of the GP kernels in eq. \ref{eq:kernel_derivatives1} -
 		and cross-covariance
 		structures for the training data $\Upsilon = [\kappa, \gamma_1, \gamma_2]$
 		and the interpolated data $\Upsilon' = [\kappa', \gamma_1', \gamma_2']$.
+		The spatial inputs in the example are sorted and taken from a line in the
+		2D space. 
 		\label{fig:GP_kernel_vis}}
 \end{figure}
 Using a GP instead of a summary statistic also allows us to make predictions. 
 A prediction model can be any mathematical or numerical function that maps 
 the input data to the output appropriately. In the case of a GP, it relies on the covariance
 kernel structure to characterize this mapping.  
-
 
 The joint probability density function for the data of a GP is:
 \begin{equation}
