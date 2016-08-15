@@ -567,7 +567,7 @@ And the partition of the kernel with the modified structure due to eq.
 can be see in Fig. \ref{fig:GP_kernel_vis}.
 In the presence of shape noise (intrinsic ellipticity) and measurement uncertainties, the actual 
 expression of the conditional covariance kernel used for interpolation  
-needs two additional white noise kernels.  
+needs two additional diagonal white noise kernels.  
 
 Using the conditional distribution, 
 we can make predictions of $\kappa$ with data from the shear fields
@@ -584,7 +584,7 @@ A prediction model can be any mathematical or numerical function that maps
 the input data to the output appropriately. In the case of a GP, it relies on the covariance
 kernel structure to characterize this mapping.  
 
-\subsection{Making mass maps with a GP}
+\subsection{Obtaining physically interesting quantities from the modified GP}
 \begin{figure}
 	\centering
 	\includegraphics[width=0.4\linewidth]{shear_gp_pgm.png}
