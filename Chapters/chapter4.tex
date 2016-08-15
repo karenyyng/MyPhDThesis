@@ -10,14 +10,16 @@ in Schneider et al. (in prep.).
 A cornerstone of cosmology is found on the 
 observation of the highly Gaussian temperature fluctuations in the cosmic microwave 
 background (CMB), an ancient light emitted during the recombination in the early
-universe. A number of inflation models can explain how these
-nearly Gaussian fluctuations could arise from quantum perturbations in the 
-early universe. Furthermore, we know how these perturbations could grow
+universe. 
+% A number of inflation models can explain how these
+% nearly Gaussian fluctuations could arise from quantum perturbations in the 
+% early universe. 
+We know how the initial matter perturbations represented by the CMB could grow
 through linear transfer over time to form a large-scale ($> 10 h^{-1} Mpc$) 
 dark matter (DM) density field that is consistent with present
 day observables. 
 This cosmic web encodes valuable information for constraining cosmological
-parameters. Many lensing analyses of the large-scale DM density field, such as from
+parameters. Many gravitational lensing analyses of the large-scale DM density field, such as from
 the Canadian-French-Hawaiian Telescope Lens survey (CFHTLens;
 \citealt{Kilbinger2013}), the Deep Lens Survey
 (DLS; \citealt{Jee2013a}, \citealt{Wittman2002}), the Dark Energy Survey 
@@ -43,6 +45,9 @@ $h^{-1} Mpc$).
 % As first discussed in chapter 1, the presence of DM could distort background
 % galaxy shapes through gravitational lensing.
 The analysis of the gravitational lensing signal from the DM density field, however, is far from trivial. 
+In Chapter 1, we have provided a review of the basics of the gravitational lensing physics. 
+Here we discuss how to incorporate the physics as part of a statistical model. 
+For this, we need to know the properties of our data and the signal.
 The measured distortions in galaxy shapes that reflect the density of intervening DM, 
 only provide a weak, indirect shear signal (known as cosmic
 shear; $\lensparams$). The signal is also buried among various sources of noise
@@ -51,7 +56,7 @@ To improve the existing constraints, there are many ongoing
 efforts to refine the analysis pipeline. 
 In this work, we propose a new approach for representing 
 the cosmic shear information and show how it can be used in a probabilistic framework. 
-This can allow the joint inference of the signal, the noise and the systematics, 
+This can allow joint inference of the signal, the noise, and the systematics, 
 and potentially provide a less biased estimate of the cosmological parameters 
 (${\bf \theta}$). 
 The most relevant reference of such a probabilistic approach can be found in 
@@ -106,16 +111,18 @@ the ring statistics; the aperture mass dispersion; the peak statistics and
 their variations. Detailed discussions of each of these can be found in 
 \cite{Kilbinger2015} and \cite{Bartelmann2001a}.
 An important concern for computing the summary statistics of the cosmic shear 
-comes from the lensing physics. As the lensing observables are the second derivatives of the
-scalar potential under the Born approximation, we expect them to be curl-free.
+comes from the lensing physics. 
+Under the Born approximation, we have shown in Chapter 1 that  
+the lensing observables are the second derivatives of the
+a scalar lensing potential. We therefore expect the lensing observables to be curl-free.
 In analogy with the electric field, this curl-free part is called the E mode, 
 while any divergence-free part due to systematics or second-order effects is called the 
 B mode.
 An ideal representation of the
-cosmic shear, therefore should allow a complete separation of the E-mode and the B-mode.
+cosmic shear should allow a complete separation of the E-mode and the B-mode.
 However, various causes can
 introduce B-mode signals to the observed cosmic shear signal. A well-known
-cause of mode mixing is known as the finite-interval problem. It is due to
+cause of mode mixing is known as the finite-interval problem. This is due to
 imperfect observation conditions, such as the blending of galaxies at small scales,
 or limitations from survey boundaries at large scales \citep{Kilbinger2013}.  
 Specific computational implementation of the summary statistics that bins the 
@@ -127,8 +134,8 @@ perspective to some of the aforementioned problems, or in the best case
 scenario, alleviate the problems. 
  
 We will also demonstrate how our method
-(step 6) are connected to the other relevant analyses (e.g. steps 2, 3, 4). 
-The rest of this chapter will have the following structure, we will \\ 
+(step 6) is connected to the other relevant analyses (e.g. steps 2, 3, 4). 
+The rest of this chapter will have the following structure: we will \\ 
 1) Illustrate the basic properties of the Gaussian Process (GP), the model that we
 use to represent the cosmic shear signal.\\ 
 2) Show the derivation for incorporating the lensing physics in 
@@ -136,7 +143,7 @@ a suitable covariance kernel for a Gaussian Process,
 in the process of describing our method, we will comment on how our method is  
 similar or different from other approaches for cosmic shear inference.\\
 3) Lay out a hierarchical model for making several mass maps 
-with the modified Gaussian Process and show some preliminary results \\ 
+with the modified Gaussian Process and show some preliminary results.\\ 
 4) Discuss the limitations and possible extensions to our method.\\
 In no part of the computation of the GP do we explicitly assume a cosmological model. All our
 derivations follow from either the lensing physics or our statistical method.   
@@ -165,7 +172,7 @@ derivations follow from either the lensing physics or our statistical method.
 
 \subsection{The basics of a Gaussian Process (GP)}
 A Gaussian Process is one of the most studied and published 
-generative statistical model for non-parametric regression. 
+generative statistical models for non-parametric regression. 
 It allows the inference of the joint probability density 
 function (PDF) to describe a set of data. 
 While we focus our analyses on how the GP can be utilized to compute a prior
@@ -181,21 +188,8 @@ and pattern extraction tasks
 It is helpful to understand the mathematical formulation of a GP, 
 before discussing how we can adapt the GP to model the lensing observables. 
 In a nutshell, a GP smooths the input data using a non-parametric kernel
-\citep{Hastie1990} to map the features to a set of predictions. 
-We characterize how goodness of fit using a loss function called the log
-marginal likelihood. Other popular loss functions in Astronomy and Cosmology 
-are the posterior, or the $\chi^2$ function.
-% A statistical (or machine learning) model can be any mathematical or stochastic
-% function that maps the inputs $\xv$ to the outputs $\psi$. 
-% We can quantify how good the mapping is by a loss function to characterize the
-% difference between the
-% predicted output and the actual outputs. For example, a loss function can be the log
-% marginal likelihood, the posterior, or the
-% $\chi^2$ function which is commonly used by physicists. 
-% There is no unique form of a loss function, a loss function
-% should be designed according to the purpose of the analysis.
-
-A GP is the generalization of a multivariate Gaussian 
+\citep{Hastie1990}. 
+A GP is also the generalization of a multivariate Gaussian 
 to infinite dimension \citep{Rasmussen2006}. While a multivariate Gaussian is
 specified by a mean vector $\mu$ and a covariance matrix $\Sigma$, 
 a GP is specified by a mean vector function $m(\xv)$ and a
@@ -227,6 +221,7 @@ In this work, we will refer to the covariance kernel function with one of
 the following names interchangeably, such as the 
 covariance kernel matrix, the kernel, the covariance
 function or the covariance matrix. 
+
 
 When the input data $\xv$ is mean subtracted, the covariance function  
 completely specifies the GP. 
@@ -263,10 +258,6 @@ length $l^2$ on the GP predictions.
 We will also illustrate the use of a composite covariance kernel function.
 A composite kernel function is computed from a linear combination of the sum and/or the
 multiplication of kernels (\citealt{Duvenaud2013}, \citealt{Rasmussen2006}).  
-This is because the product of several Gaussian distributions results in another
-Gaussian with a covariance matrix that is a sum of the covariance matrices of
-original Gaussians.  
-
 
 % Specifically, the mean vector $m(x)$ is often set to be zero in the
 % GP. The data are usually mean-subtracted before fitting a GP.  
@@ -278,8 +269,8 @@ original Gaussians.
 	\caption{
 		We show GP models with different correlation lengths (left) and their
 		corresponding kernel (right).
-		Left: An example GP with a one-dimensional input vector $\xv_\mathds{1}$
-		of length 20. The data points (($\psi, \xv_\mathds{1}$); black dots) 
+		Left: An example GP with a one-dimensional input vector $\xv_0$
+		of length 20. The data points (($\psi, \xv_0$); black dots) 
 		are generated from a sine function (blue dashed lines).  
 		We added some Gaussian noise to the data points as indicated by the error bars. 
 		The grey lines indicate the different realizations of
@@ -294,76 +285,153 @@ original Gaussians.
 \subsubsection{An example: interpolating a set one-dimensional spatial inputs
 with a GP}
 \label{subsubsec:interpolation}
-We illustrate the properties of an exponential squared covariance kernel
-$\kerngp$ with a set of one-dimensional spatial inputs $\xv_{\mathds{1}}$. 
+We illustrate the properties of an exponential squared covariance kernel $\kerngp$
+by using the corresponding GP to interpolate $\psi_0$  
+at a set of one-dimensional spatial location $\xv_0$, to a smoother version
+$\psi$. 
 This is visualized in Fig. \ref{fig:one_d_gaussian_process}.
 % A set of one-dimensional spatial inputs $\xv_\mathds{1}$ can be thought of a set of 
 % 2D coordinates along a line.  
 % We show the data that we try to model in Fig. \ref{fig:one_d_gaussian_process}.
-We draw 20 true data points $\psi_0$ (black points) from a Sine function (blue dashed line) at
-$\xv_\mathds{1}$.
+We compute 20 true data points $\psi_0$ (black points) from a Sine function (blue dashed line) at
+$\xv_0$.
 We further add Gaussian noise ${\bf\epsilon}$ to the original data $\psi_0$ as
 indicated by the individual error bar ($\sigma_i$). 
-Given $\xv_\mathds{1}$, we can then compute an exponential squared kernel matrix $\kerngp$ 
-by assuming some $\gpparams$ value. Since there is noise
-component that are independent and identically distributed (i.i.d) and drawn
-from a Gaussian, we can model that using a diagonal noise kernel in the GP kernel. 
-The resulting composite kernel is:
+Given $\xv_0$, we can then compute an exponential squared kernel matrix $\kerngp$ 
+by assuming the values of the parameters of the covariance function
+($\gpparams$). Since the noise contributions are independent and identically distributed (i.i.d) as a Gaussian,
+each of them adds variance to each data point, without adding covariances
+between data points.
+Mathematically, it means we can model the noise using a diagonal noise 
+covariance kernel as part of a composite GP kernel. 
+The resulting composite kernel matrix for the observed data is:
 \begin{equation}
-	\Matrix{K}'_{i, j} = \lambda^{-1} \exp \left(-\frac{r_{i,j}^2}{2 l^2}\right) + \sigma_i^2
+	\Matrix{K}_{i, j} = \lambda^{-1} \exp \left(-\frac{r_{i,j}^2}{2 l^2}\right) + \sigma_i^2
 	\delta_{i, j}
 \end{equation}
 
-In this interpolation problem, we want a way to draw values of $\psi$ from our
-model given $\psi_0$. We can do so by computing the conditional distribution of 
-$\psi$ given $\psi_0$. Recall the joint distribution of the data
-described by a GP is:
-\begin{equation}
-	Pr(\psi, \psi_0 | \xv) = \mathcal{N}(0, \kerngp') =  \mathcal{N}\left(\left[\begin{array}{c} 0 \\ 0 \end{array} \right], 
+In this interpolation problem, we want a way to find values of $\psi$ from our
+model given the original data $\psi_0$ (black data points). We can do so by 
+computing the conditional distribution of 
+($\psi$, $\xv$) given ($\psi_0$, $\xv_0$). We also set $\xv = \xv_0$ to
+interpolate at the original data position, but this is a choice, not a
+restriction of the GP. It is possible to set $\xv$ to any location, but the 
+interpolation (and predictions) works best when there are original data points
+near the interpolated locations for training the GP model.
+
+Recall the joint distribution of the data
+described by a GP, by definition, is:
+\begin{align}
+	Pr(\psi, \psi_0 |\kerngp, \xv_0) = \mathcal{N}(0, \kerngp') &=  \mathcal{N}\left(\left[\begin{array}{c} 0 \\ 0 \end{array} \right], 
+	\left(
+	\begin{array}{cc}
+		\kerngp(\xv, \xv) & \kerngp(\xv, \xv_0) \\
+		\kerngp(\xv, \xv_0)^T & \kerngp(\xv_0, \xv_0) + \sigma_n^2 \mathds{1}
+	\end{array}
+	\right)
+	\right)\\
+&=  \mathcal{N}\left(\left[\begin{array}{c} 0 \\ 0 \end{array} \right], 
 	\left(
 	\begin{array}{cc}
 		A & B \\
-		B^T & C
+		B^T & C 
 	\end{array}
 	\right)
-		\right)
-\end{equation}
-The corresponding conditional distribution can be proven to be \citep{Rasmussen2006}:
+	\right),
+\end{align}
+where on the left hand side, $\kerngp$ represents the functional form of the
+exponential squared kernel as a model.
+The corresponding conditional distribution is \citep{Rasmussen2006}:
 \begin{align}
-	Pr(\psi | \psi_0, \xv) &= \frac{Pr(\psi, \psi_0 | \xv)}{Pr(\psi_0 | \xv)} \label{eq:conditional_distribution0}\\
-	&= \mathcal{N}(BC^{-1}\psi_0, A - BC^{-1}B^T)\label{eq:conditional_distribution}
+	Pr(\psi | \psi_0, \xv, \kerngp) &= \frac{Pr(\psi, \psi_0 |\kerngp,
+	\xv)}{Pr(\psi_0 |\kerngp, \xv)} \label{eq:conditional_distribution0}\\
+	&= \mathcal{N}(BC^{-1}\psi_0, A -
+	BC^{-1}B^T).\label{eq:conditional_distribution}\\
+	& \equiv \mathcal{N}(\mathbb{E}(\psi | \psi_0), \Cov(\psi | \psi_0))
 \end{align}
 Note that both the numerator and the denominator are Gaussians in eq.
-\ref{eq:conditional_distribution0}. 
+\ref{eq:conditional_distribution0} for the final expression
+\ref{eq:conditional_distribution} to be Gaussian. 
+We can then draw different predictions of $\psi$ using:
+\begin{equation}
+	\psi \sim Pr(\psi | \psi_0, x, \kerngp).
+\end{equation}
 
-In eq. \ref{eq:conditional_distribution}, the multiplication of the different
-components of the kernel $\kerngp'$ to
+In eq. \ref{eq:conditional_distribution}, 
+we can find the expected value of the conditional prediction of $\psi$ to be 
+\begin{equation}
+	\mathbb{E}(\psi | \psi_0) = \kerngp(\xv, \xv_0)[\kerngp'(\xv_0, \xv_0) +
+	\sigma_n^2 \mathds{1}]^{-1}\psi_0, 
+\end{equation}
+where the multiplication of the different
+components of the kernel $ [\kerngp'(\xv_0, \xv_0) +
+	\sigma_n^2 \mathds{1}]^{-1}$ to
 the training points $\psi_0$ allows the kernel to weight $\psi_0$ to compute
-the output $\psi$. 
-Recall from eq. \ref{eqn:exp_sq_kernel} that 
-the precision parameter $\lambda$ affects the 
-amplitude of the correlations, while the correlation length (or
-the characteristic length scale) $l^2$ 
-determines how fast the correlations of  $\psi$ 
-fall off across the spatial distance $\xv$. 
+the mean prediction $\bar{\psi}$. 
+The weighting scheme is represented by the covariance matrix structure in the
+right panels of Fig. \ref{fig:one_d_gaussian_process}.
 The form of exponential squared function creates noticeable structures in the
 kernel matrix, i.e. the yellow,
 overlapping squares in the top right panel. 
-Such structures allow each entry in the output vector $\psi$ to be weighted by
-several neighboring spatial entries in $\psi_0$ as a form of smoothing.
+Recall from eq. \ref{eqn:exp_sq_kernel} that 
+the precision parameter $\lambda$ affects the 
+amplitude of the correlations in the covariance matrix, while the correlation length (or
+the characteristic length scale) $l^2$ 
+determines how fast the correlations of  $\psi$ 
+fall off across the spatial distance $\xv$. 
+Such off-diagonal structures allow each element in the output vector $\psi$ to be weighted by
+several neighboring spatial elements in $\psi_0$ as a form of smoothing.
 
 As a result of the different correlation lengths for smoothing, 
 the predictions fluctuate on specific spatial scales accordingly.
 These realizations are represented by the gray lines in the left column of Fig.
 \ref{fig:one_d_gaussian_process}. From the top row, we can see that 
 the predictions that are drawn from a GP with a small $l^2$ 
-fluctuate on a relatively small scale. Even the averaged prediction over
+fluctuate on a relatively small scale. Even the mean prediction (red line) over
 different predicted realizations in the top
-left row is not completely smooth. When $l^2$ is increased as we show in the
+left panel is not completely smooth. When $l^2$ is increased as we show in the
 middle and bottom left panels, we can notice that the predictions are
-smoother, but the fit worsens as the $l^2$ value gets too big. In general,  
-an optimal set of GP parameters $\gpparams^*$ are found by optimizing the log
-marginal (Gaussian) likelihood of a GP.
+smoother, but the fit becomes worse as the $l^2$ value gets too big. 
+
+To find the best GP parameter values, we can optimize 
+the goodness of fit. A popular measure of the goodness of fit is
+the log likelihood, which takes the form of:
+\begin{equation}
+	\log \mathcal{L} = \log(Pr({\bf d} | M))
+\end{equation}
+which denotes the PDF of obtaining the data vector ${\bf d}$ given the
+statistical model $M$. 
+In the case of the example in this section, the data vector is ${\bf d} = \psi_0$, and 
+our model is the GP. We readily write down the form of the log likelihood \citep{Rasmussen2006} as:
+\begin{align}
+	\log \mathcal{L} &= \log (Pr(\psi | \kerngp', \xv))\\
+	&=  -\frac{1}{2}\psi_0^T \kerngp^{-1}\psi_0
+- \frac{1}{2}\log|\kerngp'| - \frac{n}{2}\log(2\pi),
+	\label{eq:log_marginal_likelihood0}
+\end{align}
+where $n=20$ as we used 20 data points and this expression gives a scalar output.
+In fact, we can further interpret the composition of the log likelihood in 
+eq. \ref{eq:log_marginal_likelihood0}. It
+consists of a first term that describes the goodness of fit.
+The second term penalizes complex model assumptions \citep{Rasmussen2006} 
+as the determinant represents the volume of the hypersphere (e.g. product of
+all the eigenvalues) spanned by the kernel. 
+The complexity penalization term can prevent the GP from overfitting the data.
+
+% It is computed by 
+% the conditional probability
+% expression in \ref{eq:conditional_distribution}, but instead of
+% drawing values from the expression, we compute a scalar value from the expression:
+% \begin{equation}
+% 	log Pr(\psi | \psi, \xv) = -\frac{1}{2}\psi_0^T\kerngp^{-1}\psi_0 -
+% 	\frac{1}{2}\log|\kerngp'| - \frac{20}{2}\log(2 \pi)
+% \end{equation}
+% we call it as the log marginal 
+% an optimal set of GP parameters $\gpparams^*$ are found by optimizing the log
+% marginal (Gaussian) likelihood of a GP.
+% \begin{equation}
+% 	\log \mathcal{L} =  
+% \end{equation}
 
 Another noticeable property of a GP is the probabilistic nature of its predictions
 (Fig. \ref{fig:one_d_gaussian_process}).
@@ -380,6 +448,7 @@ have less discrepancies for data point locations with smaller error bars.
 % The probabilistic nature of the GP highlights the main differences of our
 % approach vs past analysis approaches. While past analysis computes summary 
 % statistics, such as the correlation-function to represent the  
+
 \begin{table}%[htb]
 % \small
 \begin{center}
@@ -409,15 +478,13 @@ $l^2$ & squared GP correlation length (element of $\gpparams$) \\
 \end{tabular}
 \end{center}
 \end{table}
-
-
 \subsection{Adapting the exponential squared kernel (matrix function) with lensing physics}
 There are several families of commonly used covariance kernel.
 The ones that are of the highest interest to cosmic shear modeling 
 are stationary kernels that can capture 
 the homogeneity and the isotropy of the data. This allows the predicted spatial fields
 $\psi$ to have properties consistent with the large-scale matter distribution.
-%
+An example is the exponential squared matrix.
 This kernel matrix $\kerngp(r^2)$ only depends on the
 squared magnitude of distances between pairs of galaxy locations. 
 This chosen form is, therefore, invariant
@@ -472,8 +539,10 @@ operation between the covariance operator and the differentiation operators.
 \frac{\partial^2}{\partial x_1^2} \frac{\partial^2}{\partial y_2^2} +  
 \frac{\partial^2}{\partial x_2^2} \frac{\partial^2}{\partial y_1^2} + 
 \frac{\partial^2}{\partial x_2^2} \frac{\partial^2}{\partial y_2^2}  
-\right) \kerngp_{mn}\\ 
+\right) \kerngp_{mn},\\ 
 \end{align*}
+where $\kerngp_{mn}$ represents each element of the exponential squared kernel.
+
 The resulting 4th derivatives of the covariance
 kernels $\kerngp_{\rm GP}$ have the following forms: 
 \begin{align}
@@ -545,8 +614,8 @@ Our implementation of the GP kernels in eq. \ref{eq:kernel_derivatives1} -
 		and cross-covariance
 		structures for the training data $\Upsilon = [\kappa, \gamma_1, \gamma_2]$
 		and the interpolated data $\Upsilon' = [\kappa', \gamma_1', \gamma_2']$.
-		The spatial inputs in the example are sorted and taken from a line in the
-		2D space $\xv$. 
+		% The spatial inputs in the example are sorted and taken from a line in the
+		% 2D space $\xv$. 
 		\label{fig:GP_kernel_vis}}
 \end{figure}
 
@@ -555,7 +624,7 @@ shown in Section \ref{subsubsec:interpolation}. Although this time instead of a
 one-dimensional set of inputs $\xv$, we have 2D coordinates $\xv$ and the
 lensing observables are 2D spatial fields.
 For predicting lensing observables, our output vector is a concatenation of the
-different lensing observables instead, 
+different lensing observables instead: 
 \begin{equation}
 [\lensparams', \lensparams]  = [\kappa', \gamma_1', \gamma_2', \kappa,
 \gamma_1, \gamma_2] 
@@ -569,21 +638,21 @@ In the presence of shape noise (intrinsic ellipticity) and measurement uncertain
 expression of the conditional covariance kernel used for interpolation  
 needs two additional diagonal white noise kernels.  
 
-Using the conditional distribution, 
-we can make predictions of $\kappa$ with data from the shear fields
-$\gamma_1, \gamma_2$. 
-Once we can find GP parameters $\gpparams^*$ that optimize the fit to
-the observed shear fields $\gamma_{(1, 2)}$ at $\xv$, we can compute $\kerngp_{(\kappa,
-\kappa)}$ and draw predictions of $\kappa$ from the conditional distribution. 
-Compared with an interpolation method, the mean predictions from a GP are
-often more well behaved and do not show drastic increase or decrease 
-in the tail regions where there is no data. 
-%
-Using a GP instead of a summary statistic also allows us to make predictions. 
-A prediction model can be any mathematical or numerical function that maps 
-the input data to the output appropriately. In the case of a GP, it relies on the covariance
-kernel structure to characterize this mapping.  
-
+% Using the conditional distribution, 
+% we can make predictions of $\kappa$ with data from the shear fields
+% $\gamma_1, \gamma_2$. 
+% Once we can find GP parameters $\gpparams^*$ that optimize the fit to
+% the observed shear fields $\gamma_{(1, 2)}$ at $\xv$, we can compute $\kerngp_{(\kappa,
+% \kappa)}$ and draw predictions of $\kappa$ from the conditional distribution. 
+% Compared with an interpolation method, the mean predictions from a GP are
+% often more well behaved and do not show drastic increase or decrease 
+% in the tail regions where there is no data. 
+% %
+% Using a GP instead of a summary statistic also allows us to make predictions. 
+% A prediction model can be any mathematical or numerical function that maps 
+% the input data to the output appropriately. In the case of a GP, it relies on the covariance
+% kernel structure to characterize this mapping.  
+% 
 \subsection{Obtaining physically interesting quantities from the modified GP}
 \begin{figure}
 	\centering
@@ -594,7 +663,7 @@ kernel structure to characterize this mapping.
 		the latent variable, while the shaded circle denotes 
 		the observed variable. The plate notation shows the observables that are
 		implicitly summed over different galaxies during the computation of matrix-vector
-		products in the log marginal likelihood (eq. \ref{eq:log_marginal_likelihood}). The way that the observed
+		products in the log likelihood (eq. \ref{eq:log_marginal_likelihood}). The way that the observed
 		ellipticity is connected to other branches hints that a joint analysis of
 		the connected quantities will provide better predictive performance than if
 		they were inferred separately. This figure is also present in Schneider et
@@ -602,14 +671,16 @@ kernel structure to characterize this mapping.
 		\label{fig:simplified_pgm}}
 \end{figure}
 
+
 By drawing realizations of the relevant GP, we can compute various 
 physical quantities of interest. If the goal is to give the best prediction of a
 mass map, it is possible to average over many drawn realizations of the
-convergence $\kappa$. And we will show an example of this as a demonstration of
+convergence $\kappa$, or simply compute it with the mean prediction expression
+in eq. \ref{eq:conditional_distribution}. 
+We will show an example of this as a demonstration of
 the consistency of our method with other known method for making mass maps.
-Or if the shear statistics are of interest, the relevant 2PCF and the power
-spectrum can be computed from the mean realization 
-after averaging over many realizations of the GP.
+Or, if the shear statistics are of interest, the relevant 2PCF and the power
+spectrum can be computed from the mean realization.
 
 \subsubsection{Inferring the optimal GP parameters}
 \label{subsubsection:optimize_GP_params}
@@ -631,22 +702,20 @@ for each galaxy using a composite GP kernel:
 	\label{eq:composite_kernel}
 \end{equation}
 where $\sigma_e^2$ is the variance of the shape noise, and $\sigma_{\rm ms}^2$
-represents the measurement error. We can just add the kernels because the
-kernels are in the exponential part of the Gaussian function.
-Multiplication of Gaussians result in another Gaussian those covariance matrix
-is a sum of the covariance matrices of original Gaussians. 
-We can then maximize the scalar output of the log marginal likelihood to find the optimal 
-$\gpparams^*$: 
+represents the measurement error. 
+The log likelihood for our lensing analysis is: 
 \begin{equation}
 	\log p(\epsilon_{(1,2)} | \xv) = \frac{-1}{2}\epsilon_{(1,2)}^T \mathsf{S}^{-1}
 \epsilon_{(1, 2)}
 - \frac{1}{2}\log|\mathsf{S}| - \frac{n}{2}\log(2\pi),
 \label{eq:log_marginal_likelihood}
 \end{equation}
-which consists of a first term that describes the goodness of fit,
-and a second term that penalizes complex model assumptions \citep{Rasmussen2006}. 
-The complexity penalization term can prevent the GP from overfitting the data.
-This allows us to infer a generalizable model for the observed shear, which still
+We then use a numerical optimization routines such as gradient descent or 
+Monte Carlo Markov Chains (MCMC)
+to find the set of covariance kernel parameters $\gpparams^*$ that maximizes the
+likelihood.
+This allows us to infer a generalizable model for the observed shear. However,
+this observed shear model still
 contains contributions from both the shape noise and the measurement
 uncertainties. 
 
@@ -710,14 +779,15 @@ $40 \times 40$ grid.
  
 \subsubsection{The Deep Lens Survey (DLS) galaxy cluster Abell 781}
 The second set of data was obtained from the DLS, an optical imaging survey 
-designed for cosmic shear measurements.  The data points
+designed for cosmic shear measurements.  
+We illustrate that
+our GP method can handle non-linear features, such as a galaxy clusters, and 
+can compute a convergence map without problem. 
+The data points
 are centered on the galaxy cluster called Abell 781 in DLS field 2.
 There are several previous lensing studies of this cluster, which has an estimated redshift
 of $z \approx 0.296$ (\citealt{Wittman2014}, \citealt{Cook2012}, \citealt{Sehgal2008}). 
-A galaxy cluster is a
-non-linear structure resulted from gravitational collapse. We illustrate that
-our GP method can handle non-linear features in the convergence map without 
-problem. We selected source galaxies that have photometric redshift $z_b >
+We selected source galaxies that have photometric redshift $z_b >
 0.45$ and with small measurement uncertainties $\sigma_{\rm ms} < 0.1$. We also apply  
 a R-band magnitude cut of $22 < R < 23$ and require the ellipticity for the
 major (a) and minor axis (b) of the galaxies to satisfy $\sqrt{a^2 + b^2} > 0.8"$ 
@@ -740,13 +810,15 @@ shape noise value.
 	This figure is a part of Schneider et al. (in prep.). \label{fig:Galsim_massmap}
 }
 \end{figure}
-The mean posterior mass map obtained in Fig. \ref{fig:Galsim_massmap}. 
+Fig. \ref{fig:Galsim_massmap} shows the mean posterior mass map obtained from
+the {\sc GalSim} mock data. 
 It shows features that are in general agreement with the true signal. 
 It is noteworthy that the resolutions of the posterior maps are coarser ($24 \times 24$
 spacing) than the input galaxy
-spacing ($40 \times 40$). This reflects how the log marginal likelihood disfavors a sampling
+spacing ($40 \times 40$). This reflects how the log likelihood
+disfavors a sampling
 scheme that is higher than the Nyquist frequency. The optimal smoothing length
-($l^2 = 0.0123$) from the fitting routine of the log marginal likelihood is also
+($l^2 = 0.0123$) from the fitting routine of the log likelihood is also
 larger than this Nyquist scale. As we speed up our code to handle a larger
 volume and finer
 resolution of input data, this limitation from the sampling scheme should
@@ -775,20 +847,20 @@ separation.
 		Right: The higher resolution output generated with $\sim 50000$ galaxies using 
 		algorithms from \cite{Wittman2014}. 
 		There are five white crosses on each figure showing the locations of X-ray
-		peak locations from \cite{Sehgal2008}. No clear mass has been associated
-		with the white cross second to the left. 
+		peak locations from \cite{Sehgal2008}. 
+		% No clear mass has been associated
+		% with the white cross second to the left. 
 	These figures are from Schneider et al. (in prep.).
 }
 \end{figure}
 We also see a general agreement of the features in the mass map of Abell 781
 (Fig. \ref{fig:Abell781_massmap}) with previous studies of the same cluster 
-\cite{Wittman2014}.  
+\citep{Wittman2014}.  
 We are restricted by the Nyquist frequency to give a coarser map as discussed
 before.   
-As the lensing signal from Abell 781 is higher than other fields of the
-DLS, we see a better agreement of the inferred $\lensparams$ in field 2 than
-other fields. We have not included enough galaxies to allow a good signal and
-noise separation for blank fields. 
+As the lensing signal from Abell 781 is high, we see an agreement of the 
+inferred $\lensparams$ with \cite{Wittman2014}. 
+We have not included enough galaxies to make a detailed comparison. 
 This is also one of the reasons why  we
  have not inferred cosmological parameters using the
 posterior maps of the DLS data.
@@ -804,7 +876,7 @@ posterior maps of the DLS data.
 
 \subsection{Relating the lensing observables to a cosmological model}
 There is an ongoing effort to explore different ways to relate the posterior lensing signal 
-to a cosmological model in Schneider et al. (in prep.). We outline some general
+to a cosmological model in Schneider et al. (in prep.). In this section, we outline some general
 ideas or concerns for such an effort. First, it is possible to use conventional techniques 
  to find the cosmological dependence from simulations.  
 We can compute the power spectrum from our mean posterior map. The resulting
@@ -814,7 +886,7 @@ simulations as outlined in previous studies (\citealt{Jee2013a},
 Second, if we were to explore new ways to relate the GP outputs to cosmological constraints,  
 it may be interesting to investigate the sensitivity of the GP parameters (and
 the covariance kernel models) to cosmological parameters. 
-We note that the GP parameters may not be very sensitive to cosmological parameters
+We should note that the GP parameters may not be very sensitive to cosmological parameters
 due to its flexibility to model a large variety of data. The sampling strategy of
 the galaxy locations may also affect the sensitivity. Such a sensitivity test can be
 done by repeating our {\sc GalSim} study using convergence power spectrum of different cosmology 
@@ -853,7 +925,7 @@ in {\sc C++} along with a {\sc Python} wrapper.
 Although the operation of computing and assembling the
 derivatives are $O(\ngal^2)$, the large number of addition and 
 multiplication operations in eq. \ref{eq:kernel_derivatives1} to
-\ref{eq:kernel_derivatives2}, and \ref{eq:4thderivatives} can be slow.
+\ref{eq:kernel_derivatives2} and \ref{eq:4thderivatives} can be slow.
 Exploiting the symmetry of the covariance kernel can only provide 
 a speed and memory saving of a factor of 2 for the matrix assembly step.
 
@@ -940,7 +1012,7 @@ When we take the limit of the degree of freedom of a Mat\'{e}rn kernel to infini
 we recover the exponential squared kernel. The inclusion of a Mat\'{e}rn kernel
 in addition to an exponential squared kernel, therefore, can pick up features
 that are less smooth. The use of an additional Mat\'{e}rn kernel may mitigate the
-restrictions from Nyquist sampling but this hypothesis should be verified with
+restrictions from Nyquist sampling, but this hypothesis should be verified with
 numerical experiments. 
 
 %  The manual differentiation of the analytical form of the kernels can be tedious,
@@ -980,7 +1052,7 @@ short and long term periodic trends for carbon dioxide emission at Mauna Loa.
 Additionally, it is physically interesting to examine whether the kernels that best 
 fit systematics and incompleteness can represent most of the B-mode components. 
 
-\subsection{Comparison to other representation of shear information}
+% \subsection{Comparison to other representation of shear information}
 
 
 % - [ ] describe why the lensing observables shouldn't have a B mode 
