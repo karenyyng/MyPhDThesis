@@ -569,7 +569,9 @@ In the presence of shape noise (intrinsic ellipticity) and measurement uncertain
 expression of the conditional covariance kernel used for interpolation  
 needs two additional white noise kernels.  
 
-Similarly, we can make predictions of $\kappa$ with data from the shear fields. 
+Using the conditional distribution, 
+we can make predictions of $\kappa$ with data from the shear fields
+$\gamma_1, \gamma_2$. 
 Once we can find GP parameters $\gpparams^*$ that optimize the fit to
 the observed shear fields $\gamma_{(1, 2)}$ at $\xv$, we can compute $\kerngp_{(\kappa,
 \kappa)}$ and draw predictions of $\kappa$ from the conditional distribution. 
