@@ -551,8 +551,10 @@ Our implementation of the GP kernels in eq. \ref{eq:kernel_derivatives1} -
 \end{figure}
 
 Predictions of a GP are made using an appropriate conditional distribution as we have
-shown in Section \ref{subsubsec:interpolation}.
-For predicting lensing observables, our data vector is a concatenation of the
+shown in Section \ref{subsubsec:interpolation}. Although this time instead of a
+one-dimensional set of inputs $\xv$, we have 2D coordinates $\xv$ and the
+lensing observables are 2D spatial fields.
+For predicting lensing observables, our output vector is a concatenation of the
 different lensing observables instead, 
 \begin{equation}
 [\lensparams', \lensparams]  = [\kappa', \gamma_1', \gamma_2', \kappa,
