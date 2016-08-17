@@ -1089,35 +1089,6 @@ Additionally, it is physically interesting to examine whether the kernels that b
 fit systematics and incompleteness can represent most of the B-mode components
 from the data. 
 
-% \subsection{Comparison to other representations of lensing information}
-% Most of the existing methods for represent lensing information are estimators.
-% Estimators alone are insufficient to completely specify a model of the data.
-% For example, the mean and the covariance are the two parameters of a Gaussian
-% distribution. But the average value of the data drawn from a Gaussian, 
-% which is an estimator of the mean, 
-% is insufficient to summarize all the information for the underlying Gaussian distribution.
-% Estimators of the lensing information includes 2PCF, the power spectrum, 
-% the mass aperture statistics and the shear peak statistics, to name a few.
-% The summary statistics are the best-fit representation (realization) of the data based on some
-% model assumptions. For the 2PCF, the implicit model assumption is that any
-% finite collections of $\lensparams$ have to follow a Gaussian distribution
-% (this is a known property of the Gaussian random field). 
-% There is no direct comparison between such estimators to the GP, which is a model.
-% It may be more reasonable to compare the summary statistic of the GP, such as
-% the mean realization $\bar{\psi}$ to such estimators.  
-% The uncertainty information of the aforementioned estimators, 
-% needs to be evaluated separately with a covariance. When maximizing the
-% likelihood of a GP fit to the data, both the mean
-% prediction and the covariance kernel of the predictions are simultaneously inferred.
-% 
-% There is also an attempt to use the Karhunen-Lo\'{e}ve (KL) transform to decompose
-% the lensing information into different eigenmodes \citep{VanderPlas2012a}.
-% It is an attempt to use orthogonal basis to represent the 
-% observed data.% , which is considered one instance of the model that generates the data. 
-% While such approach may also offer great signal-to-noise separation, 
-% an important advantage of the GP method over the KL eigenbases 
-% is that a GP (which is a PDF of some form) 
-% can be naturally incorporated as part of a probabilistic framework. 
 % 
 
 
