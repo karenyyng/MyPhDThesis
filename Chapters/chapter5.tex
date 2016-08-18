@@ -32,24 +32,24 @@ Here, I give a summary and the future prospect of each of my three projects.
 \subsection{Modeling merging galaxy clusters: a case study with El
 Gordo}
 The first study that I presented was a Monte Carlo simulation of El Gordo.
-By drawing the distributions of the observables,
+By drawing from the distributions of the observables,
 we evolved the motion of the merger of El Gordo analytically
 and gave estimates of the latent variables. 
-We (re)discovered how the qualitative spatial location 
+We discovered how the qualitative spatial location 
 of cluster components, such as the cool core 
 and the radio relic, can be used to construct   
 broad quantitative prior distributions for 
 constraining the merger phase.  
 We showed that it is not only possible, 
-but more likely that the merging galaxy cluster, El Gordo, is in a return phase
-than an outgoing phase.       
+but more likely, that El Gordo is in a return phase
+rather than an outgoing phase.       
  
 For future studies of galaxy clusters, 
 it is desirable to obtain a more quantitative version of the 
 prior information so a more robust statistical framework can be built for model
 comparison. 
-I advocate that simulation studies of merging galaxy cluster  
-to 1) make the simulation data available for reanalysis, or 2) if there is
+I advocate simulation studies of merging galaxy cluster  
+to 1) make the simulation data available for reanalysis, or 2) if there is a large
 enough number of galaxy clusters, provide the
 (joint or conditional) probability density function\footnote{This is {\it not}
 the same as a histogram. Histograms are lossy representations of the information 
@@ -62,7 +62,7 @@ matter in clusters: a test with the Illustris simulation}
 A second related but more general analysis of galaxy clusters was done using the
 cosmological simulation, the Illustris simulation. 
 During the analysis, we found the best 
-representations of the galaxy populations of galaxy clusters. 
+estimators of the galaxy population location in galaxy clusters. 
 The Brightest Cluster
 Galaxy (BCG) and the peak from a cross-validated kernel density estimate (KDE)
 can give high precision estimates of the DM peak to within $\lesssim$ 30 kpc.
@@ -104,15 +104,15 @@ posterior ratio of different DM models:
 	\tau = \frac{Pr(\sigmaSIDM = \sigma| \offset_{\rm obs})}{Pr(\sigmaSIDM = 0|
 		\offset_{\rm obs})},
 \end{equation}
-where $\sigma$ is a reasonable cross section value that is being compared.
+where $\sigma$ is a cross section value that is being compared.
 From our analysis of the Illustris simulation, we have provided a better idea of how to evaluate 
 $\offset$ to minimize the contribution from $n$. 
-With a more precise measurement, it is easier to find a significant ratio differences
+With a more precise measurement, it is easier to find significant ratio differences
 between SIDM models and the CDM model. 
 However, in order to compute the numerator of
 the Bayes factor, a SIDM simulation with 1) many merging clusters with suitable
 configurations, and 2) realistic error propagation is needed.  
-Although the analysis a SIDM simulation is out of the scope of this work, 
+Although the analysis of a SIDM simulation is out of the scope of this work, 
 the analysis can utilize the galaxy summary statistics that we have proposed.  
 
 
@@ -145,11 +145,11 @@ the analysis of the cosmic shear.
 Our proposed method, a GP, is a powerful regression method.
 After enforcing the GP covariance kernel to encode the known relations between
 the lensing observables, 
-we can use the GP simultaneously infer the joint PDF of the signal (both the convergence and the shear)
+we can use the GP to simultaneously infer the joint PDF of the signal (both the convergence and the shear)
 and the noise.  With a set of simulated and a set of real data, we demonstrated that our GP
 method can recover the lensing signals.  
 The remaining challenges for extending this method include: 1) reducing the
-inherit computational complexity of the method to achieve a speed up. This can
+inherent computational complexity of the method to achieve a speed up, which can
 be done via the use of latent variables (inducing points) to achieve a sparse representation of
 the lensing observables, and 2) constructing an 
 extension to the probabilistic 
