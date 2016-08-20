@@ -2,7 +2,7 @@
 \label{app:shrink_apert}
 \begin{algorithm}
 	\caption{Shrinking aperture algorithm with luminosity weights}
-	\KwData{subhalo that satisfy cuts as a galaxy}
+	\KwData{subhalos that satisfy cuts as a galaxy}
 	 \hrulefill \\
 
 	 initial aperture centroid = weighted mean galaxy location in each spatial dimension\\
@@ -20,7 +20,9 @@
 	\caption{Cumulative distribution of clusters above a certain mass threshold
 		for different samples.
 		Each distribution is normalized to the sample size.
-		The unrelaxed samples $1.2 < \nu < 2.2$ 
+		The samples with more than one dominant peak are labeled as $1.2 < \nu < 2.2$. The 
+		The samples with approximately one dominant peak are labeled as $\nu
+		\leq 1.2$.  
 		If the subsets have the same cluster mass abundance as the full sample,
 		the three plots should lie on top of one another.
 		\label{fig:mass_abundance_distribution}
