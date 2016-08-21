@@ -1158,13 +1158,13 @@ instead of 2-point statistics \citep{Kayo2012}.
 % However, there is no consensus whether such higher order statistic can
 % sufficiently capture the cosmological information encoded by non-linear structures (\citealt{Jasche2013},
 % \citealt{Kayo2012}). 
-
 As we have demonstrated using the data of Abell 781, 
 there is no restriction from the
 GP for modeling non-linear features such as a galaxy cluster. 
 A GP can capture both the linear and non-linear cosmological information. 
 
-Another major upcoming challenge for cosmic shear analysis is the systematics. 
+Another major upcoming challenge for cosmic shear analysis is the proper
+evaluation and handling of systematics. 
 The Large Synoptic Survey Telescope (LSST) will
 provide data of large enough volume such that the
 constraints will be limited by systematics such as masking. 
@@ -1179,6 +1179,13 @@ orthogonal eigenmodes \citep{VanderPlas2012a}.
 Since the KL transform and GP decomposes the shear data according to features
 at different spatial scales, both the KL transform and the GP have the potential 
 for discovering patterns due to camera systematics.  
+
+The way that GP represents the coupling of large and small scale fluctuation 
+may 
+
+Furthermore, both studies have the potential of capturing the non-linearity 
+features:
+
 
 % Most of the existing methods for represent lensing information are estimators.
 % Estimators alone are insufficient to completely specify a model of the data.
