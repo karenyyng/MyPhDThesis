@@ -191,7 +191,7 @@ other classification, dimensionality reduction
 and pattern extraction tasks
 (\citealt{Wilson2013}, \citealt{Duvenaud2013}, \citealt{Rasmussen2006}).
  
-It is helpful to understand the mathematical formulation of a GP, 
+It is helpful to understand the mathematical formulation of a GP
 before discussing how we can adapt the GP to model the lensing observables. 
 In a nutshell, a GP smooths the input data using a non-parametric kernel
 \citep{Hastie1990}. 
@@ -222,7 +222,7 @@ The mean vector function of a GP $m(\xv)$ is of length $\ngal$,
 whereas the covariance kernel function $\kerngp(\xv, \yv)$
 gives a $\ngal \times \ngal$ matrix as its output.
 Note that the GP covariance kernel function does not restrict the 
-observed length of $\ngal$, and is capable of predicting the values at
+observed length of $\xv$, and is capable of predicting the values at
 unobserved locations $\xv'$. Thus the inventors of the GP 
 have said that a GP has infinite dimension \citep{Rasmussen2006}. 
 In this work, we will refer to the covariance kernel function with one of 
@@ -295,7 +295,7 @@ with a GP}
 \label{subsubsec:interpolation}
 We illustrate the properties of an exponential squared covariance kernel $\kerngp$
 by using the corresponding GP to interpolate a set of data $\psi_0$  
-at a set of one-dimensional spatial location $\xv_0$, to a smoother version
+at a set of one-dimensional spatial locations $\xv_0$, to a smoother version
 $\psi$. 
 This is visualized in Fig. \ref{fig:one_d_gaussian_process}.
 % A set of one-dimensional spatial inputs $\xv_\mathds{1}$ can be thought of a set of 
@@ -655,8 +655,9 @@ Our implementation of the GP kernels in eq. \ref{eq:kernel_derivatives1} -
 	\caption{An illustration of the GP covariance kernel matrix for the {\sc GalSim} data set.
 		The same plot is also present in Schneider et al. (in prep.). We can see the various covariance
 		and cross-covariance
-		structures for the training data $\Upsilon = [\kappa, \gamma_1, \gamma_2]$
-		and the interpolated data $\Upsilon' = [\kappa', \gamma_1', \gamma_2']$.
+		structures for the training data $\Upsilon = [\gamma_1, \gamma_2]$
+		and the predicted data $\Upsilon' = [\kappa', \gamma_1', \gamma_2',
+		\kappa]$.
 		% The spatial inputs in the example are sorted and taken from a line in the
 		% 2D space $\xv$. 
 		\label{fig:GP_kernel_vis}}
@@ -670,7 +671,7 @@ For predicting lensing observables, which are the convergence ($\kappa$) and
 the two components of shear ($\gamma_{(1, 2)}$), we use a vector that is a concatenation of the
 different lensing observables.  
 We use $'$ to denote the quantities that we obtain
-from the interpolation and quantities without prime represent the original data: 
+from the interpolation and quantities without the prime symbol represent the original data: 
 \begin{equation}
 [\lensparams', \lensparams]  = [\kappa', \gamma_1', \gamma_2', \kappa,
 \gamma_1, \gamma_2] 
@@ -888,7 +889,7 @@ improvements can be made
 if we understand what GP covariance kernel can represent the B-mode amplitudes to achieve complete E/B mode
 separation.
 
-\subsection{Mass mapping for Deep Lens Survey Abell 781}
+\subsection{Mass mapping for Deep Lens Survey galaxy cluster Abell 781}
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.45\linewidth]{kappa_Abell781.png}
@@ -930,14 +931,14 @@ posterior maps of the DLS data.
 There is an ongoing effort to explore different ways to relate the posterior lensing signal 
 to a cosmological model in Schneider et al. (in prep.). 
 In this section, we outline some general ideas and concerns for such an effort. 
-First, it is possible to use the GP as an intermediate representation, 
+First, it is possible to use the GP as an intermediate representation to 
 obtain estimators such as the 2PCF or the power spectrum from the GP predictions. 
-Then use conventional techniques 
+Then we can use conventional techniques 
  to find the cosmological dependence from simulations.  
 We can compute the shear-shear power spectrum from our mean posterior map of the shear with
 corrected systematics. 
 The resulting shear-shear power spectrum does not have variance contribution from the 
-intrinsic ellipticites of the galaxies because the shape noise has been modeled
+intrinsic ellipticities of the galaxies because the shape noise has been modeled
 out by the Wiener filter. In conventional technique, the same marginalization
 of the shape noise is done by averaging galaxies in the neighboring region.
 The shear-shear power spectrum obtained in this manner can enable comparison to
@@ -952,8 +953,13 @@ Second, if we were to explore new ways to relate the GP outputs to cosmological 
 it may be interesting to investigate the sensitivity of the GP parameters (and
 the covariance kernel models) to cosmological parameters. 
 Directly relating the GP parameters or the outputs of the GP to cosmology can
-avoid unnecessary transformation and prevent the potential loss of cosmological 
+relate both linear and non-linear spatial features to cosmology simultaneously.
+It can also avoid unnecessary transformation and prevent the potential loss of cosmological 
 information. 
+For the 2PCF and the power spectrum that capture only the cosmological
+information in the linear spatial features, the non-linear structures had to be 
+simulated and calibrated separately before cosmological parameters could be inferred 
+(\citealt{Kilbinger2015}, \citealt{Jee2013a}).
 We should note that the GP parameters may not be very sensitive to cosmological parameters
 due to its flexibility to model a large variety of data. The sampling strategy of
 the galaxy locations may also affect the sensitivity. Such a sensitivity test can be
@@ -1125,8 +1131,9 @@ for such a task (\citealt{Rowe2010},
 of foreground stars in a more generalizable way \citep{Berge2012} and be
 applied as a prior. This allows a probabilistic connection of the 
 PSF modeling to the rest of the
-analysis. The successful examples of modeling systematics with a GP go beyond 
-the aforementioned Wiener filter formulation \citep{Perez-Cruz2013}.
+analysis. 
+% The successful examples of modeling systematics with a GP go beyond 
+% the aforementioned Wiener filter formulation \citep{Perez-Cruz2013}.
 
 To pick up undetermined periodicity or patterns, 
 we can use composite kernels with different covariance structures, 
@@ -1180,13 +1187,11 @@ Since the KL transform and GP decomposes the shear data according to features
 at different spatial scales, both the KL transform and the GP have the potential 
 for discovering patterns due to camera systematics.  
 
-The way that GP represents the coupling of large and small scale fluctuation 
-may 
-
-Furthermore, both studies have the potential of capturing the non-linearity 
-features:
-
-
+% The way that GP represents the coupling of large and small scale fluctuation 
+% may 
+% 
+% Furthermore, both studies have the potential of capturing the non-linearity 
+% features:
 % Most of the existing methods for represent lensing information are estimators.
 % Estimators alone are insufficient to completely specify a model of the data.
 % For example, the mean and the covariance are the two parameters of a Gaussian
@@ -1260,7 +1265,7 @@ representing the lensing observables.
 Our modified GP possesses the following properties that may be desirable
 for lensing analysis: \\ 
 1) We have enforced a consistent probabilistic representation of the lensing 
-observables. It is possible to predict a covergence map from the GP using
+observables. It is possible to predict a convergence map from the GP using
 the same GP parameters of the shear map and vice versa.\\ 
 2) The GP can specify the joint PDF of both the signal and the noise. 
 This allows a natural way of propagating and correcting for error.\\
@@ -1277,9 +1282,15 @@ introduce B-mode contamination. \\
 6) We have shown that the GP can model non-linear gravitational structures such 
 as a galaxy cluster. \\ 
 7) In future studies, it may be possible to identify a GP kernel that is the most 
-sensitive to the changes in cosmological parameters. Similarly, it may be
+sensitive to the changes in cosmological parameters. 
+If such effort is successful, the GP will be the first model to be able to
+capture both the linear and non-linear spatial information for inferring the relevant
+cosmological parameters ($\sigma_8$ and $\Omega_m$).\\
+8) Similarly, it may be
 possible to identify kernels for capturing the noise and systematics components 
-that are manifested as B-mode observables.
+that are manifested as B-mode observables. Being able to correct the noise and
+systematics will be crucial for upcoming sky surveys that are systematics
+dominated.
 
 Due to the high computational complexity $O(\ngal^3)$ of the current
 implementation of our GP method,  

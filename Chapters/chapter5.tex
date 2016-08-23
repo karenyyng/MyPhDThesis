@@ -84,14 +84,17 @@ using ${\bf s}_{\rm gal}$ a statistic for representing the galaxy population,
 and ${\bf s}_{\rm DM}$ the peak of the DM spatial distribution.
 We can further decompose the observed spatial offsets according to the different
 contributions: 
-\begin{equation}
-	\offset_{\rm obs} = \offset_{\SIDM} + \offset_{\rm dyn} + n + \cdots
-\end{equation}
+\begin{align}
+	\offset_{\rm obs} &= \offset_{\SIDM} + \offset_{\rm intrinsic} + n + \cdots
+	\\
+	&\equiv \offset_{\SIDM} + n_{\rm CDM} + \cdots
+\end{align}
 where $\offset_{\SIDM}$ is the offset due to the self-interaction of dark matter, 
-$\offset_{\rm dyn}$ is the offset due to dynamical friction, $n$ is the
-contribution from noise and measurement uncertainties, while ``$\cdots$" denotes
-any other possible contributions that we have not accounted for. 
-We have shown that $\offset_{\rm obs} \approx  n  > \offset_{\SIDM}$, i.e. 
+$\offset_{\rm intrinsic}$ is the offset before the merger, 
+$n$ is the contribution from noise and measurement uncertainties, while ``$\cdots$" denotes
+any other possible contributions that we have not accounted for, such as  
+the offset due to dynamical friction etc.
+We have shown that $\offset_{\rm obs} \approx  n_{\rm CDM}  > \offset_{\SIDM}$, i.e. 
 statistical noise can match observations of merging galaxy clusters, better than 
 the self-interaction of DM can match observations. 
 The observed offset levels are possible even under  
@@ -156,7 +159,7 @@ extension to the probabilistic
 framework for fitting cosmological parameters such as $\Omega_m$ and
 $\sigma_8$.  With the use of a GP, we can infer and remove the characteristic
 patterns (B-mode) caused by 
-complicated systematics and noise. This has the potential to give less biased 
+complicated systematics and noise. This has the potential to give unbiased 
 cosmological constraints for future surveys that are systematics dominant. 
 
 The field of astrophysics research is always pushing the limit of signal
