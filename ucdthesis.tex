@@ -10,10 +10,12 @@
 	% center using roman numerals per UC Davis requirements for the
 	% front matter of the dissertation:
 	\pagenumbering{roman}
-	\pagestyle{plain}
+	\pagestyle{fancy}
+	\cfoot{-\thepage-}
 
 		 
 	% % -- Title Page
+	\addcontentsline{toc}{title}{Title page}
 	\include{Front/title}
 	% \include{Front/copyright}
 	\include{Front/dedication}
@@ -23,7 +25,13 @@
 	\doublespacing
 		 
 	% % -- Table of Contents
-	\include{Front/toc}
+	% \include{Front/toc}
+	\addcontentsline{toc}{chapter}{Table of Contents}
+	% The following command creates the table of contents:
+	\begin{singlespacing}
+		\tableofcontents
+	\end{singlespacing}
+	\newpage
 		 
 	% % -- Table of Figures
 	% \include{Front/tof}
@@ -33,13 +41,14 @@
 	% % -- Abstract
 	% Note that the page numbering style for the autonomous Abstract 
 	% Page needs to be adjusted. See the Grad Studies website.
-	\subfile{abstract}
+	\addcontentsline{toc}{chapter}{Abstract}
+	\input{Chapters/abstract}
 	\newpage
 	
 	% % -- Acknowledgements
 
-	% the vspace command forces the title up a bit higher 
 
+	\addcontentsline{toc}{chapter}{Acknowledgments}
 	\include{Acknowledgements/acknowledgements}
 	
 	\newpage
@@ -49,9 +58,9 @@
 	% The following commands produce page numbering at the top right
 	% using arabic numerals per UC Davis requirements for the main
 	% text of the dissertation:
-	%\pagestyle{fancy}
-	\cfoot{\thepage}
+	\pagestyle{plain}
 	\pagenumbering{arabic}
+	% \cfoot{-\thepage-}
 
 	\input{Chapters/chapter1}
 	\input{Chapters/chapter2}

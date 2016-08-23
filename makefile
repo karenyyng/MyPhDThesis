@@ -27,7 +27,7 @@ all : ucdthesis.pdf
 ucdthesis.pdf : $(BIB) ./style/style.tex $(CONTENT) $(TEXFILE) $(FRONT) $(FIGS) ucdthesis.tex
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode " -use-make ucdthesis.tex 
 
-abstract.pdf : abstract.tex style/style.tex  	
+abstract.pdf : abstract.tex Chapters/abstract.tex style/style.tex  	
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode " -use-make $<
 
 # You must have a bibliography file of the same file prefix 

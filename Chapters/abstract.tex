@@ -1,0 +1,139 @@
+		\begin{flushright}
+			(Karen) Yin-Yee Ng \\
+			September 2016 \\
+			Physics \\
+		\end{flushright}
+
+		\begin{center}
+			Probabilistic Inference of Dark Matter Properties in Galaxy Clusters and
+			the Cosmic Web\\
+		\end{center}
+
+		% (ARGUE THE SIGNIFICANCE OF STUDYING DARK MATTER IN GENERAL)
+		% \thispagestyle{empty}
+		{\it ``Mass tells spacetime how to curve, spacetime tells mass how to move".}
+		This famous quote by physicist John Archibald Wheeler succinctly summarizes General
+		Relativity,  the most successful theory that describes our universe
+		at large scale. However, most of the mass that General Relativity describes,
+		namely dark matter (DM), remains a mystery.  
+		We have solid evidence of the existence of DM from various
+		observations, but we know little or nothing about the particle nature of DM
+		and how DM particles interact with different particles. 
+		Completing this knowledge gap would improve or 
+		revolutionize our established cosmological model,
+		the Lambda Cold-Dark Matter	($\Lambda$CDM) model, 
+		and give directions to theories beyond the standard particle
+		physics model. 
+
+			This work attempts to study DM by examining and
+		extending existing modeling approaches of DM and its visible tracers in a
+		probabilistic way. The single verified form of 
+		DM interaction is gravitational. Currently, the 
+		only way to infer the properties of DM is through visible tracers. Most of 
+		these indirect detections	either have low signal-to-noise, sparse coverage, 
+		or missing
+		variables. These limitations introduce additional
+		modeling choices and uncertainties. A probabilistic approach allows us to
+		propagate the uncertainties appropriately and marginalize any 
+		missing variables. 	
+		
+		There are two recurring types of visible tracers that 
+		my work uses. The first type of tracers are galaxies and observables in the 
+		 overdense regions of DM. These tracers allow 
+		us to infer the macroscopic dynamical properties of DM distribution that 
+		we want to study. The
+		second type of tracers, on the hand, are in the background, i.e.
+		further away than the foreground dark matter, from us observers. The
+		gravity of DM can bend spacetime such that the path of light traveling in 
+		the vicinity would also curve, leaving distortions in the galaxy images. 
+		The gravitational distortion of the images 
+		of the background galaxies is also known as gravitational lensing. In the
+		introduction (first chapter) of this thesis, I will lay out the technical
+		history, terminology and the reasons behind choosing the various data sets
+		and give an overview of the analysis methods for my thesis work. 
+		
+			In chapter two, I will present the study based on the observational data 
+			of El Gordo, one of the most massive, most ancient, merging galaxy clusters. 
+		Under the extreme collision speeds during a merger of a galaxy cluster, 
+		it is more probable for DM particles in the cluster to manifest effects of
+		self-interaction. 
+		Thus, if DM particles can interact with one another, 		
+		some preliminary simulations have shown that large-scale spatial distribution of DM
+		can show discrepancies from its galaxy-counterparts. This discrepancy 
+		is also known as the galaxy-DM offset, with a caveat. The long duration 
+		(millions of years) 
+		of a merger means that we cannot detect the
+		direction of motions of the components directly to confirm the offset as
+		a lag. My work on El Gordo was the first to show a quantitative method of estimating
+		how likely the DM components of El Gordo are to be moving in a certain
+		direction.	This study was made possible by utilizing informative
+		observables in various wavelengths, including a pair of radio shockwaves on
+		the outer skirt of the cluster, enhanced X-ray emissivity and the decrement of the
+		Sunyaev-Zel'Dovich effect for the infra-red observations.
+		This comprehensive set of observables allowed us to formulate 
+		probabilistic constraints in our Monte Carlo simulation of El Gordo.
+		Furthermore, the study also brought up several questions about the modeling
+		choices for comparing the DM and the member-galaxy distributions of a cluster.
+		For instance, do the DM maps and the galaxy maps have high enough
+		resolution to show the delicate offset signal produced by the possible
+		self-interaction of DM (SIDM)?
+		
+		To address my concerns from the study of El Gordo, 
+		I conducted a second investigation of galaxy clusters in a cosmological
+		simulation, which is described in chapter 3. The dataset I chose was from 
+		the Illustris simulation. As this simulation
+		assumes a Cold-Dark-Matter model (CDM) without requiring an SIDM model, 
+		any offset between DM and the member galaxies in a 
+		galaxy cluster provides an estimate of the variability of the galaxy-DM offset.  My
+		study shows that 
+		the variability in this setting is non-negligible compared to the
+		small observed offsets, it is
+		likely that random variation can account for the
+		galaxy-DM offsets in observations. The result weakens our belief that SIDM is the
+		cause of the offsets. 
+
+			The fourth chapter of my dissertation builds on top of my previous experience
+			with analyzing the weak lensing data for El Gordo. This time, I performed 
+			the weak lensing study for a dataset of a much larger spatial scale, 
+			such that, galaxy
+		clusters look like parts of a homogeneous and isotropic DM web. At this scale,
+		it is possible to compare the spatial distribution of DM to simulations to give 
+		competitive constraints on cosmological parameters. Using weak lensing
+		signals for estimating cosmological parameters is also known as cosmic shear 
+		inference. While I used a parametric technique to estimate the mass of El
+		Gordo in chapter 2, 
+		my work in chapter 4 introduces a new non-parametric model using a Gaussian Process.
+		A Gaussian Process is a generalization of the multivariate normal distribution 
+		to higher dimensions. We can draw functional models from a Gaussian Process
+		to describe our data. While the realizations are drawn from a multivariate
+		normal distribution,  we can specify the parameters and the
+		functional structure of the covariance (kernel) matrix of the underlying 
+		distribution. 
+		This generative model gives us the ability to put probabilistic estimates 
+		of DM density in regions without any background galaxies. 
+		As I have built the lensing physics into the 
+		very core of the covariance kernel matrix, we can also simultaneously infer the
+		several important lensing observables, such as shear and convergence, 
+		given some lensed galaxy shapes. 
+		More importantly, this technique relies on fewer assumptions about the
+		photometric redshift than traditional cosmic shear analysis technique. 
+		This may reduce
+		the bias towards a fiducial cosmology and lead to interesting discoveries.
+		However, this new technique is not without its challenges. Computationally,
+		this technique requires an $O(n^3)$ runtime. Despite my best attempts to
+		parallelize the computation, the algorithm takes longer for
+	  generating DM mass maps than traditional approaches. My work here
+		marks the beginning of an alternative method for cosmic
+		shear inference. Many promising approximation techniques have emerged to 
+		drastically speed up the runtime of doing inference with a Gaussian Process.
+		Incorporating these approximations may make it possible to use this method 
+		to give tighter cosmological constraints  
+		from future sky surveys such as the Large Synoptic Survey Telescope.  
+
+		I conclude my work in Chapter 5 and discuss the implications of my work.
+		This includes some future directions for analyzing DM
+		by using simulations with different underlying DM
+		models and real data. 
+     
+    \newpage
+		
