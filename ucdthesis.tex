@@ -15,14 +15,11 @@
 
 		 
 	% % -- Title Page
-	\addcontentsline{toc}{title}{Title page}
+	\addcontentsline{toc}{chapter}{Title Page}
 	\include{Front/title}
 	% \include{Front/copyright}
 	\include{Front/dedication}
 
-	% The following command produces double-spaced lines for the
-	% remainder of the document:
-	\doublespacing
 		 
 	% % -- Table of Contents
 	% \include{Front/toc}
@@ -41,6 +38,10 @@
 	% % -- Abstract
 	% Note that the page numbering style for the autonomous Abstract 
 	% Page needs to be adjusted. See the Grad Studies website.
+
+	% The following command produces double-spaced lines for the
+	% remainder of the document:
+	\doublespacing
 	\addcontentsline{toc}{chapter}{Abstract}
 	\input{Chapters/abstract}
 	\newpage
