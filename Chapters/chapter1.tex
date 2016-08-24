@@ -377,9 +377,10 @@ dependency-separation can be found in \cite{Meek2013} and \cite{Shachter2013}.
 		a, b and c) while, Fig. d factors to $P(A, B, C) = P(A, C |
 		B) P(B)$. In (a), observing B creates D-separation because B completely
 		explains C without A. Similarly, in (b), observing B completely explains A. 
-		In (c), B is a confounding factor of A and C that can induce spurious correlation,
-		however, observing B, which is the cause of A and C, specifies
-		its effect on both A and C, thus removing the correlation between A and C. 
+		In (c), B is a confounding factor of A and C that can induce spurious
+		correlation if B is not observed.
+		However, observing B, which is the cause of A and C, specifies
+		the effects of B on both A and C respectively, thus removing the correlation between A and C. 
 		In (d), A and C both explains B. If B is explained by C
 		in a certain way, then A has to explain all the effects that B
 		does not explain. There is then induced correlation between A and C that
